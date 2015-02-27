@@ -8,7 +8,7 @@ $ open <path-or-url>
 # Windows
 $ start <path-or-url>
 # Linux
-$ xdg-open <path-or-url> || gnome-open <path-or-url> || kde-open <path-or-url>
+$ open <path-or-url> || xdg-open <path-or-url> || gnome-open <path-or-url> || kde-open <path-or-url>
 ```
 
 # Usage

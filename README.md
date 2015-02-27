@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Byron/open-rs.svg?branch=master)](https://travis-ci.org/Byron/open-rs)
+
 Use this library to open a path or URL using the program configured on the system. It is equivalent to running one of the following:
 
 ```bash

@@ -27,7 +27,7 @@ pub fn that(path: &str) -> IoResult<ProcessExit> {
     use std::old_io::IoError;
 
     let mut res = Err(IoError::from_errno(0, false));
-    for program in &["open", "xdg-open", "gnome-open", "kde-open"] {
+    for program in &["xdg-open", "gnome-open", "kde-open"] {
         res = Command::new(program).arg(path).detached().status();
         match res {
             Ok(_) => return res,

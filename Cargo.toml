@@ -1,7 +1,7 @@
 [package]
 
 name = "open"
-version = "1.0.2"
+version = "1.0.3"
 authors = ["Sebastian Thiel <byronimo@gmail.com>"]
 license = "MIT"
 description = "Open a path or URL using the program configured on the system"

@@ -1,0 +1,6 @@
+[clog]
+repository = "https://github.com/Byron/open-rs"
+from-latest-tag = true
+
+[sections]
+Improvements = ["imp"]

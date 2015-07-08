@@ -11,4 +11,5 @@ documentation = "http://byron.github.io/open-rs"
 
 [[bin]]
 test = false
+doc = false
 name = "open"

@@ -38,7 +38,7 @@ pub fn that(path: &str) -> io::Result<ExitStatus> {
 
 #[cfg(target_os = "windows")]
 pub fn that(path: &str) -> io::Result<ExitStatus> {
-    match Command::new("start").arg(path).spawn() {
+    match Command::new("cmd").arg("/C").arg("start").arg(path).spawn() {
         Ok(mut child) => child.wait(),
         Err(err) => Err(err),
     }

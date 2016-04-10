@@ -1,3 +1,17 @@
+<a name="v1.1.1"></a>
+### v1.1.1 (2016-04-10)
+
+
+#### Bug Fixes
+
+* **cargo:**  no docs for open ([31605e0e](https://github.com/Byron/open-rs/commit/31605e0eddfb0cf8db635dd4d86131bc46beae78))
+
+#### Improvements
+
+* **api:**  allow OSStrings instead of &str ([1d13a671](https://github.com/Byron/open-rs/commit/1d13a671f2c9bd9616bf185fac77b32da1dcf8ee))
+
+
+
 <a name="25c0e398"></a>
 ## 25c0e398 (2015-07-08)
 

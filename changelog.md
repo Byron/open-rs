@@ -1,3 +1,10 @@
+<a name="v1.2.0"></a>
+## v1.2.0 (2017-01-31)
+
+* **windows**: escape '&' in URLs. On windows, a shell is used to execute the command, which
+  requires certain precautions for the URL to open to get through the interpreter.
+
+
 <a name="v1.1.1"></a>
 ### v1.1.1 (2016-04-10)
 

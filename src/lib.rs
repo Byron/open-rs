@@ -39,7 +39,14 @@ pub fn that<T:AsRef<OsStr>+Sized>(path: T) -> io::Result<ExitStatus> {
 
 #[cfg(target_os = "windows")]
 pub fn that<T:AsRef<OsStr>+Sized>(path: T) -> io::Result<ExitStatus> {
-    try!(Command::new("cmd").arg("/C").arg("start").arg(path.as_ref()).spawn()).wait()
+    let mut cmd = Command::new("cmd");
+    cmd.arg("/C").arg("start");
+    if let Some(s) = path.as_ref().to_str() {
+        cmd.arg(s.replace("&", "^&"));
+    } else {
+        cmd.arg(path.as_ref());
+    }
+    try!(cmd.spawn()).wait()
 }
 
 #[cfg(target_os = "macos")]

@@ -59,7 +59,7 @@ pub fn that<T:AsRef<OsStr>+Sized>(path: T) -> io::Result<ExitStatus> {
 #[cfg(target_os = "windows")]
 pub fn that<T:AsRef<OsStr>+Sized>(path: T) -> io::Result<ExitStatus> {
     let mut cmd = Command::new("cmd");
-    cmd.arg("/C").arg("start");
+    cmd.arg("/C").arg("start").arg("");
     if let Some(s) = path.as_ref().to_str() {
         cmd.arg(s.replace("&", "^&"));
     } else {

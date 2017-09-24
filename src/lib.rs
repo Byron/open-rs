@@ -16,7 +16,7 @@
 //! # Notes
 //!
 //! As an operating system program is used, chances are that the open operation fails.
-//! Therfore, you are advised to at least check the result with `.is_err()` and
+//! Therefore, you are advised to at least check the result with `.is_err()` and
 //! behave accordingly, e.g. by letting the user know what you tried to open, and failed.
 //!
 //! ```

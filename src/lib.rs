@@ -37,12 +37,43 @@ pub fn that<T:AsRef<OsStr>+Sized>(path: T) -> io::Result<ExitStatus> {
     last_err
 }
 
+#[cfg(not(any(target_os = "windows", target_os = "macos")))]
+pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: &str) -> io::Result<ExitStatus> {
+    Command::new(app)
+        .arg(path.as_ref())
+        .spawn()?
+        .wait()?
+}
+
 #[cfg(target_os = "windows")]
 pub fn that<T:AsRef<OsStr>+Sized>(path: T) -> io::Result<ExitStatus> {
     try!(Command::new("cmd").arg("/C").arg("start").arg(path.as_ref()).spawn()).wait()
 }
 
+#[cfg(target_os = "windows")]
+pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: &str) -> io::Result<ExitStatus> {
+    Command::new("cmd")
+        .arg("/C")
+        .arg("start")
+        .arg("")
+        .arg("/b")
+        .arg(app)
+        .arg(path.as_ref())
+        .spawn()?
+        .wait()
+}
+
 #[cfg(target_os = "macos")]
 pub fn that<T:AsRef<OsStr>+Sized>(path: T) -> io::Result<ExitStatus> {
     try!(Command::new("open").arg(path.as_ref()).spawn()).wait()
+}
+
+#[cfg(target_os = "macos")]
+pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: &str) -> io::Result<ExitStatus> {
+    Command::new("open")
+        .arg(path.as_ref())
+        .arg("-a")
+        .arg(app)
+        .spawn()?
+        .wait()
 }

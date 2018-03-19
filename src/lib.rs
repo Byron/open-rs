@@ -24,7 +24,7 @@
 //! match open::that("http://rust-lang.org") {
 //!     Ok(exit_status) => {
 //!         if exit_status.success() {
-//!             println!("Look at your browser !");
+//!             println!("Look at your browser!");
 //!         } else {
 //!             if let Some(code) = exit_status.code() {
 //!                 println!("Command returned non-zero exit status {}!", code);
@@ -65,10 +65,10 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
     } else {
         cmd.arg(path.as_ref());
     }
-    try!(cmd.spawn()).wait()
+    cmd.spawn()?.wait()
 }
 
 #[cfg(target_os = "macos")]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
-    try!(Command::new("open").arg(path.as_ref()).spawn()).wait()
+    Command::new("open").arg(path.as_ref()).spawn()?.wait()
 }

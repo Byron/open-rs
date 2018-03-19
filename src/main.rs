@@ -5,7 +5,7 @@ use std::env;
 use std::process;
 
 fn main() {
-    let path_or_url = match env::args().skip(1).next() {
+    let path_or_url = match env::args().nth(1) {
         Some(arg) => arg,
         None => {
             writeln!(stderr(), "usage: open <path-or-url>").ok();

@@ -1,7 +1,7 @@
 extern crate open;
 
-use std::io::{stderr, Write};
 use std::env;
+use std::io::{stderr, Write};
 use std::process;
 
 fn main() {

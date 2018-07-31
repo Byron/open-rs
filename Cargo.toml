@@ -13,3 +13,6 @@ documentation = "http://byron.github.io/open-rs"
 test = false
 doc = false
 name = "open"
+
+[target.'cfg(windows)'.dependencies]
+winapi = { version = "0.3", features = ["shellapi"] }

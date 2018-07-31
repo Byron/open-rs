@@ -37,9 +37,15 @@
 //! }
 //! # }
 //! ```
+#[cfg(windows)]
+extern crate winapi;
+
+#[cfg(not(target_os = "windows"))]
+use std::process::Command;
+
 use std::ffi::OsStr;
 use std::io;
-use std::process::{Command, ExitStatus};
+use std::process::ExitStatus;
 
 #[cfg(not(any(target_os = "windows", target_os = "macos")))]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
@@ -59,22 +65,53 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
 
 #[cfg(target_os = "windows")]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
-    Command::new("cmd")
-        .arg("/C")
-        .arg("start")
-        .arg("")
-        .arg({
-            let path_ref = path.as_ref();
-            match path_ref.to_str() {
-                Some(s) => s.replace("&", "^&"),
-                None => path_ref,
-            }
-        })
-        .spawn()?
-        .wait()
+    use winapi::ctypes::c_int;
+    use winapi::um::shellapi::ShellExecuteW;
+    use std::os::windows::ffi::OsStrExt;
+    use std::os::windows::process::ExitStatusExt;
+    use std::ptr;
+
+    const SW_SHOW: c_int = 5;
+
+    let path = windows::convert_path(path.as_ref())?;
+    let operation: Vec<u16> = OsStr::new("open\0").encode_wide().collect();
+    let result = unsafe {
+        ShellExecuteW(
+            ptr::null_mut(),
+            operation.as_ptr(),
+            path.as_ptr(),
+            ptr::null(),
+            ptr::null(),
+            SW_SHOW,
+        )
+    };
+    if result as c_int > 32 {
+        Ok(ExitStatus::from_raw(0))
+    } else {
+        Err(io::Error::last_os_error())
+    }
 }
 
 #[cfg(target_os = "macos")]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
     Command::new("open").arg(path.as_ref()).spawn()?.wait()
+}
+
+#[cfg(windows)]
+mod windows {
+    use std::io;
+    use std::ffi::OsStr;
+    use std::os::windows::ffi::OsStrExt;
+
+    pub fn convert_path(path: &OsStr) -> io::Result<Vec<u16>> {
+        let mut maybe_result: Vec<_> = path.encode_wide().collect();
+        if maybe_result.iter().any(|&u| u == 0) {
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "path contains NUL byte(s)",
+            ));
+        }
+        maybe_result.push(0);
+        Ok(maybe_result)
+    }
 }

@@ -19,7 +19,8 @@ fn main() {
             "An error occourred when opening '{}': {}",
             path_or_url,
             err
-        ).ok();
+        )
+        .ok();
         process::exit(3);
     }
 }

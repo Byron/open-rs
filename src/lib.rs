@@ -41,7 +41,7 @@
 extern crate winapi;
 
 #[cfg(not(target_os = "windows"))]
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 use std::ffi::OsStr;
 use std::io;
@@ -52,7 +52,12 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
     let path_ref = path.as_ref();
     let mut last_err: io::Error = io::Error::from_raw_os_error(0);
     for program in &["xdg-open", "gnome-open", "kde-open"] {
-        match Command::new(program).arg(path_ref).spawn() {
+        match Command::new(program)
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .arg(path_ref)
+            .spawn()
+        {
             Ok(mut child) => return child.wait(),
             Err(err) => {
                 last_err = err;
@@ -65,11 +70,11 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
 
 #[cfg(target_os = "windows")]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
-    use winapi::ctypes::c_int;
-    use winapi::um::shellapi::ShellExecuteW;
     use std::os::windows::ffi::OsStrExt;
     use std::os::windows::process::ExitStatusExt;
     use std::ptr;
+    use winapi::ctypes::c_int;
+    use winapi::um::shellapi::ShellExecuteW;
 
     const SW_SHOW: c_int = 5;
 
@@ -94,13 +99,18 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
 
 #[cfg(target_os = "macos")]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
-    Command::new("open").arg(path.as_ref()).spawn()?.wait()
+    Command::new("open")
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .arg(path.as_ref())
+        .spawn()?
+        .wait()
 }
 
 #[cfg(windows)]
 mod windows {
-    use std::io;
     use std::ffi::OsStr;
+    use std::io;
     use std::os::windows::ffi::OsStrExt;
 
     pub fn convert_path(path: &OsStr) -> io::Result<Vec<u16>> {

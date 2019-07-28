@@ -51,7 +51,7 @@ use std::process::ExitStatus;
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
     let path_ref = path.as_ref();
     let mut last_err: io::Error = io::Error::from_raw_os_error(0);
-    for program in &["wslopen", "xdg-open", "gnome-open", "kde-open"] {
+    for program in &["xdg-open", "gnome-open", "kde-open", "wslview"] {
         match Command::new(program)
             .stdout(Stdio::null())
             .stderr(Stdio::null())

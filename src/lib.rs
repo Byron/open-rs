@@ -46,6 +46,7 @@ use std::process::{Command, Stdio};
 use std::ffi::OsStr;
 use std::io;
 use std::process::ExitStatus;
+use std::thread;
 
 #[cfg(not(any(target_os = "windows", target_os = "macos")))]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
@@ -105,6 +106,14 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
         .arg(path.as_ref())
         .spawn()?
         .wait()
+}
+
+/// Convenience function for opening the passed path in a new thread.
+pub fn that_in_background<T: AsRef<OsStr> + Sized>(
+    path: T,
+) -> thread::JoinHandle<io::Result<ExitStatus>> {
+    let path = path.as_ref().to_os_string();
+    thread::spawn(|| that(path))
 }
 
 #[cfg(windows)]

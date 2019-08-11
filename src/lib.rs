@@ -109,6 +109,7 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
 }
 
 /// Convenience function for opening the passed path in a new thread.
+/// See documentation of `that(...)` for more details.
 pub fn that_in_background<T: AsRef<OsStr> + Sized>(
     path: T,
 ) -> thread::JoinHandle<io::Result<ExitStatus>> {

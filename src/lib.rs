@@ -40,13 +40,13 @@
 #[cfg(windows)]
 extern crate winapi;
 
-#[cfg(not(target_os = "windows"))]
-use std::process::{Command, Stdio};
-
-use std::ffi::OsStr;
-use std::io;
-use std::process::ExitStatus;
-use std::thread;
+use std::{
+    ffi::OsStr,
+    process::{Command, Stdio},
+    io,
+    process::ExitStatus,
+    thread
+};
 
 #[cfg(not(any(target_os = "windows", target_os = "macos")))]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {

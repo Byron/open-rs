@@ -1,8 +1,10 @@
 extern crate open;
 
-use std::env;
-use std::io::{stderr, Write};
-use std::process;
+use std::{
+    env,
+    io::{stderr, Write},
+    process
+};
 
 fn main() {
     let path_or_url = match env::args().nth(1) {

@@ -1,14 +1,15 @@
 [package]
 
 name = "open"
-version = "1.3.2"
+version = "1.3.3"
 authors = ["Sebastian Thiel <byronimo@gmail.com>"]
 license = "MIT"
+edition = "2018"
+readme = "README.md"
 description = "Open a path or URL using the program configured on the system"
 repository = "https://github.com/Byron/open-rs"
 keywords = ["open", "xdg-open", "start", "launch"]
-documentation = "http://byron.github.io/open-rs"
-exclude = ["/etc/*", "/.clog.toml", "/.travis.yml"]
+include = ["src/**/*.rs", "Cargo.toml"]
 
 [[bin]]
 test = false

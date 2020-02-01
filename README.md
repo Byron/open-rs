@@ -19,12 +19,6 @@ Add this to your Cargo.toml
 [dependencies]
 open = "*"
 ```
-
-Add this to your lib ...
-```Rust
-extern crate open;
-```
-
 ... and open something using
 ```Rust
 open::that("https://rust-lang.org");

@@ -1,4 +1,8 @@
 <a name="v1.2.0"></a>
+## v1.3.3 (2020-02-01)
+
+* update code and crate to Edition 2018
+
 ## v1.2.0 (2017-01-31)
 
 * **windows**: escape '&' in URLs. On windows, a shell is used to execute the command, which

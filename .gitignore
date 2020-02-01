@@ -1,4 +1,2 @@
-/.idea/
 target
 Cargo.lock
-*.sublime-workspace

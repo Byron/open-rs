@@ -9,7 +9,7 @@ readme = "README.md"
 description = "Open a path or URL using the program configured on the system"
 repository = "https://github.com/Byron/open-rs"
 keywords = ["open", "xdg-open", "start", "launch"]
-include = ["src/**/*.rs", "Cargo.toml"]
+include = ["src/**/*.rs", "Cargo.toml", "*.md"]
 
 [[bin]]
 test = false

@@ -1,4 +1,8 @@
 <a name="v1.2.0"></a>
+## v1.3.4 (2020-02-11)
+
+* Add LICENSE.md and README.md into the crates.io tarball.
+
 ## v1.3.3 (2020-02-01)
 
 * update code and crate to Edition 2018

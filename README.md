@@ -24,6 +24,11 @@ open = "*"
 open::that("https://rust-lang.org");
 ```
 
+or, open with something app
+```Rust
+open::with("https://rust-lang.org", "firefox");
+```
+
 Follow this link for the [massive API docs](http://byron.github.io/open-rs).
 
 # Credits

@@ -41,7 +41,7 @@
 extern crate winapi;
 
 #[cfg(not(windows))]
-use std::process::Stdio;
+use std::process::{Command, Stdio};
 
 use std::{
     ffi::OsStr,

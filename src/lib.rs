@@ -40,9 +40,11 @@
 #[cfg(windows)]
 extern crate winapi;
 
+#[cfg(not(windows))]
+use std::process::Stdio;
+
 use std::{
     ffi::OsStr,
-    process::{Command, Stdio},
     io,
     process::ExitStatus,
     thread
@@ -108,6 +110,54 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
         .wait()
 }
 
+#[cfg(not(any(target_os = "windows", target_os = "macos")))]
+pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
+    Command::new(app.into())
+        .arg(path.as_ref())
+        .spawn()?
+        .wait()
+}
+
+#[cfg(target_os = "windows")]
+pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
+    use std::os::windows::ffi::OsStrExt;
+    use std::os::windows::process::ExitStatusExt;
+    use std::ptr;
+    use winapi::ctypes::c_int;
+    use winapi::um::shellapi::ShellExecuteW;
+
+    const SW_SHOW: c_int = 5;
+
+    let path = windows::convert_path(path.as_ref())?;
+    let operation: Vec<u16> = OsStr::new("open\0").encode_wide().collect();
+    let app_name: Vec<u16> = OsStr::new(&format!("{}\0", app.into())).encode_wide().collect();
+    let result = unsafe {
+        ShellExecuteW(
+            ptr::null_mut(),
+            operation.as_ptr(),
+            app_name.as_ptr(),
+            path.as_ptr(),
+            ptr::null(),
+            SW_SHOW,
+        )
+    };
+    if result as c_int > 32 {
+        Ok(ExitStatus::from_raw(0))
+    } else {
+        Err(io::Error::last_os_error())
+    }
+}
+
+#[cfg(target_os = "macos")]
+pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
+    Command::new("open")
+        .arg(path.as_ref())
+        .arg("-a")
+        .arg(app.into())
+        .spawn()?
+        .wait()
+}
+
 /// Convenience function for opening the passed path in a new thread.
 /// See documentation of `that(...)` for more details.
 pub fn that_in_background<T: AsRef<OsStr> + Sized>(
@@ -115,6 +165,15 @@ pub fn that_in_background<T: AsRef<OsStr> + Sized>(
 ) -> thread::JoinHandle<io::Result<ExitStatus>> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
+}
+
+pub fn with_in_background<T: AsRef<OsStr> + Sized>(
+    path: T,
+    app: impl Into<String>
+) -> thread::JoinHandle<io::Result<ExitStatus>> {
+    let path = path.as_ref().to_os_string();
+    let app = app.into();
+    thread::spawn(|| with(path, app))
 }
 
 #[cfg(windows)]

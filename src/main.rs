@@ -3,7 +3,7 @@ extern crate open;
 use std::{
     env,
     io::{stderr, Write},
-    process
+    process,
 };
 
 fn main() {

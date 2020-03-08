@@ -43,12 +43,7 @@ extern crate winapi;
 #[cfg(not(windows))]
 use std::process::{Command, Stdio};
 
-use std::{
-    ffi::OsStr,
-    io,
-    process::ExitStatus,
-    thread
-};
+use std::{ffi::OsStr, io, process::ExitStatus, thread};
 
 #[cfg(not(any(target_os = "windows", target_os = "macos")))]
 pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
@@ -111,15 +106,12 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
 }
 
 #[cfg(not(any(target_os = "windows", target_os = "macos")))]
-pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
-    Command::new(app.into())
-        .arg(path.as_ref())
-        .spawn()?
-        .wait()
+pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
+    Command::new(app.into()).arg(path.as_ref()).spawn()?.wait()
 }
 
 #[cfg(target_os = "windows")]
-pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
+pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
     use std::os::windows::ffi::OsStrExt;
     use std::os::windows::process::ExitStatusExt;
     use std::ptr;
@@ -130,7 +122,9 @@ pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result
 
     let path = windows::convert_path(path.as_ref())?;
     let operation: Vec<u16> = OsStr::new("open\0").encode_wide().collect();
-    let app_name: Vec<u16> = OsStr::new(&format!("{}\0", app.into())).encode_wide().collect();
+    let app_name: Vec<u16> = OsStr::new(&format!("{}\0", app.into()))
+        .encode_wide()
+        .collect();
     let result = unsafe {
         ShellExecuteW(
             ptr::null_mut(),
@@ -149,7 +143,7 @@ pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result
 }
 
 #[cfg(target_os = "macos")]
-pub fn with<T:AsRef<OsStr>+Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
+pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
     Command::new("open")
         .arg(path.as_ref())
         .arg("-a")
@@ -169,7 +163,7 @@ pub fn that_in_background<T: AsRef<OsStr> + Sized>(
 
 pub fn with_in_background<T: AsRef<OsStr> + Sized>(
     path: T,
-    app: impl Into<String>
+    app: impl Into<String>,
 ) -> thread::JoinHandle<io::Result<ExitStatus>> {
     let path = path.as_ref().to_os_string();
     let app = app.into();

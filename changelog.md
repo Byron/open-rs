@@ -1,4 +1,7 @@
-<a name="v1.2.0"></a>
+## v1.4.0 (2020-03-08)
+
+* add `open::with(path, app)` and `open::with_in_background(…)`
+
 ## v1.3.4 (2020-02-11)
 
 * Add LICENSE.md and README.md into the crates.io tarball.

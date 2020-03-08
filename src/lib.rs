@@ -12,6 +12,15 @@
 //! open::that("http://rust-lang.org").unwrap();
 //! # }
 //! ```
+//! Alternatively, specify the program to open something with. It should expect to receive the path or URL as first argument.
+//! ```test_harness,no_run
+//! extern crate open;
+//!
+//! # #[test]
+//! # fn doit() {
+//! open::with("http://rust-lang.org", "firefox").unwrap();
+//! # }
+//! ```
 //!
 //! # Notes
 //!

@@ -17,14 +17,14 @@ $ open <path-or-url> || xdg-open <path-or-url> || gnome-open <path-or-url> || kd
 Add this to your Cargo.toml
 ```toml
 [dependencies]
-open = "*"
+open = "1"
 ```
-... and open something using
+…and open something using…
 ```Rust
 open::that("https://rust-lang.org");
 ```
 
-or, open with something app
+…or, open something with an application of your choice
 ```Rust
 open::with("https://rust-lang.org", "firefox");
 ```

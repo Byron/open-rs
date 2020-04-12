@@ -60,15 +60,18 @@ jobs:
           profile: minimal
           override: true
           target: ${{ matrix.target }}
+          components: rustfmt, clippy
 
       - name: Show command used for Cargo
-        if: success()
         run: |
           echo "cargo command is: ${{ env.CARGO }}"
           echo "target flag is: ${{ env.TARGET_FLAGS }}"
           echo "target dir is: ${{ env.TARGET_DIR }}"
 
       - name: Run tests
-        if: success()
         run: ${{ env.CARGO }} test ${{ env.TARGET_FLAGS }}
+      - name: Run fmt
+        run: ${{ env.CARGO }} fmt ${{ env.TARGET_FLAGS }} --all -- --check
+      - name: Run clippy
+        run: ${{ env.CARGO }} clippy ${{ env.TARGET_FLAGS }}
 

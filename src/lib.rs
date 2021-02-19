@@ -201,24 +201,22 @@ mod unix {
         process::{Command, ExitStatus, Stdio},
     };
 
+    use which::which;
+
     pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result<ExitStatus> {
-        let path_ref = path.as_ref();
-        let mut last_err = Error::from_raw_os_error(0);
-        for program in &["xdg-open", "gnome-open", "kde-open", "wslview"] {
-            match Command::new(program)
-                .stdout(Stdio::null())
-                .stderr(Stdio::null())
-                .arg(path_ref)
-                .spawn()
-            {
-                Ok(mut child) => return child.wait(),
-                Err(err) => {
-                    last_err = err;
-                    continue;
-                }
-            }
-        }
-        Err(last_err)
+        ["xdg-open", "gnome-open", "kde-open", "wslview"] // Open handlers
+            .iter()
+            .find(|it| which(it).is_ok()) // find the first handler that exists
+            .ok_or(Error::from_raw_os_error(0)) // If not found, return err
+            .and_then(|program| {
+                // If found run the handler
+                Command::new(program)
+                    .stdout(Stdio::null())
+                    .stderr(Stdio::null())
+                    .arg(path.as_ref())
+                    .spawn()?
+                    .wait()
+            })
     }
 
     pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result<ExitStatus> {

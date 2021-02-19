@@ -55,7 +55,14 @@ pub use windows::{that, with};
 #[cfg(target_os = "macos")]
 pub use macos::{that, with};
 
-#[cfg(not(any(target_os = "windows", target_os = "macos")))]
+#[cfg(any(
+    target_os = "linux",
+    target_os = "freebsd",
+    target_os = "dragonfly",
+    target_os = "netbsd",
+    target_os = "openbsd",
+    target_os = "solaris"
+))]
 pub use unix::{that, with};
 
 /// Convenience function for opening the passed path in a new thread.
@@ -178,7 +185,14 @@ mod macos {
     }
 }
 
-#[cfg(not(any(target_os = "windows", target_os = "macos")))]
+#[cfg(any(
+    target_os = "linux",
+    target_os = "freebsd",
+    target_os = "dragonfly",
+    target_os = "netbsd",
+    target_os = "openbsd",
+    target_os = "solaris"
+))]
 mod unix {
 
     use std::{

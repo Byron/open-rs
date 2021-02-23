@@ -107,25 +107,7 @@ mod windows {
     }
 
     pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
-        const SW_SHOW: c_int = 5;
-
-        let path = convert_path(path.as_ref())?;
-        let operation: Vec<u16> = OsStr::new("open\0").encode_wide().collect();
-        let result = unsafe {
-            ShellExecuteW(
-                ptr::null_mut(),
-                operation.as_ptr(),
-                path.as_ptr(),
-                ptr::null(),
-                ptr::null(),
-                SW_SHOW,
-            )
-        };
-        if result as c_int > 32 {
-            Ok(ExitStatus::from_raw(0))
-        } else {
-            Err(io::Error::last_os_error())
-        }
+        Command::new("explorer").arg(path).spawn()?.wait()
     }
 
     pub fn with<T: AsRef<OsStr> + Sized>(

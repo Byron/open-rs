@@ -94,7 +94,7 @@ mod windows {
     use winapi::ctypes::c_int;
     use winapi::um::shellapi::ShellExecuteW;
 
-    pub fn convert_path(path: &OsStr) -> io::Result<Vec<u16>> {
+    fn convert_path(path: &OsStr) -> io::Result<Vec<u16>> {
         let mut maybe_result: Vec<_> = path.encode_wide().collect();
         if maybe_result.iter().any(|&u| u == 0) {
             return Err(io::Error::new(

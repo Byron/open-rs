@@ -1,3 +1,7 @@
+## v1.5.0 (2021-02-28)
+
+* Use 'explorer' on Windows instead of a shell.
+
 ## v1.4.0 (2020-03-08)
 
 * add `open::with(path, app)` and `open::with_in_background(…)`

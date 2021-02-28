@@ -159,7 +159,6 @@ mod windows {
 
 #[cfg(target_os = "macos")]
 mod macos {
-
     use std::{
         ffi::OsStr,
         io::Result,
@@ -194,7 +193,6 @@ mod macos {
     target_os = "solaris"
 ))]
 mod unix {
-
     use std::{
         ffi::OsStr,
         io::{Error, Result},

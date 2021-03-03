@@ -88,7 +88,7 @@ mod windows {
     use std::ffi::OsStr;
     use std::io;
     use std::os::windows::{ffi::OsStrExt, process::ExitStatusExt};
-    use std::process::{Command, ExitStatus};
+    use std::process::ExitStatus;
     use std::ptr;
 
     use winapi::ctypes::c_int;

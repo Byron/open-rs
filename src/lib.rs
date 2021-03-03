@@ -90,7 +90,7 @@ mod windows {
         io,
         os::windows::{ffi::OsStrExt, process::ExitStatusExt},
         process::ExitStatus,
-        ptr
+        ptr,
     };
 
     use winapi::ctypes::c_int;

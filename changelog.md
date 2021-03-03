@@ -1,4 +1,10 @@
-## v1.5.0 (2021-02-28)
+## v1.5.1 (2021-03-03)
+
+* Use shell instead of explorer on windows, reverting the original behaviour.
+
+## v1.5.0 (2021-02-28) - YANKED
+
+YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 * Use 'explorer' on Windows instead of a shell.
 

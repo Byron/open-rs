@@ -85,11 +85,13 @@ pub fn with_in_background<T: AsRef<OsStr> + Sized>(
 
 #[cfg(windows)]
 mod windows {
-    use std::ffi::OsStr;
-    use std::io;
-    use std::os::windows::{ffi::OsStrExt, process::ExitStatusExt};
-    use std::process::ExitStatus;
-    use std::ptr;
+    use std::{
+        ffi::OsStr,
+        io,
+        os::windows::{ffi::OsStrExt, process::ExitStatusExt},
+        process::ExitStatus,
+        ptr
+    };
 
     use winapi::ctypes::c_int;
     use winapi::um::shellapi::ShellExecuteW;

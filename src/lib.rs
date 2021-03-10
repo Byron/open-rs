@@ -57,6 +57,7 @@ pub use macos::{that, with};
 
 #[cfg(any(
     target_os = "linux",
+    target_os = "android",
     target_os = "freebsd",
     target_os = "dragonfly",
     target_os = "netbsd",
@@ -188,6 +189,7 @@ mod macos {
 
 #[cfg(any(
     target_os = "linux",
+    target_os = "android",
     target_os = "freebsd",
     target_os = "dragonfly",
     target_os = "netbsd",

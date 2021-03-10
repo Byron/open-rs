@@ -1,5 +1,6 @@
-## v1.5.2 (2021-03-10)
+## v1.6.0 (2021-03-10)
 
+* Add IOS support
 * Restore Android support
 
 ## v1.5.1 (2021-03-03)

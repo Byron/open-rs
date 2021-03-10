@@ -71,6 +71,7 @@ pub use unix::{that, with};
 
 #[cfg(not(any(
     target_os = "dragonfly",
+    target_os = "android",
     target_os = "freebsd",
     target_os = "ios",
     target_os = "linux",

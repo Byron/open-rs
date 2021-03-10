@@ -1,3 +1,7 @@
+## v1.5.2 (2021-03-10)
+
+* Restore Android support
+
 ## v1.5.1 (2021-03-03)
 
 * Use shell instead of explorer on windows, reverting the original behaviour.

@@ -55,6 +55,9 @@ pub use windows::{that, with};
 #[cfg(target_os = "macos")]
 pub use macos::{that, with};
 
+#[cfg(target_os = "ios")]
+pub use ios::{that, with};
+
 #[cfg(any(
     target_os = "linux",
     target_os = "android",
@@ -65,6 +68,19 @@ pub use macos::{that, with};
     target_os = "solaris"
 ))]
 pub use unix::{that, with};
+
+#[cfg(not(any(
+    target_os = "dragonfly",
+    target_os = "freebsd",
+    target_os = "ios",
+    target_os = "linux",
+    target_os = "macos",
+    target_os = "netbsd",
+    target_os = "openbsd",
+    target_os = "solaris",
+    target_os = "windows",
+)))]
+compile_error!("open is not supported on this platform");
 
 /// Convenience function for opening the passed path in a new thread.
 /// See documentation of `that(...)` for more details.
@@ -181,6 +197,35 @@ mod macos {
         Command::new("open")
             .arg(path.as_ref())
             .arg("-a")
+            .arg(app.into())
+            .spawn()?
+            .wait()
+    }
+}
+
+#[cfg(target_os = "ios")]
+mod ios {
+    use std::{
+        ffi::OsStr,
+        io::Result,
+        process::{Command, ExitStatus, Stdio},
+    };
+
+    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result<ExitStatus> {
+        Command::new("uiopen")
+            .stdout(Stdio::null())
+            .stderr(Stdio::null())
+            .arg("--url")
+            .arg(path.as_ref())
+            .spawn()?
+            .wait()
+    }
+
+    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result<ExitStatus> {
+        Command::new("uiopen")
+            .arg("--url")
+            .arg(path.as_ref())
+            .arg("--bundleid")
             .arg(app.into())
             .spawn()?
             .wait()

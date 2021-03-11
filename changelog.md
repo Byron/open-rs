@@ -3,7 +3,10 @@
 * Add IOS support
 * Restore Android support
 
-## v1.5.1 (2021-03-03)
+## v1.5.1 (2021-03-03) - YANKED
+
+YANKED as it would erroneously exclude Android from the list of supported platforms, making it a breaking release for some despite
+the minor version change.
 
 * Use shell instead of explorer on windows, reverting the original behaviour.
 

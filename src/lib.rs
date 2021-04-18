@@ -258,7 +258,7 @@ mod unix {
             .ok_or(Error::from_raw_os_error(0)) // If not found, return err
             .and_then(|program| {
                 // If found run the handler
-                if program.to_string() == "gio" {
+                if *program == "gio" {
                     Command::new(program)
                         .stdout(Stdio::null())
                         .stderr(Stdio::null())

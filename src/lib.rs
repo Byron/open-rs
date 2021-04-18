@@ -252,18 +252,28 @@ mod unix {
     use which::which;
 
     pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result<ExitStatus> {
-        ["xdg-open", "gnome-open", "kde-open", "wslview"] // Open handlers
+        ["xdg-open", "gio", "gnome-open", "kde-open", "wslview"] // Open handlers
             .iter()
             .find(|it| which(it).is_ok()) // find the first handler that exists
             .ok_or(Error::from_raw_os_error(0)) // If not found, return err
             .and_then(|program| {
                 // If found run the handler
-                Command::new(program)
-                    .stdout(Stdio::null())
-                    .stderr(Stdio::null())
-                    .arg(path.as_ref())
-                    .spawn()?
-                    .wait()
+                if *program == "gio" {
+                    Command::new(program)
+                        .stdout(Stdio::null())
+                        .stderr(Stdio::null())
+                        .arg("open")
+                        .arg(path.as_ref())
+                        .spawn()?
+                        .wait()
+                } else {
+                    Command::new(program)
+                        .stdout(Stdio::null())
+                        .stderr(Stdio::null())
+                        .arg(path.as_ref())
+                        .spawn()?
+                        .wait()
+                }
             })
     }
 

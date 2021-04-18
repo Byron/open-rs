@@ -9,7 +9,7 @@ $ open <path-or-url>
 # Windows
 $ start <path-or-url>
 # Linux
-$ open <path-or-url> || xdg-open <path-or-url> || gnome-open <path-or-url> || kde-open <path-or-url>
+$ xdg-open <path-or-url> || gio open <path-or-url> || gnome-open <path-or-url> || kde-open <path-or-url> || wslview <path-or-url>
 ```
 
 # Usage

@@ -1,3 +1,7 @@
+## v1.7.0 (2021-04-18)
+
+* Add `gio` support on unix platforms
+
 ## v1.6.0 (2021-03-10)
 
 * Add IOS support

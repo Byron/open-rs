@@ -244,40 +244,69 @@ mod ios {
 ))]
 mod unix {
     use std::{
-        ffi::OsStr,
-        io::{Error, Result},
+        env,
+        ffi::{OsStr, OsString},
+        io,
+        path::{Path, PathBuf},
         process::{Command, ExitStatus, Stdio},
     };
 
-    use which::which;
+    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
+        let path = path.as_ref();
+        let open_handlers = [
+            ("xdg-open", &[path] as &[_]),
+            ("gio", &[OsStr::new("open"), path]),
+            ("gnome-open", &[path]),
+            ("kde-open", &[path]),
+            ("wslview", &[&wsl_path(path)]),
+        ];
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result<ExitStatus> {
-        ["xdg-open", "gio", "gnome-open", "kde-open", "wslview"] // Open handlers
-            .iter()
-            .find(|it| which(it).is_ok()) // find the first handler that exists
-            .ok_or(Error::from_raw_os_error(0)) // If not found, return err
-            .and_then(|program| {
-                // If found run the handler
-                if *program == "gio" {
-                    Command::new(program)
-                        .stdout(Stdio::null())
-                        .stderr(Stdio::null())
-                        .arg("open")
-                        .arg(path.as_ref())
-                        .spawn()?
-                        .wait()
-                } else {
-                    Command::new(program)
-                        .stdout(Stdio::null())
-                        .stderr(Stdio::null())
-                        .arg(path.as_ref())
-                        .spawn()?
-                        .wait()
-                }
-            })
+        let mut unsuccessful = None;
+        let mut error = None;
+
+        for (command, args) in &open_handlers {
+            let result = Command::new(command)
+                .stdout(Stdio::null())
+                .stderr(Stdio::null())
+                .args(*args)
+                .status();
+
+            match result {
+                Ok(status) if status.success() => return result,
+                Ok(_) => unsuccessful = unsuccessful.or(Some(result)),
+                Err(err) => error = error.or(Some(Err(err))),
+            }
+        }
+
+        unsuccessful
+            .or(error)
+            .unwrap_or_else(|| Err(io::Error::from(io::ErrorKind::Other)))
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result<ExitStatus> {
+    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
         Command::new(app.into()).arg(path.as_ref()).spawn()?.wait()
+    }
+
+    // Polyfill to workaround absolute path bug in wslu(wslview). In versions before
+    // v3.1.1, wslview is unable to find absolute paths. `wsl_path` converts an
+    // absolute path into a relative path starting from the current directory. If
+    // the path is already a relative path or the conversion fails the original path
+    // is returned.
+    fn wsl_path<T: AsRef<OsStr>>(path: T) -> OsString {
+        fn path_relative_to_current_dir<T: AsRef<OsStr>>(path: T) -> Option<PathBuf> {
+            let path = Path::new(&path);
+
+            if path.is_relative() {
+                return None;
+            }
+
+            let base = env::current_dir().ok()?;
+            pathdiff::diff_paths(path, base)
+        }
+
+        match path_relative_to_current_dir(&path) {
+            None => OsString::from(&path),
+            Some(relative) => OsString::from(relative),
+        }
     }
 }

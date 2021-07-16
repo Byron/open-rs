@@ -12,7 +12,9 @@ fn main() {
     match open::that(&path_or_url) {
         Ok(status) if status.success() => (),
         Ok(status) => match status.code() {
-            Some(code) => print_error_and_exit(code, &path_or_url, &format!("error code: {}", code)),
+            Some(code) => {
+                print_error_and_exit(code, &path_or_url, &format!("error code: {}", code))
+            }
             None => print_error_and_exit(3, &path_or_url, "error unknown"),
         },
         Err(err) => print_error_and_exit(3, &path_or_url, &err.to_string()),

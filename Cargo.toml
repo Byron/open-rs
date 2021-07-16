@@ -20,4 +20,4 @@ name = "open"
 winapi = { version = "0.3", features = ["shellapi"] }
 
 [target.'cfg(all(unix, not(macos)))'.dependencies]
-which = "4"
+pathdiff = "0.2.0"

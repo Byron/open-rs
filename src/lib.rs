@@ -283,7 +283,10 @@ mod unix {
             .unwrap_or_else(|| Err(io::Error::from(io::ErrorKind::Other)))
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> io::Result<ExitStatus> {
+    pub fn with<T: AsRef<OsStr> + Sized>(
+        path: T,
+        app: impl Into<String>,
+    ) -> io::Result<ExitStatus> {
         Command::new(app.into()).arg(path.as_ref()).spawn()?.wait()
     }
 

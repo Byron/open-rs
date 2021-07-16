@@ -12,14 +12,14 @@ fn main() {
     match open::that(&path_or_url) {
         Ok(status) if status.success() => (),
         Ok(status) => match status.code() {
-            Some(code) => open_error(code, &path_or_url, &format!("error code: {}", code)),
-            None => open_error(3, &path_or_url, "error unknown"),
+            Some(code) => print_error_and_exit(code, &path_or_url, &format!("error code: {}", code)),
+            None => print_error_and_exit(3, &path_or_url, "error unknown"),
         },
-        Err(err) => open_error(3, &path_or_url, &err.to_string()),
+        Err(err) => print_error_and_exit(3, &path_or_url, &err.to_string()),
     }
 }
 
-fn open_error(code: i32, path: &str, error_message: &str) {
+fn print_error_and_exit(code: i32, path: &str, error_message: &str) -> ! {
     eprintln!(
         "An error occurred when opening '{}': {}",
         path, error_message

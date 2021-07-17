@@ -1,3 +1,8 @@
+## v1.7.0 (2021-07-17)
+
+* improved support [for
+  windows-subsystem-for-linux](https://github.com/Byron/open-rs/pull/33#issue-691044025)
+
 ## v1.7.0 (2021-04-18)
 
 * Add `gio` support on unix platforms

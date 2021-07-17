@@ -280,7 +280,7 @@ mod unix {
 
         unsuccessful
             .or(error)
-            .unwrap_or_else(|| Err(io::Error::from(io::ErrorKind::Other)))
+            .expect("successful cases don't get here")
     }
 
     pub fn with<T: AsRef<OsStr> + Sized>(

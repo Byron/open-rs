@@ -1,3 +1,24 @@
+## v2.0.0 (2021-07-25)
+
+**Breaking**: Change result from `io::Result<ExitStatus>` to `io::Result<()>`.
+Commands that exit with a successful exit status result in `Ok`, otherwise an `Err` variant is created.
+Previously it was easy to receive an `Ok(ExitStatus)` but forget to actually check the status. Along with
+issues with particular programs reporting success even on error, doing error handling correctly was
+close to impossible.
+This releases alleviates most of the issues.
+
+Error information is gathered from the stderr channel of the process using a single read operation.
+This prevents the child process from keeping the main process alive if stderr is kept open.
+
+## Notes
+
+`wslview` always reports a 0 exit status, even if the path does not exist, which results in false positives.
+The stderr channel is written to but ignored in this implementation because of the successful exit status.
+Other programs write to stderr as part of normal operation. Firefox on Linux never seems to be able to load all 
+the modules it wants to, so it writes to stderr but successfully opens. The only way to avoid these false positives
+is to special case wsl or for `wslview` to fix the unsuccessful exit status bug.
+This is only a minor problem and can mostly be ignored.
+
 ## v1.7.0 (2021-07-17)
 
 * improved support [for

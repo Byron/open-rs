@@ -1,0 +1,4 @@
+# Rustfmt Configuration.
+
+## Empty to enforce all defaults.
+## Overrides configuration from parent directory, home directory, and global config directory.

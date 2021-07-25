@@ -2,52 +2,32 @@
 //!
 //! # Usage
 //!
-//! The following should open the given URL in a web browser
+//! Open the given URL in the default web browser.
 //!
-//! ```test_harness,no_run
-//! extern crate open;
-//!
-//! # #[test]
-//! # fn doit() {
+//! ```no_run
 //! open::that("http://rust-lang.org").unwrap();
-//! # }
 //! ```
-//! Alternatively, specify the program to open something with. It should expect to receive the path or URL as first argument.
-//! ```test_harness,no_run
-//! extern crate open;
 //!
-//! # #[test]
-//! # fn doit() {
+//! Alternatively, specify the program to be used to open the path or URL.
+//!
+//! ```no_run
 //! open::with("http://rust-lang.org", "firefox").unwrap();
-//! # }
 //! ```
 //!
 //! # Notes
 //!
-//! As an operating system program is used, chances are that the open operation fails.
-//! Therefore, you are advised to at least check the result with `.is_err()` and
-//! behave accordingly, e.g. by letting the user know what you tried to open, and failed.
+//! As an operating system program is used, the open operation can fail.
+//! Therefore, you are advised to at least check the result and behave
+//! accordingly, e.g. by letting the user know that the open operation failed.
 //!
-//! ```
-//! # fn doit() {
-//! match open::that("http://rust-lang.org") {
-//!     Ok(exit_status) => {
-//!         if exit_status.success() {
-//!             println!("Look at your browser!");
-//!         } else {
-//!             if let Some(code) = exit_status.code() {
-//!                 println!("Command returned non-zero exit status {}!", code);
-//!             } else {
-//!                 println!("Command returned with unknown exit status!");
-//!             }
-//!         }
-//!     }
-//!     Err(why) => println!("Failure to execute command: {}", why),
+//! ```no_run
+//! let path = "http://rust-lang.org";
+//!
+//! match open::that(path) {
+//!     Ok(()) => println!("Opened '{}' successfully.", path),
+//!     Err(err) => eprintln!("An error occurred when opening '{}': {}", path, err),
 //! }
-//! # }
 //! ```
-
-use std::{ffi::OsStr, io, process::ExitStatus, thread};
 
 #[cfg(target_os = "windows")]
 pub use windows::{that, with};
@@ -83,11 +63,18 @@ pub use unix::{that, with};
 )))]
 compile_error!("open is not supported on this platform");
 
+use std::{
+    ffi::OsStr,
+    io,
+    process::{Command, Output, Stdio},
+    thread,
+};
+
+type Result = io::Result<()>;
+
 /// Convenience function for opening the passed path in a new thread.
 /// See documentation of `that(...)` for more details.
-pub fn that_in_background<T: AsRef<OsStr> + Sized>(
-    path: T,
-) -> thread::JoinHandle<io::Result<ExitStatus>> {
+pub fn that_in_background<T: AsRef<OsStr> + Sized>(path: T) -> thread::JoinHandle<Result> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
 }
@@ -95,24 +82,89 @@ pub fn that_in_background<T: AsRef<OsStr> + Sized>(
 pub fn with_in_background<T: AsRef<OsStr> + Sized>(
     path: T,
     app: impl Into<String>,
-) -> thread::JoinHandle<io::Result<ExitStatus>> {
+) -> thread::JoinHandle<Result> {
     let path = path.as_ref().to_os_string();
     let app = app.into();
     thread::spawn(|| with(path, app))
 }
 
+trait IntoResult<T> {
+    fn into_result(self) -> T;
+}
+
+impl IntoResult<Result> for io::Result<Output> {
+    fn into_result(self) -> Result {
+        match self {
+            Ok(o) if o.status.success() => Ok(()),
+            Ok(o) => Err(from_output(o)),
+            Err(err) => Err(err),
+        }
+    }
+}
+
+#[cfg(windows)]
+impl IntoResult<Result> for winapi::ctypes::c_int {
+    fn into_result(self) -> Result {
+        match self {
+            i if i > 32 => Ok(()),
+            _ => Err(io::Error::last_os_error()),
+        }
+    }
+}
+
+fn from_output(output: Output) -> io::Error {
+    let error_msg = match output.stderr.is_empty() {
+        true => output.status.to_string(),
+        false => format!(
+            "{} ({})",
+            String::from_utf8_lossy(&output.stderr).trim(),
+            output.status
+        ),
+    };
+
+    io::Error::new(io::ErrorKind::Other, error_msg)
+}
+
+trait CommandExt {
+    fn output_stderr(&mut self) -> io::Result<Output>;
+}
+
+impl CommandExt for Command {
+    fn output_stderr(&mut self) -> io::Result<Output> {
+        let mut process = self
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::piped())
+            .spawn()?;
+
+        let status = process.wait()?;
+
+        // Read up to 256 bytes from stderr.
+        use std::io::Read;
+        let mut stderr = vec![0; 256];
+        let len = process
+            .stderr
+            .take()
+            .and_then(|mut err| err.read(&mut stderr).ok())
+            .unwrap_or(0);
+        stderr.truncate(len);
+
+        Ok(Output {
+            status,
+            stderr,
+            stdout: vec![],
+        })
+    }
+}
+
 #[cfg(windows)]
 mod windows {
-    use std::{
-        ffi::OsStr,
-        io,
-        os::windows::{ffi::OsStrExt, process::ExitStatusExt},
-        process::ExitStatus,
-        ptr,
-    };
+    use std::{ffi::OsStr, io, os::windows::ffi::OsStrExt, ptr};
 
     use winapi::ctypes::c_int;
     use winapi::um::shellapi::ShellExecuteW;
+
+    use crate::{IntoResult, Result};
 
     fn convert_path(path: &OsStr) -> io::Result<Vec<u16>> {
         let mut maybe_result: Vec<_> = path.encode_wide().collect();
@@ -126,7 +178,7 @@ mod windows {
         Ok(maybe_result)
     }
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
+    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
         const SW_SHOW: c_int = 5;
 
         let path = convert_path(path.as_ref())?;
@@ -141,17 +193,10 @@ mod windows {
                 SW_SHOW,
             )
         };
-        if result as c_int > 32 {
-            Ok(ExitStatus::from_raw(0))
-        } else {
-            Err(io::Error::last_os_error())
-        }
+        (result as c_int).into_result()
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(
-        path: T,
-        app: impl Into<String>,
-    ) -> io::Result<ExitStatus> {
+    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
         const SW_SHOW: c_int = 5;
 
         let path = convert_path(path.as_ref())?;
@@ -169,67 +214,55 @@ mod windows {
                 SW_SHOW,
             )
         };
-        if result as c_int > 32 {
-            Ok(ExitStatus::from_raw(0))
-        } else {
-            Err(io::Error::last_os_error())
-        }
+        (result as c_int).into_result()
     }
 }
 
 #[cfg(target_os = "macos")]
 mod macos {
-    use std::{
-        ffi::OsStr,
-        io::Result,
-        process::{Command, ExitStatus, Stdio},
-    };
+    use std::{ffi::OsStr, process::Command};
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result<ExitStatus> {
+    use crate::{CommandExt, IntoResult, Result};
+
+    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
         Command::new("open")
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
             .arg(path.as_ref())
-            .spawn()?
-            .wait()
+            .output_stderr()
+            .into_result()
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result<ExitStatus> {
+    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
         Command::new("open")
             .arg(path.as_ref())
             .arg("-a")
             .arg(app.into())
-            .spawn()?
-            .wait()
+            .output_stderr()
+            .into_result()
     }
 }
 
 #[cfg(target_os = "ios")]
 mod ios {
-    use std::{
-        ffi::OsStr,
-        io::Result,
-        process::{Command, ExitStatus, Stdio},
-    };
+    use std::{ffi::OsStr, process::Command};
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result<ExitStatus> {
+    use crate::{CommandExt, IntoResult, Result};
+
+    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
         Command::new("uiopen")
-            .stdout(Stdio::null())
-            .stderr(Stdio::null())
             .arg("--url")
             .arg(path.as_ref())
-            .spawn()?
-            .wait()
+            .output_stderr()
+            .into_result()
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result<ExitStatus> {
+    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
         Command::new("uiopen")
             .arg("--url")
             .arg(path.as_ref())
             .arg("--bundleid")
             .arg(app.into())
-            .spawn()?
-            .wait()
+            .output_stderr()
+            .into_result()
     }
 }
 
@@ -246,12 +279,13 @@ mod unix {
     use std::{
         env,
         ffi::{OsStr, OsString},
-        io,
         path::{Path, PathBuf},
-        process::{Command, ExitStatus, Stdio},
+        process::Command,
     };
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> io::Result<ExitStatus> {
+    use crate::{CommandExt, IntoResult, Result};
+
+    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
         let path = path.as_ref();
         let open_handlers = [
             ("xdg-open", &[path] as &[_]),
@@ -262,32 +296,28 @@ mod unix {
         ];
 
         let mut unsuccessful = None;
-        let mut error = None;
+        let mut io_error = None;
 
         for (command, args) in &open_handlers {
-            let result = Command::new(command)
-                .stdout(Stdio::null())
-                .stderr(Stdio::null())
-                .args(*args)
-                .status();
+            let result = Command::new(command).args(*args).output_stderr();
 
             match result {
-                Ok(status) if status.success() => return result,
-                Ok(_) => unsuccessful = unsuccessful.or(Some(result)),
-                Err(err) => error = error.or(Some(Err(err))),
+                Ok(o) if o.status.success() => return Ok(()),
+                Ok(o) => unsuccessful = unsuccessful.or_else(|| Some(crate::from_output(o))),
+                Err(err) => io_error = io_error.or(Some(err)),
             }
         }
 
-        unsuccessful
-            .or(error)
-            .expect("successful cases don't get here")
+        Err(unsuccessful
+            .or(io_error)
+            .expect("successful cases don't get here"))
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(
-        path: T,
-        app: impl Into<String>,
-    ) -> io::Result<ExitStatus> {
-        Command::new(app.into()).arg(path.as_ref()).spawn()?.wait()
+    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
+        Command::new(app.into())
+            .arg(path.as_ref())
+            .output_stderr()
+            .into_result()
     }
 
     // Polyfill to workaround absolute path bug in wslu(wslview). In versions before

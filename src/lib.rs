@@ -30,13 +30,13 @@
 //! ```
 
 #[cfg(target_os = "windows")]
-pub use windows::{that, with};
+use windows as os;
 
 #[cfg(target_os = "macos")]
-pub use macos::{that, with};
+use macos as os;
 
 #[cfg(target_os = "ios")]
-pub use ios::{that, with};
+use ios as os;
 
 #[cfg(any(
     target_os = "linux",
@@ -47,7 +47,7 @@ pub use ios::{that, with};
     target_os = "openbsd",
     target_os = "solaris"
 ))]
-pub use unix::{that, with};
+use unix as os;
 
 #[cfg(not(any(
     target_os = "linux",
@@ -72,13 +72,60 @@ use std::{
 
 type Result = io::Result<()>;
 
-/// Convenience function for opening the passed path in a new thread.
-/// See documentation of `that(...)` for more details.
+/// Open path with the default application.
+///
+/// # Examples
+///
+/// ```
+/// let path = "http://rust-lang.org";
+///
+/// match open::that(path) {
+///     Ok(()) => println!("Opened '{}' successfully.", path),
+///     Err(err) => panic!("An error occurred when opening '{}': {}", path, err),
+/// }
+/// ```
+///
+/// # Errors
+///
+/// A [`std::io::Error`] is returned on failure. Because different operating systems
+/// handle errors differently it is recommend to not match on a certain error.
+pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
+    os::that(path)
+}
+
+/// Open path with the given application.
+///
+/// # Examples
+///
+/// ```
+/// let path = "http://rust-lang.org";
+/// let app = "firefox";
+///
+/// match open::with(path, app) {
+///     Ok(()) => println!("Opened '{}' successfully.", path),
+///     Err(err) => panic!("An error occurred when opening '{}': {}", path, err),
+/// }
+/// ```
+///
+/// # Errors
+///
+/// A [`std::io::Error`] is returned on failure. Because different operating systems
+/// handle errors differently it is recommend to not match on a certain error.
+pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
+    os::with(path, app)
+}
+
+/// Open path with the default application in a new thread.
+///
+/// See documentation of [`that`] for more details.
 pub fn that_in_background<T: AsRef<OsStr> + Sized>(path: T) -> thread::JoinHandle<Result> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
 }
 
+/// Open path with the given application in a new thread.
+///
+/// See documentation of [`with`] for more details.
 pub fn with_in_background<T: AsRef<OsStr> + Sized>(
     path: T,
     app: impl Into<String>,

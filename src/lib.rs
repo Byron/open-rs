@@ -76,7 +76,7 @@ type Result = io::Result<()>;
 ///
 /// # Examples
 ///
-/// ```
+/// ```no_run
 /// let path = "http://rust-lang.org";
 ///
 /// match open::that(path) {
@@ -97,7 +97,7 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
 ///
 /// # Examples
 ///
-/// ```
+/// ```no_run
 /// let path = "http://rust-lang.org";
 /// let app = "firefox";
 ///

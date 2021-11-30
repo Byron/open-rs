@@ -184,18 +184,18 @@ impl CommandExt for Command {
             .stderr(Stdio::piped())
             .spawn()?;
 
-        let status = process.wait()?;
-
-        // Read up to 256 bytes from stderr.
+        // Consume all stderr - it's open just for a few programs which can't handle it being closed.
         use std::io::Read;
         let mut stderr = vec![0; 256];
-        let len = process
-            .stderr
-            .take()
-            .and_then(|mut err| err.read(&mut stderr).ok())
-            .unwrap_or(0);
+        let mut stderr_src = process.stderr.take().expect("piped stderr");
+
+        let len = stderr_src.read(&mut stderr).unwrap_or(0);
         stderr.truncate(len);
 
+        // consume the rest to avoid blocking
+        std::io::copy(&mut stderr_src, &mut std::io::sink()).ok();
+
+        let status = process.wait()?;
         Ok(Output {
             status,
             stderr,

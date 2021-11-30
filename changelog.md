@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.2 (2021-11-30)
 
 ### Bug Fixes
 
@@ -10,7 +10,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 5 commits contributed to the release over the course of 106 calendar days.
+ - 6 commits contributed to the release over the course of 106 calendar days.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
 
@@ -23,6 +23,7 @@
  * **[#85](https://github.com/Byron/open-rs/issues/85)**
     - Prevent deadlocks due to filled pipe on stderr ([`30a144a`](https://github.com/Byron/open-rs/commit/30a144ac15acffbc78005cd67d3f783aa2526498))
  * **Uncategorized**
+    - update changelog ([`e9a2f05`](https://github.com/Byron/open-rs/commit/e9a2f05ec8248b3723779dfead6fbd4827a2f929))
     - Release open v2.0.1 ([`066a591`](https://github.com/Byron/open-rs/commit/066a591823ddebb2904959b6395bc945c22ba213))
     - Merge pull request #36 from apogeeoak/documentation ([`fc755d3`](https://github.com/Byron/open-rs/commit/fc755d343cede927c06e1735e8d14ed3858d2582))
     - Add no_run to documentation examples. ([`7c97658`](https://github.com/Byron/open-rs/commit/7c9765891b86d5d6168556e8f5363641f57e130d))
@@ -483,7 +484,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 </details>
 
 <csr-unknown>
-rustup  (07560d233 2015-04-20) (built 2015-04-19) (https://github.com/Byron/open-rs/commit/8b4e1558f09937c555ab381ea6399a2c0758c23d8b4e1558)<csr-unknown/>
+don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1cb95c1e03bede218b8fb03bbd9ada931730c96b1c)linux uses open before anything else (https://github.com/Byron/open-rs/commit/4696d1a5ec80691e97bb1be4261d4f79ee0ade4d4696d1a5)<csr-unknown/>
 
 ## v1.1.0 (2015-07-08)
 
@@ -499,36 +500,15 @@ rustup  (07560d233 2015-04-20) (built 2015-04-19) (https://github.com/Byron/open
 
 ### Bug Fixes
 
+<csr-id-30c96b1cb95c1e03bede218b8fb03bbd9ada9317/>
+<csr-id-4696d1a5ec80691e97bb1be4261d4f79ee0ade4d/>
+<csr-id-0fcafb56cdb5d154b3e983d17c93a1dd7c665426/>
+
  - <csr-id-25c0e398856c24a2daf0444640567ed3fd2f4307/> use result
    I wonder why that was not shown when I compiled it
  - <csr-id-8b4e1558f09937c555ab381ea6399a2c0758c23d/> (07560d233 2015-04-20) (built 2015-04-19)
    * use std::io consistently
-   * adjust to improved `Command` API
-   
-   Related to https://github.com/Byron/google-apis-rs/issues/70
- - <csr-id-30c96b1cb95c1e03bede218b8fb03bbd9ada9317/> don't use 'open' on linux
-     ➜  ~  open -h
-     Usage: open [OPTIONS] -- command
-   
-   Because ...
-     This utility help you to start a program on a new virtual terminal
-     (VT).
-   
-     Options:
-       -c, --console=NUM   use the given VT number;
-       -e, --exec          execute the command, without forking;
-       -f, --force         force opening a VT without checking;
-       -l, --login         make the command a login shell;
-       -u, --user          figure out the owner of the current VT;
-       -s, --switch        switch to the new VT;
-       -w, --wait          wait for command to complete;
-       -v, --verbose       print a message for each action;
-       -V, --version       print program version and exit;
-       -h, --help          output a brief help message.
- - <csr-id-4696d1a5ec80691e97bb1be4261d4f79ee0ade4d/> linux uses open before anything else
-   See http://goo.gl/XTXpLM
- - <csr-id-0fcafb56cdb5d154b3e983d17c93a1dd7c665426/> description added
-   [skip ci]
+* adjust to improved `Command` API
 
 ### Commit Statistics
 
@@ -560,6 +540,9 @@ rustup  (07560d233 2015-04-20) (built 2015-04-19) (https://github.com/Byron/open
     - added travis badge ([`c2e31d5`](https://github.com/Byron/open-rs/commit/c2e31d55da439e30639da2d014951e2eb2b851ff))
 </details>
 
+<csr-unknown>
+Related to https://github.com/Byron/google-apis-rs/issues/70 don’t use ‘open’ on linux➜  ~  open -hUsage: open [OPTIONS] – commandBecause …This utility help you to start a program on a new virtual terminal(VT).Options:-c, –console=NUM   use the given VT number;-e, –exec          execute the command, without forking;-f, –force         force opening a VT without checking;-l, –login         make the command a login shell;-u, –user          figure out the owner of the current VT;-s, –switch        switch to the new VT;-w, –wait          wait for command to complete;-v, –verbose       print a message for each action;-V, –version       print program version and exit;-h, –help          output a brief help message. linux uses open before anything elseSee http://goo.gl/XTXpLM description added[skip ci]<csr-unknown/>
+
 ## v1.0.0 (2015-02-27)
 
 ### New Features
@@ -568,10 +551,8 @@ rustup  (07560d233 2015-04-20) (built 2015-04-19) (https://github.com/Byron/open
    Contains everything, including
    
    * API docs
-   * usage
-   * CI
-   
-   No contribution guide, as I think there won't be much to do here.
+* usage
+* CI
 
 ### Commit Statistics
 
@@ -590,4 +571,7 @@ rustup  (07560d233 2015-04-20) (built 2015-04-19) (https://github.com/Byron/open
  * **Uncategorized**
     - from zero to 1.0.0 ([`6fbf790`](https://github.com/Byron/open-rs/commit/6fbf79011577d465d9fed94a07a5f75b63199609))
 </details>
+
+<csr-unknown>
+No contribution guide, as I think there won’t be much to do here.<csr-unknown/>
 

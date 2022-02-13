@@ -1,5 +1,29 @@
 # Changelog
 
+## Unreleased
+
+On MacOS, specify the `open` program explicitly by path, instead of relying on a similarly named program to be available
+in the `PATH`.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 1 commit contributed to the release.
+ - 74 days passed between releases.
+ - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' where seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - use full path for `open` command on macOS ([`8f7c92a`](https://github.com/Byron/open-rs/commit/8f7c92ab1adf936cd43e4ba0eb1934e2c73763f7))
+</details>
+
 ## 2.0.2 (2021-11-30)
 
 ### Bug Fixes
@@ -11,6 +35,7 @@
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release over the course of 106 calendar days.
+ - 128 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
 
@@ -23,11 +48,11 @@
  * **[#85](https://github.com/Byron/open-rs/issues/85)**
     - Prevent deadlocks due to filled pipe on stderr ([`30a144a`](https://github.com/Byron/open-rs/commit/30a144ac15acffbc78005cd67d3f783aa2526498))
  * **Uncategorized**
+    - Release open v2.0.2 ([`1d94593`](https://github.com/Byron/open-rs/commit/1d94593fa7be75ffdafcb7614c0f68fe4485f07a))
     - update changelog ([`e9a2f05`](https://github.com/Byron/open-rs/commit/e9a2f05ec8248b3723779dfead6fbd4827a2f929))
     - Release open v2.0.1 ([`066a591`](https://github.com/Byron/open-rs/commit/066a591823ddebb2904959b6395bc945c22ba213))
     - Merge pull request #36 from apogeeoak/documentation ([`fc755d3`](https://github.com/Byron/open-rs/commit/fc755d343cede927c06e1735e8d14ed3858d2582))
     - Add no_run to documentation examples. ([`7c97658`](https://github.com/Byron/open-rs/commit/7c9765891b86d5d6168556e8f5363641f57e130d))
-    - Update documentation. ([`5dd987f`](https://github.com/Byron/open-rs/commit/5dd987f3d25ebf3c82394d1225b836aefaf93b5d))
 </details>
 
 ## v2.0.1 (2021-08-15)
@@ -51,7 +76,8 @@ This releases alleviates most of the issues.
 
 <csr-read-only-do-not-edit/>
 
- - 6 commits contributed to the release.
+ - 7 commits contributed to the release.
+ - 8 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -63,6 +89,7 @@ This releases alleviates most of the issues.
 
  * **Uncategorized**
     - (cargo-release) version 2.0.0 ([`bc2e36f`](https://github.com/Byron/open-rs/commit/bc2e36f5d61b81974420cd62650d743afd4b6824))
+    - Update documentation. ([`5dd987f`](https://github.com/Byron/open-rs/commit/5dd987f3d25ebf3c82394d1225b836aefaf93b5d))
     - Update changelog ([`6659519`](https://github.com/Byron/open-rs/commit/665951968a2d99cbebaf41bc2dd564ea9d6dc93c))
     - Merge branch 'result_type' ([`0226df6`](https://github.com/Byron/open-rs/commit/0226df6be4abd85f0c8f8001532d0c67ad231a49))
     - Merge pull request #34 from apogeeoak/rustfmt ([`05f02be`](https://github.com/Byron/open-rs/commit/05f02be302377d669350f30991c2f80e6a729bc7))
@@ -78,7 +105,8 @@ This releases alleviates most of the issues.
 
 <csr-read-only-do-not-edit/>
 
- - 9 commits contributed to the release.
+ - 7 commits contributed to the release.
+ - 89 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -96,8 +124,6 @@ This releases alleviates most of the issues.
     - Improve support for wsl. ([`428ff97`](https://github.com/Byron/open-rs/commit/428ff979979760132d7c583df6834c3349132350))
     - Merge pull request #32 from apogeeoak/exit_status ([`81d8c40`](https://github.com/Byron/open-rs/commit/81d8c406cdf9405e31965a5aea9a5d21da812433))
     - cargo fmt ([`215227a`](https://github.com/Byron/open-rs/commit/215227a3385aa2624d32567eebb08af49e258b60))
-    - clarify what the error handler does ([`4f87a78`](https://github.com/Byron/open-rs/commit/4f87a7888049b182ede9e00a057c2cc625152ef9))
-    - Handle unsuccessful exit status. ([`d2d35af`](https://github.com/Byron/open-rs/commit/d2d35af2f582249030fc569854450ac12e3c08d4))
 </details>
 
 ## v1.7.0 (2021-04-18)
@@ -108,7 +134,8 @@ This releases alleviates most of the issues.
 
 <csr-read-only-do-not-edit/>
 
- - 7 commits contributed to the release over the course of 38 calendar days.
+ - 9 commits contributed to the release.
+ - 38 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -120,12 +147,14 @@ This releases alleviates most of the issues.
 
  * **Uncategorized**
     - (cargo-release) version 1.7.0 ([`ac09da1`](https://github.com/Byron/open-rs/commit/ac09da180256c5974427313b845b928199faf913))
+    - clarify what the error handler does ([`4f87a78`](https://github.com/Byron/open-rs/commit/4f87a7888049b182ede9e00a057c2cc625152ef9))
     - update changelog ([`e39f357`](https://github.com/Byron/open-rs/commit/e39f357627288d971b6436f873ac2949fa534548))
+    - Handle unsuccessful exit status. ([`d2d35af`](https://github.com/Byron/open-rs/commit/d2d35af2f582249030fc569854450ac12e3c08d4))
     - Re-enable CI after branch renaming ([`0db1b1a`](https://github.com/Byron/open-rs/commit/0db1b1ad11853750b8c22a701438d0e3e149821b))
     - Merge pull request #31 from City-busz/patch-1 ([`10fd4a7`](https://github.com/Byron/open-rs/commit/10fd4a7183c9137bb1afee5a9a6d3dcc87eb821a))
     - Remove unnecessary allocation ([`6a1766a`](https://github.com/Byron/open-rs/commit/6a1766a602fa3354827b06d7b5dbf8f694b86690))
-    - Add support for gio open on Linux ([`90bc634`](https://github.com/Byron/open-rs/commit/90bc6348e00e2e42cc0f7ed3eb7746d6e749749e))
     - Update changelog to reflect 1.5.1 is also yanked ([`ccbae5d`](https://github.com/Byron/open-rs/commit/ccbae5d122cb0b8cff58d9125ced2d0211e82ec9))
+    - Add support for gio open on Linux ([`90bc634`](https://github.com/Byron/open-rs/commit/90bc6348e00e2e42cc0f7ed3eb7746d6e749749e))
 </details>
 
 ## v1.6.0 (2021-03-10)
@@ -151,6 +180,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 8 commits contributed to the release over the course of 7 calendar days.
+ - 7 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -177,7 +207,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 <csr-read-only-do-not-edit/>
 
- - 7 commits contributed to the release.
+ - 5 commits contributed to the release.
+ - 3 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -193,8 +224,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
     - minor refactor ([`67ea295`](https://github.com/Byron/open-rs/commit/67ea2950aa2c478c8cd63764145ad53ad55bdd11))
     - Merge pull request #27 from hybras/master ([`b58fa52`](https://github.com/Byron/open-rs/commit/b58fa52eb8ee46a789c864b7132e8375fe7efa77))
     - Keep Fork up to date with upstream ([`f113b80`](https://github.com/Byron/open-rs/commit/f113b80374ed1412d2d86e79b79f7ac9ef39a2fc))
-    - Revert "Add missing Command import" ([`7ff85da`](https://github.com/Byron/open-rs/commit/7ff85da679de7cd17155c4ea27d0f89fda6dff0a))
-    - Revert "Use the file explorer to open windows url's" ([`b2a79f6`](https://github.com/Byron/open-rs/commit/b2a79f6b93feef3a59ce57d865334d757e642540))
 </details>
 
 ## v1.5.0 (2021-02-28)
@@ -203,7 +232,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 <csr-read-only-do-not-edit/>
 
- - 18 commits contributed to the release over the course of 321 calendar days.
+ - 17 commits contributed to the release over the course of 7 calendar days.
+ - 356 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -215,23 +245,22 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  * **Uncategorized**
     - minor version bump ([`831d440`](https://github.com/Byron/open-rs/commit/831d4404ee3ab9d76a416f69ee586f7d037f4840))
+    - Revert "Add missing Command import" ([`7ff85da`](https://github.com/Byron/open-rs/commit/7ff85da679de7cd17155c4ea27d0f89fda6dff0a))
     - Merge branch 'hybras/master' ([`e8bb206`](https://github.com/Byron/open-rs/commit/e8bb20654ac8b8ffbdfebf70f9aa1f0d3cdc0a33))
+    - Revert "Use the file explorer to open windows url's" ([`b2a79f6`](https://github.com/Byron/open-rs/commit/b2a79f6b93feef3a59ce57d865334d757e642540))
     - Delete completed TODO file ([`6c6bad0`](https://github.com/Byron/open-rs/commit/6c6bad075a5dcdc12670ec885000e26810bcf4fc))
-    - Remove unneeded pub ([`3507b55`](https://github.com/Byron/open-rs/commit/3507b55dcaa30db5673cbe8b7a405db4f00245ac))
-    - Remove user specific dir from gitgnore ([`021bb15`](https://github.com/Byron/open-rs/commit/021bb150d6066b111bdb04d2c4340dc9172db562))
-    - Add missing Command import ([`c910278`](https://github.com/Byron/open-rs/commit/c9102785d58cc955595eb189bd89a2ff82a539f0))
-    - Use the file explorer to open windows url's ([`4545425`](https://github.com/Byron/open-rs/commit/45454254b6e07fd88e398e8de86b55863f369373))
-    - Mark completed todo items ([`db518e9`](https://github.com/Byron/open-rs/commit/db518e9063933df824c4bb0e0c560bc73ef1b700))
-    - Use which in non-macOS unix ([`ef8ab99`](https://github.com/Byron/open-rs/commit/ef8ab99d65ce7baf03d43304b3c0cb48e816e411))
-    - Change cfg(not(any(bad)) to cfg(any(good)) ([`204f0ca`](https://github.com/Byron/open-rs/commit/204f0ca89f522ca4e6dc31b0cdefc3bcd434909b))
-    - Modularize Code ([`cb5bbd3`](https://github.com/Byron/open-rs/commit/cb5bbd3287bf2ca66e6ea3afefb149e4fe12bdd8))
-    - Add todo's ([`311ad44`](https://github.com/Byron/open-rs/commit/311ad44c50ddba910c13f3cd85326522accc8e23))
     - optimize manifest includes ([`c3d8262`](https://github.com/Byron/open-rs/commit/c3d826220e59040d6d08d707ac771ba817165a07))
+    - Remove unneeded pub ([`3507b55`](https://github.com/Byron/open-rs/commit/3507b55dcaa30db5673cbe8b7a405db4f00245ac))
     - See if we can run cargo clippy and rustfmt as well ([`c90687d`](https://github.com/Byron/open-rs/commit/c90687de90eb3731ec508c8d3df639de582fb163))
+    - Remove user specific dir from gitgnore ([`021bb15`](https://github.com/Byron/open-rs/commit/021bb150d6066b111bdb04d2c4340dc9172db562))
     - Actually link to the correct workflow when clicking the badge ([`6765b42`](https://github.com/Byron/open-rs/commit/6765b424010b55e23568924786700a3795e694dc))
+    - Add missing Command import ([`c910278`](https://github.com/Byron/open-rs/commit/c9102785d58cc955595eb189bd89a2ff82a539f0))
     - bye bye travis, we had a great time ([`aa28a85`](https://github.com/Byron/open-rs/commit/aa28a858dfe8be9c34e3fd6a6df67722baec4df1))
+    - Use the file explorer to open windows url's ([`4545425`](https://github.com/Byron/open-rs/commit/45454254b6e07fd88e398e8de86b55863f369373))
     - rename workflow in file as well ([`6bfc6d2`](https://github.com/Byron/open-rs/commit/6bfc6d2e9efdbd656a37531fe43cca6ab443a2b9))
+    - Mark completed todo items ([`db518e9`](https://github.com/Byron/open-rs/commit/db518e9063933df824c4bb0e0c560bc73ef1b700))
     - try cross-platform testing based on cross-platform binary builds ([`d62e50d`](https://github.com/Byron/open-rs/commit/d62e50d7b1944597468b2c983047e236ae9ff08f))
+    - Use which in non-macOS unix ([`ef8ab99`](https://github.com/Byron/open-rs/commit/ef8ab99d65ce7baf03d43304b3c0cb48e816e411))
 </details>
 
 ## v1.4.0 (2020-03-08)
@@ -242,7 +271,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 <csr-read-only-do-not-edit/>
 
- - 6 commits contributed to the release over the course of 25 calendar days.
+ - 9 commits contributed to the release over the course of 25 calendar days.
+ - 25 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -254,8 +284,11 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  * **Uncategorized**
     - Adjust doc; cut release ([`ead2494`](https://github.com/Byron/open-rs/commit/ead2494b783ffd0e393972aeb1f82adaf39fe0d3))
+    - Change cfg(not(any(bad)) to cfg(any(good)) ([`204f0ca`](https://github.com/Byron/open-rs/commit/204f0ca89f522ca4e6dc31b0cdefc3bcd434909b))
     - Cargo fmt ([`94b129a`](https://github.com/Byron/open-rs/commit/94b129ad998729967a856f19f74e4628957ea99b))
+    - Modularize Code ([`cb5bbd3`](https://github.com/Byron/open-rs/commit/cb5bbd3287bf2ca66e6ea3afefb149e4fe12bdd8))
     - fixed import bug ([`e98ec3d`](https://github.com/Byron/open-rs/commit/e98ec3d79ef199dc16f3ce65b766aa0110abaaf0))
+    - Add todo's ([`311ad44`](https://github.com/Byron/open-rs/commit/311ad44c50ddba910c13f3cd85326522accc8e23))
     - update README.md ([`9efaee0`](https://github.com/Byron/open-rs/commit/9efaee0b5402c725e2c152643d448182881a2898))
     - add with function ([`9b83669`](https://github.com/Byron/open-rs/commit/9b83669e8c463648b6f4149e84fcb1e00d68f49b))
     - (cargo-release) start next development iteration 1.3.5-alpha.0 ([`d3db8c7`](https://github.com/Byron/open-rs/commit/d3db8c748be2e65865aed7246cd8eaeaacd4ef8a))
@@ -265,11 +298,16 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 * Add LICENSE.md and README.md into the crates.io tarball.
 
+### Chore
+
+ - <csr-id-5c1497c6d09a829d4be19e9bd3eec5557efce370/> Include README/LICENSE into a release tarball
+
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release over the course of 9 calendar days.
+ - 184 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -297,6 +335,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
+ - 13 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -319,6 +358,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
+ - 25 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -336,11 +376,16 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 ## v1.2.3 (2019-07-03)
 
+### Chore
+
+ - <csr-id-c2908176e2bb982a679d7097584e584a53deaf15/> Exclude unneeded files from crates.io
+
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release over the course of 16 calendar days.
+ - 331 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -363,6 +408,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release over the course of 234 calendar days.
+ - 314 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -388,6 +434,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release over the course of 178 calendar days.
+ - 236 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -412,11 +459,16 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 * **windows**: escape '&' in URLs. On windows, a shell is used to execute the command, which
   requires certain precautions for the URL to open to get through the interpreter.
 
+### Chore
+
+ - <csr-id-37a253c89b1241b6f6ca0d3cafc8baa936aa274f/> v1.2.0
+
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release over the course of 4 calendar days.
+ - 295 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -467,6 +519,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release over the course of 276 calendar days.
+ - 276 days passed between releases.
  - 2 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -487,6 +540,15 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1cb95c1e03bede218b8fb03bbd9ada931730c96b1c)linux uses open before anything else (https://github.com/Byron/open-rs/commit/4696d1a5ec80691e97bb1be4261d4f79ee0ade4d4696d1a5)<csr-unknown/>
 
 ## v1.1.0 (2015-07-08)
+
+### Chore
+
+ - <csr-id-a5557d5c096983cf70f59b1807cb6fbe2b6dab5e/> v1.1.0
+   * added clog configuration and changelog
+ - <csr-id-8db67f5874b007ea3710ed9670e88ad3f49b6d7d/> use stable instead of beta
+ - <csr-id-d816380f9680a9d56e22a79e025dc6c2073fb439/> switch to travis-cargo
+ - <csr-id-bf8c9a11f4c1b1ac17d684a31c90d2a38255045e/> added sublime-rustc-linter cfg
+   [skip ci]
 
 ### Documentation
 
@@ -515,6 +577,7 @@ don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1
 <csr-read-only-do-not-edit/>
 
  - 13 commits contributed to the release over the course of 130 calendar days.
+ - 130 days passed between releases.
  - 12 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -539,9 +602,6 @@ don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1
     - description added ([`0fcafb5`](https://github.com/Byron/open-rs/commit/0fcafb56cdb5d154b3e983d17c93a1dd7c665426))
     - added travis badge ([`c2e31d5`](https://github.com/Byron/open-rs/commit/c2e31d55da439e30639da2d014951e2eb2b851ff))
 </details>
-
-<csr-unknown>
-Related to https://github.com/Byron/google-apis-rs/issues/70 don’t use ‘open’ on linux➜  ~  open -hUsage: open [OPTIONS] – commandBecause …This utility help you to start a program on a new virtual terminal(VT).Options:-c, –console=NUM   use the given VT number;-e, –exec          execute the command, without forking;-f, –force         force opening a VT without checking;-l, –login         make the command a login shell;-u, –user          figure out the owner of the current VT;-s, –switch        switch to the new VT;-w, –wait          wait for command to complete;-v, –verbose       print a message for each action;-V, –version       print program version and exit;-h, –help          output a brief help message. linux uses open before anything elseSee http://goo.gl/XTXpLM description added[skip ci]<csr-unknown/>
 
 ## v1.0.0 (2015-02-27)
 
@@ -571,7 +631,4 @@ Related to https://github.com/Byron/google-apis-rs/issues/70 don’t use ‘open
  * **Uncategorized**
     - from zero to 1.0.0 ([`6fbf790`](https://github.com/Byron/open-rs/commit/6fbf79011577d465d9fed94a07a5f75b63199609))
 </details>
-
-<csr-unknown>
-No contribution guide, as I think there won’t be much to do here.<csr-unknown/>
 

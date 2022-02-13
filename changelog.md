@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.0.3 (2022-02-13)
 
 On MacOS, specify the `open` program explicitly by path, instead of relying on a similarly named program to be available
 in the `PATH`.
@@ -9,7 +9,7 @@ in the `PATH`.
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 2 commits contributed to the release.
  - 74 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -21,6 +21,7 @@ in the `PATH`.
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Prepare changelog ([`1c7e10f`](https://github.com/Byron/open-rs/commit/1c7e10f94c30598bdc2e4ae482d38b2f46928ebf))
     - use full path for `open` command on macOS ([`8f7c92a`](https://github.com/Byron/open-rs/commit/8f7c92ab1adf936cd43e4ba0eb1934e2c73763f7))
 </details>
 
@@ -296,6 +297,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 ## v1.3.4 (2020-02-11)
 
+<csr-id-5c1497c6d09a829d4be19e9bd3eec5557efce370/>
+
 * Add LICENSE.md and README.md into the crates.io tarball.
 
 ### Chore
@@ -376,6 +379,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 ## v1.2.3 (2019-07-03)
 
+<csr-id-c2908176e2bb982a679d7097584e584a53deaf15/>
+
 ### Chore
 
  - <csr-id-c2908176e2bb982a679d7097584e584a53deaf15/> Exclude unneeded files from crates.io
@@ -455,6 +460,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 </details>
 
 ## v1.2.0 (2017-01-31)
+
+<csr-id-37a253c89b1241b6f6ca0d3cafc8baa936aa274f/>
 
 * **windows**: escape '&' in URLs. On windows, a shell is used to execute the command, which
   requires certain precautions for the URL to open to get through the interpreter.
@@ -540,6 +547,11 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1cb95c1e03bede218b8fb03bbd9ada931730c96b1c)linux uses open before anything else (https://github.com/Byron/open-rs/commit/4696d1a5ec80691e97bb1be4261d4f79ee0ade4d4696d1a5)<csr-unknown/>
 
 ## v1.1.0 (2015-07-08)
+
+<csr-id-a5557d5c096983cf70f59b1807cb6fbe2b6dab5e/>
+<csr-id-8db67f5874b007ea3710ed9670e88ad3f49b6d7d/>
+<csr-id-d816380f9680a9d56e22a79e025dc6c2073fb439/>
+<csr-id-bf8c9a11f4c1b1ac17d684a31c90d2a38255045e/>
 
 ### Chore
 

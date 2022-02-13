@@ -272,14 +272,14 @@ mod macos {
     use crate::{CommandExt, IntoResult, Result};
 
     pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
-        Command::new("open")
+        Command::new("/usr/bin/open")
             .arg(path.as_ref())
             .output_stderr()
             .into_result()
     }
 
     pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
-        Command::new("open")
+        Command::new("/usr/bin/open")
             .arg(path.as_ref())
             .arg("-a")
             .arg(app.into())

@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.1.0 (2022-02-21)
 
 * add support for illumnos
 
@@ -8,7 +8,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 2 commits contributed to the release.
  - 8 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -20,6 +20,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Update changelog ([`b56050f`](https://github.com/Byron/open-rs/commit/b56050f41fc04a2d5ec61f20451df534315f7d74))
     - add Illumos support ([`5d43c13`](https://github.com/Byron/open-rs/commit/5d43c13e5418f1d34b44cab71ee7306402fe5823))
 </details>
 

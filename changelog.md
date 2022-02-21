@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased
+
+* add support for illumnos
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 1 commit contributed to the release.
+ - 8 days passed between releases.
+ - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' where seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - add Illumos support ([`5d43c13`](https://github.com/Byron/open-rs/commit/5d43c13e5418f1d34b44cab71ee7306402fe5823))
+</details>
+
 ## 2.0.3 (2022-02-13)
 
 On MacOS, specify the `open` program explicitly by path, instead of relying on a similarly named program to be available
@@ -9,7 +32,7 @@ in the `PATH`.
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 74 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -21,6 +44,7 @@ in the `PATH`.
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v2.0.3 ([`3b5e74d`](https://github.com/Byron/open-rs/commit/3b5e74dbab169ee2a22c9de0b3a5923dc7e6937e))
     - Prepare changelog ([`1c7e10f`](https://github.com/Byron/open-rs/commit/1c7e10f94c30598bdc2e4ae482d38b2f46928ebf))
     - use full path for `open` command on macOS ([`8f7c92a`](https://github.com/Byron/open-rs/commit/8f7c92ab1adf936cd43e4ba0eb1934e2c73763f7))
 </details>

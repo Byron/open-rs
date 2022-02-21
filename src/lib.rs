@@ -45,6 +45,7 @@ use ios as os;
     target_os = "dragonfly",
     target_os = "netbsd",
     target_os = "openbsd",
+    target_os = "illumos",
     target_os = "solaris"
 ))]
 use unix as os;
@@ -56,6 +57,7 @@ use unix as os;
     target_os = "dragonfly",
     target_os = "netbsd",
     target_os = "openbsd",
+    target_os = "illumos",
     target_os = "solaris",
     target_os = "ios",
     target_os = "macos",
@@ -320,6 +322,7 @@ mod ios {
     target_os = "dragonfly",
     target_os = "netbsd",
     target_os = "openbsd",
+    target_os = "illumos",
     target_os = "solaris"
 ))]
 mod unix {

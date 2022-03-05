@@ -1,5 +1,29 @@
 # Changelog
 
+## Unreleased
+
+A maintenance release which allows boxed values in parameter position.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 11 days passed between releases.
+ - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' where seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Revert rust edition version ([`9441d6c`](https://github.com/Byron/open-rs/commit/9441d6c87419f94e0ebaffdf69f9b01f0aec4ddb))
+    - Update to 2021 edition and remove Sized bound ([`2601e4e`](https://github.com/Byron/open-rs/commit/2601e4eff11a77a7ccd5acfa3215eb76450fe18c))
+</details>
+
 ## 2.1.0 (2022-02-21)
 
 * add support for illumnos
@@ -8,7 +32,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 8 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -20,6 +44,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v2.1.0 ([`a49e9cc`](https://github.com/Byron/open-rs/commit/a49e9ccac9ea89dabc19b1a0215378ede887260b))
     - Update changelog ([`b56050f`](https://github.com/Byron/open-rs/commit/b56050f41fc04a2d5ec61f20451df534315f7d74))
     - add Illumos support ([`5d43c13`](https://github.com/Byron/open-rs/commit/5d43c13e5418f1d34b44cab71ee7306402fe5823))
 </details>

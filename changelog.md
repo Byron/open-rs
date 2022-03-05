@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.1.1 (2022-03-05)
 
 A maintenance release which allows boxed values in parameter position.
 
@@ -8,7 +8,7 @@ A maintenance release which allows boxed values in parameter position.
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 11 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -20,6 +20,7 @@ A maintenance release which allows boxed values in parameter position.
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - prepare changelog ([`d569761`](https://github.com/Byron/open-rs/commit/d569761a7c6c57f92e48fc6ac195baf13df8666d))
     - Revert rust edition version ([`9441d6c`](https://github.com/Byron/open-rs/commit/9441d6c87419f94e0ebaffdf69f9b01f0aec4ddb))
     - Update to 2021 edition and remove Sized bound ([`2601e4e`](https://github.com/Byron/open-rs/commit/2601e4eff11a77a7ccd5acfa3215eb76450fe18c))
 </details>

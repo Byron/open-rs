@@ -91,7 +91,7 @@ type Result = io::Result<()>;
 ///
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
-pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
+pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
     os::that(path)
 }
 
@@ -113,14 +113,14 @@ pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
 ///
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
-pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
+pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
     os::with(path, app)
 }
 
 /// Open path with the default application in a new thread.
 ///
 /// See documentation of [`that`] for more details.
-pub fn that_in_background<T: AsRef<OsStr> + Sized>(path: T) -> thread::JoinHandle<Result> {
+pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<Result> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
 }
@@ -128,7 +128,7 @@ pub fn that_in_background<T: AsRef<OsStr> + Sized>(path: T) -> thread::JoinHandl
 /// Open path with the given application in a new thread.
 ///
 /// See documentation of [`with`] for more details.
-pub fn with_in_background<T: AsRef<OsStr> + Sized>(
+pub fn with_in_background<T: AsRef<OsStr>>(
     path: T,
     app: impl Into<String>,
 ) -> thread::JoinHandle<Result> {
@@ -227,7 +227,7 @@ mod windows {
         Ok(maybe_result)
     }
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
         const SW_SHOW: c_int = 5;
 
         let path = convert_path(path.as_ref())?;
@@ -245,7 +245,7 @@ mod windows {
         (result as c_int).into_result()
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
         const SW_SHOW: c_int = 5;
 
         let path = convert_path(path.as_ref())?;
@@ -273,14 +273,14 @@ mod macos {
 
     use crate::{CommandExt, IntoResult, Result};
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
         Command::new("/usr/bin/open")
             .arg(path.as_ref())
             .output_stderr()
             .into_result()
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
         Command::new("/usr/bin/open")
             .arg(path.as_ref())
             .arg("-a")
@@ -296,7 +296,7 @@ mod ios {
 
     use crate::{CommandExt, IntoResult, Result};
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
         Command::new("uiopen")
             .arg("--url")
             .arg(path.as_ref())
@@ -304,7 +304,7 @@ mod ios {
             .into_result()
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
         Command::new("uiopen")
             .arg("--url")
             .arg(path.as_ref())
@@ -335,7 +335,7 @@ mod unix {
 
     use crate::{CommandExt, IntoResult, Result};
 
-    pub fn that<T: AsRef<OsStr> + Sized>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
         let path = path.as_ref();
         let open_handlers = [
             ("xdg-open", &[path] as &[_]),
@@ -363,7 +363,7 @@ mod unix {
             .expect("successful cases don't get here"))
     }
 
-    pub fn with<T: AsRef<OsStr> + Sized>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
         Command::new(app.into())
             .arg(path.as_ref())
             .output_stderr()

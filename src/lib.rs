@@ -38,6 +38,9 @@ use macos as os;
 #[cfg(target_os = "ios")]
 use ios as os;
 
+#[cfg(target_os = "haiku")]
+use haiku as os;
+
 #[cfg(any(
     target_os = "linux",
     target_os = "android",
@@ -62,6 +65,7 @@ use unix as os;
     target_os = "ios",
     target_os = "macos",
     target_os = "windows",
+    target_os = "haiku"
 )))]
 compile_error!("open is not supported on this platform");
 
@@ -310,6 +314,27 @@ mod ios {
             .arg(path.as_ref())
             .arg("--bundleid")
             .arg(app.into())
+            .output_stderr()
+            .into_result()
+    }
+}
+
+#[cfg(target_os = "haiku")]
+mod haiku {
+    use std::{ffi::OsStr, process::Command};
+
+    use crate::{CommandExt, IntoResult, Result};
+
+    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
+        Command::new("/bin/open")
+            .arg(path.as_ref())
+            .output_stderr()
+            .into_result()
+    }
+
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
+        Command::new(app.into())
+            .arg(path.as_ref())
             .output_stderr()
             .into_result()
     }

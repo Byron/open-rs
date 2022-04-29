@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 2.1.2 (2022-04-29)
+
+<csr-id-85f4dfdafe6119af5b3a5d8f079279818d3d61ee/>
 
 ### Other
 
@@ -10,7 +12,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 2 commits contributed to the release.
  - 54 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -22,6 +24,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - update changelog ([`45e0388`](https://github.com/Byron/open-rs/commit/45e0388e3c0a1b255b5868d6e0c3a540b75c33e9))
     - add platform support ([`85f4dfd`](https://github.com/Byron/open-rs/commit/85f4dfdafe6119af5b3a5d8f079279818d3d61ee))
 </details>
 
@@ -511,6 +514,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 ## v1.2.1 (2017-09-24)
 
+<csr-id-79bc73b7ca0927f0594670bcc23de989693275c0/>
+
 ### Other
 
  - <csr-id-79bc73b7ca0927f0594670bcc23de989693275c0/> improve example
@@ -573,6 +578,8 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 </details>
 
 ## v1.1.1 (2016-04-10)
+
+<csr-id-da45d9bad33fd9ed9659ec56ffe3b31d310253ca/>
 
 ### Bug Fixes
 
@@ -639,6 +646,7 @@ don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1
 <csr-id-8db67f5874b007ea3710ed9670e88ad3f49b6d7d/>
 <csr-id-d816380f9680a9d56e22a79e025dc6c2073fb439/>
 <csr-id-bf8c9a11f4c1b1ac17d684a31c90d2a38255045e/>
+<csr-id-210ec6ef37ba7d230a0cc367e979173a555fa092/>
 
 ### Chore
 

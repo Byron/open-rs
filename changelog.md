@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased
+
+### Other
+
+ - <csr-id-85f4dfdafe6119af5b3a5d8f079279818d3d61ee/> add Heiku platform support
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 1 commit contributed to the release.
+ - 54 days passed between releases.
+ - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' where seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - add platform support ([`85f4dfd`](https://github.com/Byron/open-rs/commit/85f4dfdafe6119af5b3a5d8f079279818d3d61ee))
+</details>
+
 ## 2.1.1 (2022-03-05)
 
 A maintenance release which allows boxed values in parameter position.
@@ -8,7 +33,7 @@ A maintenance release which allows boxed values in parameter position.
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 11 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -20,6 +45,7 @@ A maintenance release which allows boxed values in parameter position.
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v2.1.1 ([`18f730d`](https://github.com/Byron/open-rs/commit/18f730d7d40f7e27002479adb41b342413235ce7))
     - prepare changelog ([`d569761`](https://github.com/Byron/open-rs/commit/d569761a7c6c57f92e48fc6ac195baf13df8666d))
     - Revert rust edition version ([`9441d6c`](https://github.com/Byron/open-rs/commit/9441d6c87419f94e0ebaffdf69f9b01f0aec4ddb))
     - Update to 2021 edition and remove Sized bound ([`2601e4e`](https://github.com/Byron/open-rs/commit/2601e4eff11a77a7ccd5acfa3215eb76450fe18c))
@@ -485,6 +511,10 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 ## v1.2.1 (2017-09-24)
 
+### Other
+
+ - <csr-id-79bc73b7ca0927f0594670bcc23de989693275c0/> improve example
+
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
@@ -554,6 +584,12 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 * **api:**  allow OSStrings instead of &str ([1d13a671](https://github.com/Byron/open-rs/commit/1d13a671f2c9bd9616bf185fac77b32da1dcf8ee))
 
+### Other
+
+ - <csr-id-da45d9bad33fd9ed9659ec56ffe3b31d310253ca/> allow OSStrings instead of &str
+   Actually I can only hope that ordinary &str will still be fine.
+   Technically, I think they should ... but we shall see.
+
 ## 25c0e398 (2015-07-08)
 
 ### Features
@@ -612,6 +648,10 @@ don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1
  - <csr-id-d816380f9680a9d56e22a79e025dc6c2073fb439/> switch to travis-cargo
  - <csr-id-bf8c9a11f4c1b1ac17d684a31c90d2a38255045e/> added sublime-rustc-linter cfg
    [skip ci]
+
+### Other
+
+ - <csr-id-210ec6ef37ba7d230a0cc367e979173a555fa092/> start is a cmd command, not an executable
 
 ### Documentation
 

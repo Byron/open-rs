@@ -17,7 +17,7 @@ doc = false
 name = "open"
 
 [target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["shellapi"] }
+windows-sys = { version = "0.36", features = ["Win32_UI_Shell", "Win32_Foundation"] }
 
 [target.'cfg(all(unix, not(macos)))'.dependencies]
 pathdiff = "0.2.0"

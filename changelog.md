@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.1.3 (2022-06-03)
 
 A maintenance release which reduces compile times on windows by switching from `winapi` to the
 `windows` crate.
@@ -9,7 +9,7 @@ A maintenance release which reduces compile times on windows by switching from `
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 35 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -21,6 +21,7 @@ A maintenance release which reduces compile times on windows by switching from `
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - prepare new release ([`c1844c7`](https://github.com/Byron/open-rs/commit/c1844c7557b5e2d3c96cc19f4bc7e3fa7f2ef7d3))
     - Merge branch 'windows-sys' ([`246ddc8`](https://github.com/Byron/open-rs/commit/246ddc837d19760e9ad255ce31fbb6dfdac71738))
     - Switch to windows-sys ([`a95a288`](https://github.com/Byron/open-rs/commit/a95a2881064ec1a348031b2050d2873df2def31e))
 </details>

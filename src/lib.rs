@@ -156,7 +156,7 @@ impl IntoResult<Result> for io::Result<Output> {
 }
 
 #[cfg(windows)]
-impl IntoResult<Result> for winapi::ctypes::c_int {
+impl IntoResult<Result> for std::os::raw::c_int {
     fn into_result(self) -> Result {
         match self {
             i if i > 32 => Ok(()),
@@ -214,8 +214,8 @@ impl CommandExt for Command {
 mod windows {
     use std::{ffi::OsStr, io, os::windows::ffi::OsStrExt, ptr};
 
-    use winapi::ctypes::c_int;
-    use winapi::um::shellapi::ShellExecuteW;
+    use std::os::raw::c_int;
+    use windows_sys::Win32::UI::Shell::ShellExecuteW;
 
     use crate::{IntoResult, Result};
 
@@ -238,7 +238,7 @@ mod windows {
         let operation: Vec<u16> = OsStr::new("open\0").encode_wide().collect();
         let result = unsafe {
             ShellExecuteW(
-                ptr::null_mut(),
+                0,
                 operation.as_ptr(),
                 path.as_ptr(),
                 ptr::null(),
@@ -259,7 +259,7 @@ mod windows {
             .collect();
         let result = unsafe {
             ShellExecuteW(
-                ptr::null_mut(),
+                0,
                 operation.as_ptr(),
                 app_name.as_ptr(),
                 path.as_ptr(),

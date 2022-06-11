@@ -187,24 +187,13 @@ impl CommandExt for Command {
         let mut process = self
             .stdin(Stdio::null())
             .stdout(Stdio::null())
-            .stderr(Stdio::piped())
+            .stderr(Stdio::null())
             .spawn()?;
-
-        // Consume all stderr - it's open just for a few programs which can't handle it being closed.
-        use std::io::Read;
-        let mut stderr = vec![0; 256];
-        let mut stderr_src = process.stderr.take().expect("piped stderr");
-
-        let len = stderr_src.read(&mut stderr).unwrap_or(0);
-        stderr.truncate(len);
-
-        // consume the rest to avoid blocking
-        std::io::copy(&mut stderr_src, &mut std::io::sink()).ok();
 
         let status = process.wait()?;
         Ok(Output {
             status,
-            stderr,
+            stderr: vec![],
             stdout: vec![],
         })
     }

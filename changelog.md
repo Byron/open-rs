@@ -1,5 +1,39 @@
 # Changelog
 
+## Unreleased
+
+A major release which simplifies the error type to resolve a significant problems that surfaced on
+linux (and was present from day one).
+
+### Bug Fixes (BREAKING)
+
+ - <csr-id-0bdc6d64ed425b2627a7ba17614f44ba686536fb/> Assure `that(…)` is non-blocking on linux
+   This change goes hand in hand with removing additional information
+   from the error case which was the reason for the blocking issue
+   on linux.
+   
+   Note that the top-level `Result` type was also removed.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 8 days passed between releases.
+ - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' where seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - refactor ([`475f002`](https://github.com/Byron/open-rs/commit/475f0021071fa1498a0fb5ca7d7336a3f4a35b7f))
+    - Assure `that(…)` is non-blocking on linux ([`0bdc6d6`](https://github.com/Byron/open-rs/commit/0bdc6d64ed425b2627a7ba17614f44ba686536fb))
+</details>
+
 ## 2.1.3 (2022-06-03)
 
 A maintenance release which reduces compile times on windows by switching from `winapi` to the
@@ -9,7 +43,7 @@ A maintenance release which reduces compile times on windows by switching from `
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 35 days passed between releases.
  - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -21,6 +55,7 @@ A maintenance release which reduces compile times on windows by switching from `
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v2.1.3 ([`bf6e99c`](https://github.com/Byron/open-rs/commit/bf6e99cb578cd3c90eed3ff4fddd712b26982e21))
     - prepare new release ([`c1844c7`](https://github.com/Byron/open-rs/commit/c1844c7557b5e2d3c96cc19f4bc7e3fa7f2ef7d3))
     - Merge branch 'windows-sys' ([`246ddc8`](https://github.com/Byron/open-rs/commit/246ddc837d19760e9ad255ce31fbb6dfdac71738))
     - Switch to windows-sys ([`a95a288`](https://github.com/Byron/open-rs/commit/a95a2881064ec1a348031b2050d2873df2def31e))

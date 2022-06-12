@@ -119,9 +119,10 @@ pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> 
     os::with(path, app)
 }
 
-/// Open path with the default application in a new thread.
+/// Open path with the default application in a new thread, which is useful if
+/// the program ends up to be blocking. Otherwise, prefer [`that()`].
 ///
-/// See documentation of [`that`] for more details.
+/// See documentation of [`that()`] for more details.
 pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<io::Result<()>> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
@@ -129,7 +130,7 @@ pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<io::Re
 
 /// Open path with the given application in a new thread.
 ///
-/// See documentation of [`with`] for more details.
+/// See documentation of [`with()`] for more details.
 pub fn with_in_background<T: AsRef<OsStr>>(
     path: T,
     app: impl Into<String>,

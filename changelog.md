@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.0.0 (2022-06-12)
 
 A major release which simplifies the error type to resolve a significant problems that surfaced on
 linux (and was present from day one).
@@ -18,8 +18,8 @@ linux (and was present from day one).
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
- - 8 days passed between releases.
+ - 3 commits contributed to the release.
+ - 9 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -30,6 +30,7 @@ linux (and was present from day one).
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - update changelog and docs ([`10b92f5`](https://github.com/Byron/open-rs/commit/10b92f55de77c508a6cbd95c344a3d923b9207c4))
     - refactor ([`475f002`](https://github.com/Byron/open-rs/commit/475f0021071fa1498a0fb5ca7d7336a3f4a35b7f))
     - Assure `that(…)` is non-blocking on linux ([`0bdc6d6`](https://github.com/Byron/open-rs/commit/0bdc6d64ed425b2627a7ba17614f44ba686536fb))
 </details>

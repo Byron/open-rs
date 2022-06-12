@@ -72,11 +72,9 @@ compile_error!("open is not supported on this platform");
 use std::{
     ffi::OsStr,
     io,
-    process::{Command, Output, Stdio},
+    process::{Command, Stdio},
     thread,
 };
-
-type Result = io::Result<()>;
 
 /// Open path with the default application.
 ///
@@ -95,7 +93,7 @@ type Result = io::Result<()>;
 ///
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
-pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
+pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
     os::that(path)
 }
 
@@ -117,14 +115,14 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
 ///
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
-pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
+pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
     os::with(path, app)
 }
 
 /// Open path with the default application in a new thread.
 ///
 /// See documentation of [`that`] for more details.
-pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<Result> {
+pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<io::Result<()>> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
 }
@@ -135,7 +133,7 @@ pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<Result
 pub fn with_in_background<T: AsRef<OsStr>>(
     path: T,
     app: impl Into<String>,
-) -> thread::JoinHandle<Result> {
+) -> thread::JoinHandle<io::Result<()>> {
     let path = path.as_ref().to_os_string();
     let app = app.into();
     thread::spawn(|| with(path, app))
@@ -145,19 +143,22 @@ trait IntoResult<T> {
     fn into_result(self) -> T;
 }
 
-impl IntoResult<Result> for io::Result<Output> {
-    fn into_result(self) -> Result {
+impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
+    fn into_result(self) -> io::Result<()> {
         match self {
-            Ok(o) if o.status.success() => Ok(()),
-            Ok(o) => Err(from_output(o)),
+            Ok(status) if status.success() => Ok(()),
+            Ok(status) => Err(io::Error::new(
+                io::ErrorKind::Other,
+                format!("Launcher failed with {:?}", status),
+            )),
             Err(err) => Err(err),
         }
     }
 }
 
 #[cfg(windows)]
-impl IntoResult<Result> for std::os::raw::c_int {
-    fn into_result(self) -> Result {
+impl IntoResult<io::Result<()>> for std::os::raw::c_int {
+    fn into_result(self) -> io::Result<()> {
         match self {
             i if i > 32 => Ok(()),
             _ => Err(io::Error::last_os_error()),
@@ -165,48 +166,19 @@ impl IntoResult<Result> for std::os::raw::c_int {
     }
 }
 
-fn from_output(output: Output) -> io::Error {
-    let error_msg = match output.stderr.is_empty() {
-        true => output.status.to_string(),
-        false => format!(
-            "{} ({})",
-            String::from_utf8_lossy(&output.stderr).trim(),
-            output.status
-        ),
-    };
-
-    io::Error::new(io::ErrorKind::Other, error_msg)
-}
-
 trait CommandExt {
-    fn output_stderr(&mut self) -> io::Result<Output>;
+    fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus>;
 }
 
 impl CommandExt for Command {
-    fn output_stderr(&mut self) -> io::Result<Output> {
+    fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus> {
         let mut process = self
             .stdin(Stdio::null())
             .stdout(Stdio::null())
-            .stderr(Stdio::piped())
+            .stderr(Stdio::null())
             .spawn()?;
 
-        // Consume all stderr - it's open just for a few programs which can't handle it being closed.
-        use std::io::Read;
-        let mut stderr = vec![0; 256];
-        let mut stderr_src = process.stderr.take().expect("piped stderr");
-
-        let len = stderr_src.read(&mut stderr).unwrap_or(0);
-        stderr.truncate(len);
-
-        // consume the rest to avoid blocking
-        std::io::copy(&mut stderr_src, &mut std::io::sink()).ok();
-
-        let status = process.wait()?;
-        Ok(Output {
-            status,
-            stderr,
-            stdout: vec![],
-        })
+        process.wait()
     }
 }
 
@@ -217,7 +189,7 @@ mod windows {
     use std::os::raw::c_int;
     use windows_sys::Win32::UI::Shell::ShellExecuteW;
 
-    use crate::{IntoResult, Result};
+    use crate::IntoResult;
 
     fn convert_path(path: &OsStr) -> io::Result<Vec<u16>> {
         let mut maybe_result: Vec<_> = path.encode_wide().collect();
@@ -231,7 +203,7 @@ mod windows {
         Ok(maybe_result)
     }
 
-    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
         const SW_SHOW: c_int = 5;
 
         let path = convert_path(path.as_ref())?;
@@ -249,7 +221,7 @@ mod windows {
         (result as c_int).into_result()
     }
 
-    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
         const SW_SHOW: c_int = 5;
 
         let path = convert_path(path.as_ref())?;
@@ -273,69 +245,69 @@ mod windows {
 
 #[cfg(target_os = "macos")]
 mod macos {
-    use std::{ffi::OsStr, process::Command};
+    use std::{ffi::OsStr, io, process::Command};
 
-    use crate::{CommandExt, IntoResult, Result};
+    use crate::{CommandExt, IntoResult};
 
-    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
         Command::new("/usr/bin/open")
             .arg(path.as_ref())
-            .output_stderr()
+            .status_without_output()
             .into_result()
     }
 
-    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
         Command::new("/usr/bin/open")
             .arg(path.as_ref())
             .arg("-a")
             .arg(app.into())
-            .output_stderr()
+            .status_without_output()
             .into_result()
     }
 }
 
 #[cfg(target_os = "ios")]
 mod ios {
-    use std::{ffi::OsStr, process::Command};
+    use std::{ffi::OsStr, io, process::Command};
 
-    use crate::{CommandExt, IntoResult, Result};
+    use crate::{CommandExt, IntoResult};
 
-    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
         Command::new("uiopen")
             .arg("--url")
             .arg(path.as_ref())
-            .output_stderr()
+            .status_without_output()
             .into_result()
     }
 
-    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
         Command::new("uiopen")
             .arg("--url")
             .arg(path.as_ref())
             .arg("--bundleid")
             .arg(app.into())
-            .output_stderr()
+            .status_without_output()
             .into_result()
     }
 }
 
 #[cfg(target_os = "haiku")]
 mod haiku {
-    use std::{ffi::OsStr, process::Command};
+    use std::{ffi::OsStr, io, process::Command};
 
-    use crate::{CommandExt, IntoResult, Result};
+    use crate::{CommandExt, IntoResult};
 
-    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
         Command::new("/bin/open")
             .arg(path.as_ref())
-            .output_stderr()
+            .status_without_output()
             .into_result()
     }
 
-    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
         Command::new(app.into())
             .arg(path.as_ref())
-            .output_stderr()
+            .status_without_output()
             .into_result()
     }
 }
@@ -354,13 +326,14 @@ mod unix {
     use std::{
         env,
         ffi::{OsStr, OsString},
+        io,
         path::{Path, PathBuf},
         process::Command,
     };
 
-    use crate::{CommandExt, IntoResult, Result};
+    use crate::{CommandExt, IntoResult};
 
-    pub fn that<T: AsRef<OsStr>>(path: T) -> Result {
+    pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
         let path = path.as_ref();
         let open_handlers = [
             ("xdg-open", &[path] as &[_]),
@@ -374,11 +347,18 @@ mod unix {
         let mut io_error = None;
 
         for (command, args) in &open_handlers {
-            let result = Command::new(command).args(*args).output_stderr();
+            let result = Command::new(command).args(*args).status_without_output();
 
             match result {
-                Ok(o) if o.status.success() => return Ok(()),
-                Ok(o) => unsuccessful = unsuccessful.or_else(|| Some(crate::from_output(o))),
+                Ok(status) if status.success() => return Ok(()),
+                Ok(status) => {
+                    unsuccessful = unsuccessful.or_else(|| {
+                        Some(std::io::Error::new(
+                            std::io::ErrorKind::Other,
+                            status.to_string(),
+                        ))
+                    })
+                }
                 Err(err) => io_error = io_error.or(Some(err)),
             }
         }
@@ -388,10 +368,10 @@ mod unix {
             .expect("successful cases don't get here"))
     }
 
-    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Result {
+    pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
         Command::new(app.into())
             .arg(path.as_ref())
-            .output_stderr()
+            .status_without_output()
             .into_result()
     }
 

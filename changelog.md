@@ -1,5 +1,31 @@
 # Changelog
 
+## 3.0.1 (2022-06-12)
+
+### Bug Fixes
+
+ - <csr-id-df358d296fc40801e970654bf2b689577637db5e/> deprecate `that_in_background()` as `that()` is definitely non-blocking now.
+   Note that we keep `with_in_background()` as it's unclear if a custom
+   launcher blocks or not.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 1 commit contributed to the release.
+ - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' where seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - deprecate `that_in_background()` as `that()` is definitely non-blocking now. ([`df358d2`](https://github.com/Byron/open-rs/commit/df358d296fc40801e970654bf2b689577637db5e))
+</details>
+
 ## 3.0.0 (2022-06-12)
 
 A major release which simplifies the error type to resolve a significant problems that surfaced on
@@ -18,7 +44,7 @@ linux (and was present from day one).
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 9 days passed between releases.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
@@ -30,6 +56,7 @@ linux (and was present from day one).
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v3.0.0 ([`3f51fb2`](https://github.com/Byron/open-rs/commit/3f51fb2e95a1f54c3ba54f349edefec34c25c7dc))
     - update changelog and docs ([`10b92f5`](https://github.com/Byron/open-rs/commit/10b92f55de77c508a6cbd95c344a3d923b9207c4))
     - refactor ([`475f002`](https://github.com/Byron/open-rs/commit/475f0021071fa1498a0fb5ca7d7336a3f4a35b7f))
     - Assure `that(…)` is non-blocking on linux ([`0bdc6d6`](https://github.com/Byron/open-rs/commit/0bdc6d64ed425b2627a7ba17614f44ba686536fb))

@@ -1,8 +1,8 @@
-//! Use this library to open a path or URL using the program configured on the system.
+//! Use this library to open a path or URL using the program configured on the system in a non-blocking fashion.
 //!
 //! # Usage
 //!
-//! Open the given URL in the default web browser.
+//! Open the given URL in the default web browser, without blocking.
 //!
 //! ```no_run
 //! open::that("http://rust-lang.org").unwrap();
@@ -16,8 +16,17 @@
 //!
 //! # Notes
 //!
+//! ## Nonblocking operation
+//!
+//! The functions provided are nonblocking as it will return even though the
+//! launched child process is still running. Note that depending on the operating
+//! system, spawning launch helpers, which this library does under the hood,
+//! might still take 100's of milliseconds.
+//!
+//! ## Error handling
+//!
 //! As an operating system program is used, the open operation can fail.
-//! Therefore, you are advised to at least check the result and behave
+//! Therefore, you are advised to check the result and behave
 //! accordingly, e.g. by letting the user know that the open operation failed.
 //!
 //! ```no_run
@@ -76,7 +85,7 @@ use std::{
     thread,
 };
 
-/// Open path with the default application.
+/// Open path with the default application without blocking.
 ///
 /// # Examples
 ///
@@ -98,6 +107,9 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 }
 
 /// Open path with the given application.
+///
+/// This function may block if the application doesn't detach itself.
+/// In that case, consider using [`with_in_background()`].
 ///
 /// # Examples
 ///

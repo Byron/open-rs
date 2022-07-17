@@ -1,5 +1,30 @@
 # Changelog
 
+## 3.0.2 (2022-07-17)
+
+### Bug Fixes
+
+ - <csr-id-fe70aad1ee0c792b83e1c5faabda8d2c142cdabe/> Improve documentation about blocking behaviour.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 1 commit contributed to the release.
+ - 35 days passed between releases.
+ - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#51](https://github.com/Byron/open-rs/issues/51)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#51](https://github.com/Byron/open-rs/issues/51)**
+    - Improve documentation about blocking behaviour. ([`fe70aad`](https://github.com/Byron/open-rs/commit/fe70aad1ee0c792b83e1c5faabda8d2c142cdabe))
+</details>
+
 ## 3.0.1 (2022-06-12)
 
 ### Bug Fixes
@@ -12,7 +37,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 2 commits contributed to the release.
  - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
@@ -23,6 +48,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v3.0.1 ([`757f773`](https://github.com/Byron/open-rs/commit/757f773a6d7e3afa35c2cab6f3f4a44c7c8facee))
     - deprecate `that_in_background()` as `that()` is definitely non-blocking now. ([`df358d2`](https://github.com/Byron/open-rs/commit/df358d296fc40801e970654bf2b689577637db5e))
 </details>
 

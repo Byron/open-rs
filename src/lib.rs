@@ -50,6 +50,9 @@ use ios as os;
 #[cfg(target_os = "haiku")]
 use haiku as os;
 
+#[cfg(all(target_arch = "wasm32", target_os = "unknown"))]
+use wasm32 as os;
+
 #[cfg(any(
     target_os = "linux",
     target_os = "android",
@@ -74,7 +77,8 @@ use unix as os;
     target_os = "ios",
     target_os = "macos",
     target_os = "windows",
-    target_os = "haiku"
+    target_os = "haiku",
+    all(target_arch = "wasm32", target_os = "unknown")
 )))]
 compile_error!("open is not supported on this platform");
 
@@ -220,3 +224,6 @@ mod haiku;
     target_os = "solaris"
 ))]
 mod unix;
+
+#[cfg(all(target_arch = "wasm32", target_os = "unknown"))]
+mod wasm32;

@@ -1,5 +1,35 @@
 # Changelog
 
+## 3.0.3 (2022-09-16)
+
+### Bug Fixes
+
+ - <csr-id-4c0fdb3bacd73c881c6e8178248c588932ec6196/> quote paths on windows to allow spaces in paths not be treated as multiple paths.
+   Note that paths that are already quoted will also be quoted, as the
+   current quoting implementation is unconditional.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 4 commits contributed to the release over the course of 60 calendar days.
+ - 60 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' where seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - quote paths on windows to allow spaces in paths not be treated as multiple paths. ([`4c0fdb3`](https://github.com/Byron/open-rs/commit/4c0fdb3bacd73c881c6e8178248c588932ec6196))
+    - refactor ([`e0d5968`](https://github.com/Byron/open-rs/commit/e0d596880cd1d746d80927155092827614a7a3ef))
+    - Fixed issue on Windows where a space in a path could cause problems with specific programs. ([`1ab9bc3`](https://github.com/Byron/open-rs/commit/1ab9bc37a0fc04d9fa033245d0c44392f2a2912a))
+    - try to fix CI by not using nightly toolchains on windows ([`b20e01c`](https://github.com/Byron/open-rs/commit/b20e01cf590d82a05841af1c92428249fe21d838))
+</details>
+
 ## 3.0.2 (2022-07-17)
 
 ### Bug Fixes
@@ -10,9 +40,9 @@
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 2 commits contributed to the release.
  - 35 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#51](https://github.com/Byron/open-rs/issues/51)
 
 ### Commit Details
@@ -23,6 +53,8 @@
 
  * **[#51](https://github.com/Byron/open-rs/issues/51)**
     - Improve documentation about blocking behaviour. ([`fe70aad`](https://github.com/Byron/open-rs/commit/fe70aad1ee0c792b83e1c5faabda8d2c142cdabe))
+ * **Uncategorized**
+    - Release open v3.0.2 ([`c7ea529`](https://github.com/Byron/open-rs/commit/c7ea5291ac6a26da7346f995fad5b3121b02f488))
 </details>
 
 ## 3.0.1 (2022-06-12)
@@ -38,7 +70,7 @@
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -72,7 +104,7 @@ linux (and was present from day one).
 
  - 4 commits contributed to the release.
  - 9 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -99,7 +131,7 @@ A maintenance release which reduces compile times on windows by switching from `
 
  - 4 commits contributed to the release.
  - 35 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -129,7 +161,7 @@ A maintenance release which reduces compile times on windows by switching from `
 
  - 3 commits contributed to the release.
  - 54 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -154,7 +186,7 @@ A maintenance release which allows boxed values in parameter position.
 
  - 4 commits contributed to the release.
  - 11 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -180,7 +212,7 @@ A maintenance release which allows boxed values in parameter position.
 
  - 3 commits contributed to the release.
  - 8 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -206,7 +238,7 @@ in the `PATH`.
 
  - 3 commits contributed to the release.
  - 74 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -233,7 +265,7 @@ in the `PATH`.
 
  - 7 commits contributed to the release over the course of 106 calendar days.
  - 128 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
 
 ### Commit Details
@@ -276,7 +308,7 @@ This releases alleviates most of the issues.
 
  - 6 commits contributed to the release.
  - 8 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -304,7 +336,7 @@ This releases alleviates most of the issues.
 
  - 9 commits contributed to the release.
  - 89 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -335,7 +367,7 @@ This releases alleviates most of the issues.
 
  - 7 commits contributed to the release over the course of 38 calendar days.
  - 38 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -378,7 +410,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 8 commits contributed to the release over the course of 7 calendar days.
  - 7 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -406,7 +438,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 7 commits contributed to the release.
  - 3 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -433,7 +465,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 18 commits contributed to the release over the course of 321 calendar days.
  - 356 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -473,7 +505,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 6 commits contributed to the release over the course of 25 calendar days.
  - 25 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -507,7 +539,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 4 commits contributed to the release over the course of 9 calendar days.
  - 184 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -535,7 +567,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 3 commits contributed to the release.
  - 13 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -558,7 +590,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 3 commits contributed to the release.
  - 25 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -587,7 +619,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 3 commits contributed to the release over the course of 16 calendar days.
  - 331 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -610,7 +642,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 6 commits contributed to the release over the course of 234 calendar days.
  - 314 days passed between releases.
- - 0 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -642,7 +674,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 7 commits contributed to the release over the course of 178 calendar days.
  - 236 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -678,7 +710,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 3 commits contributed to the release over the course of 4 calendar days.
  - 295 days passed between releases.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -737,7 +769,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
  - 4 commits contributed to the release over the course of 276 calendar days.
  - 276 days passed between releases.
- - 2 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -805,7 +837,7 @@ don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1
 
  - 13 commits contributed to the release over the course of 130 calendar days.
  - 130 days passed between releases.
- - 12 commits where understood as [conventional](https://www.conventionalcommits.org).
+ - 12 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details
@@ -846,7 +878,7 @@ don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1
 <csr-read-only-do-not-edit/>
 
  - 1 commit contributed to the release.
- - 1 commit where understood as [conventional](https://www.conventionalcommits.org).
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' where seen in commit messages
 
 ### Commit Details

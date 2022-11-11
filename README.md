@@ -4,7 +4,7 @@
 Use this library to open a path or URL using the program configured on the system. It is equivalent to running one of the following:
 
 ```bash
-# OSX
+# macOS
 $ open <path-or-url>
 # Windows
 $ start <path-or-url>
@@ -29,8 +29,8 @@ open::that("https://rust-lang.org");
 open::with("https://rust-lang.org", "firefox");
 ```
 
-Follow this link for the [massive API docs](http://byron.github.io/open-rs).
+Follow this link for the [massive API docs](https://byron.github.io/open-rs).
 
 # Credits
 
-The implementation is based on the respective functionality of [cargo](https://github.com/rust-lang/cargo), but was improved to allow some error handling.
+The implementation is based on the respective functionality of [Cargo](https://github.com/rust-lang/cargo), but was improved to allow some error handling.

@@ -29,7 +29,7 @@ open::that("https://rust-lang.org");
 open::with("https://rust-lang.org", "firefox");
 ```
 
-Follow this link for the [massive API docs](https://byron.github.io/open-rs).
+Follow this link for the [massive API docs](https://docs.rs/open).
 
 # Credits
 

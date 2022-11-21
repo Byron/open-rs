@@ -1,6 +1,37 @@
 # Changelog
 
+## Unreleased
+
+### New Features
+
+ - <csr-id-c3d2819d121ede284ba12d26ac3272c1f664c4ed/> upgrade `windows-sys` to more recent version.
+   This mainly reduces build times for some, and may increase them for
+   others, on windows only. If build times increase, try to upgrade
+   `windows-sys` across the dependency tree.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 3 commits contributed to the release.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - upgrade `windows-sys` to more recent version. ([`c3d2819`](https://github.com/Byron/open-rs/commit/c3d2819d121ede284ba12d26ac3272c1f664c4ed))
+    - Upgrade to windows-sys v0.42 ([`4de95c7`](https://github.com/Byron/open-rs/commit/4de95c73503b19f810d7e669b73e261b1004e689))
+    - Revert "Upgrade to windows-sys v0.42.0" ([`2aff3bd`](https://github.com/Byron/open-rs/commit/2aff3bd2a2e917377ef10dcc4104c6aaf5895bd4))
+</details>
+
 ## 3.1.0 (2022-11-20)
+
+**YANKED**
 
 ### New Features
 
@@ -13,7 +44,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 6 commits contributed to the release over the course of 8 calendar days.
+ - 7 commits contributed to the release over the course of 8 calendar days.
  - 65 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -25,6 +56,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v3.1.0 ([`37bf011`](https://github.com/Byron/open-rs/commit/37bf011b68a5579254341de92e4d9b27ce71803b))
     - upgrade `windows-sys` to more recent version. ([`a1c8dd7`](https://github.com/Byron/open-rs/commit/a1c8dd79eb6c4f91a92aa631fd0d8bc163d1a05c))
     - Upgrade to windows-sys v0.42.0 ([`aba0a62`](https://github.com/Byron/open-rs/commit/aba0a628b1bf1be365fdbe2bc0200d0c98c7a2bf))
     - Update listed version number. ([`7a1cc83`](https://github.com/Byron/open-rs/commit/7a1cc838d5fe0218e8d1422b42a32023fd140e67))

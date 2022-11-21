@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 3.2.0 (2022-11-21)
 
 ### New Features
 
@@ -13,7 +13,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -24,6 +24,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - prepare changelog prior to release ([`20c6ee4`](https://github.com/Byron/open-rs/commit/20c6ee456d400416673d0e98058f55d50c78115a))
     - upgrade `windows-sys` to more recent version. ([`c3d2819`](https://github.com/Byron/open-rs/commit/c3d2819d121ede284ba12d26ac3272c1f664c4ed))
     - Upgrade to windows-sys v0.42 ([`4de95c7`](https://github.com/Byron/open-rs/commit/4de95c73503b19f810d7e669b73e261b1004e689))
     - Revert "Upgrade to windows-sys v0.42.0" ([`2aff3bd`](https://github.com/Byron/open-rs/commit/2aff3bd2a2e917377ef10dcc4104c6aaf5895bd4))

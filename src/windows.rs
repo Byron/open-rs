@@ -7,6 +7,7 @@ use std::{
 
 use std::os::raw::c_int;
 use windows_sys::Win32::UI::Shell::ShellExecuteW;
+use windows_sys::Win32::UI::WindowsAndMessaging::SW_SHOW;
 
 use crate::IntoResult;
 
@@ -30,8 +31,6 @@ fn convert_path(path: &OsStr) -> io::Result<Vec<u16>> {
 }
 
 pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
-    const SW_SHOW: c_int = 5;
-
     let path = convert_path(path.as_ref())?;
     let operation: Vec<u16> = OsStr::new("open\0").encode_wide().collect();
     let result = unsafe {
@@ -48,8 +47,6 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 }
 
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    const SW_SHOW: c_int = 5;
-
     let path = convert_path(path.as_ref())?;
     let operation: Vec<u16> = OsStr::new("open\0").encode_wide().collect();
     let app_name: Vec<u16> = OsStr::new(&format!("{}\0", app.into()))

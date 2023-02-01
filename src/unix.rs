@@ -1,4 +1,5 @@
 use std::{
+    collections::VecDeque,
     env,
     ffi::{OsStr, OsString},
     io,
@@ -44,7 +45,15 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 }
 
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    Command::new(app.into())
+    let app: String = app.into();
+    let mut args = app.split_whitespace().collect::<VecDeque<&str>>();
+    let (cmd, args) = args
+        .pop_front()
+        .map(move |cmd| (cmd, args))
+        .unwrap_or((&app, VecDeque::from([])));
+
+    Command::new(cmd)
+        .args(args)
         .arg(path.as_ref())
         .status_without_output()
         .into_result()

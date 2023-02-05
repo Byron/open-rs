@@ -1,5 +1,7 @@
 use std::{ffi::OsStr, io, process::Command};
 
+use crate::{CommandExt, IntoResult};
+
 pub fn command<T: AsRef<OsStr>>(path: T) -> Command {
     let mut cmd = Command::new("cmd");
     cmd.arg("/c").arg("start").arg(path.as_ref());

@@ -11,17 +11,15 @@ use crate::{CommandExt, IntoResult};
 pub fn command<T: AsRef<OsStr>>(path: T) -> Command {
     let path = path.as_ref();
     let open_handlers = [
-        ("xdg-open", &["--version"], &[path] as &[_]),
-        ("gio", &["version"], &[OsStr::new("open"), path]),
-        ("gnome-open", &["--version"], &[path]),
-        ("kde-open", &["--version"], &[path]),
-        ("wslview", &["--version"], &[&wsl_path(path)]),
+        ("xdg-open", &[path] as &[_]),
+        ("gio", &[OsStr::new("open"), path]),
+        ("gnome-open", &[path]),
+        ("kde-open", &[path]),
+        ("wslview", &[&wsl_path(path)]),
     ];
 
-    for (command, check_args, args) in &open_handlers {
-        let result = Command::new(command)
-            .args(*check_args)
-            .status_without_output();
+    for (command, args) in &open_handlers {
+        let result = Command::new(command).status_without_output();
 
         if let Ok(status) = result {
             if status.success() {
@@ -33,7 +31,7 @@ pub fn command<T: AsRef<OsStr>>(path: T) -> Command {
     }
 
     // fallback to xdg-open
-    let (command, _, args) = &open_handlers[0];
+    let (command, args) = &open_handlers[0];
     let mut cmd = Command::new(command);
     cmd.args(*args);
     cmd

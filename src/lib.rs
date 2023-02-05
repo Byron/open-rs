@@ -14,6 +14,12 @@
 //! open::with("http://rust-lang.org", "firefox").unwrap();
 //! ```
 //!
+//! Or obtain the command without running it.
+//!
+//! ```no_run
+//! let cmd = open::command("http://rust-lang.org");
+//! ```
+//!
 //! # Notes
 //!
 //! ## Nonblocking operation
@@ -129,6 +135,18 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 /// handle errors differently it is recommend to not match on a certain error.
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
     os::with(path, app)
+}
+
+/// Get command that opens path with the default application.
+///
+/// # Examples
+///
+/// ```no_run
+/// let path = "http://rust-lang.org";
+/// let cmd = open::command(path);
+/// ```
+pub fn command<'a, T: AsRef<OsStr>>(path: T) -> Command {
+    os::command(path)
 }
 
 /// Open path with the default application in a new thread.

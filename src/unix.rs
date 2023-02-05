@@ -8,39 +8,39 @@ use std::{
 
 use crate::{CommandExt, IntoResult};
 
-pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
+pub fn command<T: AsRef<OsStr>>(path: T) -> Command {
     let path = path.as_ref();
     let open_handlers = [
-        ("xdg-open", &[path] as &[_]),
-        ("gio", &[OsStr::new("open"), path]),
-        ("gnome-open", &[path]),
-        ("kde-open", &[path]),
-        ("wslview", &[&wsl_path(path)]),
+        ("xdg-open", &["--version"], &[path] as &[_]),
+        ("gio", &["version"], &[OsStr::new("open"), path]),
+        ("gnome-open", &["--version"], &[path]),
+        ("kde-open", &["--version"], &[path]),
+        ("wslview", &["--version"], &[&wsl_path(path)]),
     ];
 
-    let mut unsuccessful = None;
-    let mut io_error = None;
+    for (command, check_args, args) in &open_handlers {
+        let result = Command::new(command)
+            .args(*check_args)
+            .status_without_output();
 
-    for (command, args) in &open_handlers {
-        let result = Command::new(command).args(*args).status_without_output();
-
-        match result {
-            Ok(status) if status.success() => return Ok(()),
-            Ok(status) => {
-                unsuccessful = unsuccessful.or_else(|| {
-                    Some(std::io::Error::new(
-                        std::io::ErrorKind::Other,
-                        status.to_string(),
-                    ))
-                })
-            }
-            Err(err) => io_error = io_error.or(Some(err)),
-        }
+        if let Ok(status) = result {
+            if status.success() {
+                let mut cmd = Command::new(command);
+                cmd.args(*args);
+                return cmd;
+            };
+        };
     }
 
-    Err(unsuccessful
-        .or(io_error)
-        .expect("successful cases don't get here"))
+    // fallback to xdg-open
+    let (command, _, args) = &open_handlers[0];
+    let mut cmd = Command::new(command);
+    cmd.args(*args);
+    cmd
+}
+
+pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
+    command(path).status_without_output().into_result()
 }
 
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {

@@ -14,10 +14,10 @@
 //! open::with("http://rust-lang.org", "firefox").unwrap();
 //! ```
 //!
-//! Or obtain the command without running it.
+//! Or obtain commands for opening the URL without running them.
 //!
 //! ```no_run
-//! let cmd = open::command("http://rust-lang.org");
+//! let cmds = open::commands("http://rust-lang.org");
 //! ```
 //!
 //! # Notes
@@ -137,16 +137,19 @@ pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> 
     os::with(path, app)
 }
 
-/// Get command that opens path with the default application.
+/// Get iterator over commands that open path with the default application.
+/// Iterator over Commands is returned as for certain platforms there are
+/// multiple command options.
+/// It is the responsibility of the callee to try all commands.
 ///
 /// # Examples
 ///
 /// ```no_run
 /// let path = "http://rust-lang.org";
-/// let cmd = open::command(path);
+/// let cmds = open::commands(path);
 /// ```
-pub fn command<'a, T: AsRef<OsStr>>(path: T) -> Command {
-    os::command(path)
+pub fn commands<T: AsRef<OsStr>>(path: T) -> impl Iterator<Item = Command> {
+    os::commands(path)
 }
 
 /// Open path with the default application in a new thread.
@@ -200,17 +203,19 @@ impl IntoResult<io::Result<()>> for std::os::raw::c_int {
 }
 
 trait CommandExt {
-    fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus>;
+    fn without_io(&mut self) -> &mut Self;
+    fn status(&mut self) -> io::Result<std::process::ExitStatus>;
 }
 
 impl CommandExt for Command {
-    fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus> {
-        let mut process = self
-            .stdin(Stdio::null())
+    fn without_io(&mut self) -> &mut Self {
+        self.stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::null())
-            .spawn()?;
+    }
 
+    fn status(&mut self) -> io::Result<std::process::ExitStatus> {
+        let mut process = self.spawn()?;
         process.wait()
     }
 }

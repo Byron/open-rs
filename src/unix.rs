@@ -1,12 +1,9 @@
 use std::{
     env,
     ffi::{OsStr, OsString},
-    io,
     path::{Path, PathBuf},
     process::Command,
 };
-
-use crate::{CommandExt, IntoResult};
 
 pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     let path = path.as_ref();
@@ -26,11 +23,10 @@ pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     .collect()
 }
 
-pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
+pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
     let mut cmd = Command::new(app.into());
-    cmd.arg(path.as_ref())
-        .status_without_output()
-        .into_result(&cmd)
+    cmd.arg(path.as_ref());
+    cmd
 }
 
 // Polyfill to workaround absolute path bug in wslu(wslview). In versions before

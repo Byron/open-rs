@@ -148,7 +148,8 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    os::with(path, app)
+    let mut cmd = with_command(path, app);
+    cmd.status_without_output().into_result(&cmd)
 }
 
 /// Get multiple commands that open `path` with the default application.
@@ -166,6 +167,21 @@ pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> 
 /// ```
 pub fn commands<'a, T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     os::commands(path)
+}
+
+/// Get a command that uses `app` to open `path`.
+///
+/// # Examples
+///
+/// ```no_run
+/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let path = "http://rust-lang.org";
+/// assert!(open::with_command(path, "app").status()?.success());
+/// # Ok(())
+/// # }
+/// ```
+pub fn with_command<'a, T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
+    os::with_command(path, app)
 }
 
 /// Open path with the default application in a new thread to assure it's non-blocking.

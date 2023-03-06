@@ -21,16 +21,15 @@ pub fn command<T: AsRef<OsStr>>(path: T) -> Command {
     for (command, args) in &open_handlers {
         let result = Command::new(command).status_without_output();
 
-        if let Ok(status) = result {
-            if status.success() {
-                let mut cmd = Command::new(command);
-                cmd.args(*args);
-                return cmd;
-            };
+        if let Ok(_) = result {
+            let mut cmd = Command::new(command);
+            cmd.args(*args);
+            dbg!(&cmd);
+            return cmd;
         };
     }
 
-    // fallback to xdg-open
+    // fallback to xdg-open, even though we know it's probably not working at this point.
     let (command, args) = &open_handlers[0];
     let mut cmd = Command::new(command);
     cmd.args(*args);

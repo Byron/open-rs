@@ -114,7 +114,16 @@ use std::{
 /// Sometimes, depending on the platform and system configuration, launchers *can* block.
 /// If you want to be sure they don't, use [`that_in_background()`] instead.
 pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
-    os::that(path)
+    let mut last_err = None;
+    for mut cmd in commands(path) {
+        match cmd.status_without_output() {
+            Ok(status) => {
+                return Ok(status).into_result(&cmd);
+            }
+            Err(err) => last_err = Some(err),
+        }
+    }
+    Err(last_err.expect("no launcher worked, at least one error"))
 }
 
 /// Open path with the given application.

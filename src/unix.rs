@@ -26,19 +26,6 @@ pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     .collect()
 }
 
-pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
-    let mut last_err = None;
-    for mut cmd in commands(path) {
-        match cmd.status_without_output() {
-            Ok(status) => {
-                return Ok(status).into_result(&cmd);
-            }
-            Err(err) => last_err = Some(err),
-        }
-    }
-    Err(last_err.expect("no launcher worked, at least one error"))
-}
-
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
     let mut cmd = Command::new(app.into());
     cmd.arg(path.as_ref())

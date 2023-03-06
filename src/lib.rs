@@ -5,19 +5,37 @@
 //! Open the given URL in the default web browser, without blocking.
 //!
 //! ```no_run
-//! open::that("http://rust-lang.org").unwrap();
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! open::that("http://rust-lang.org")?;
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! Alternatively, specify the program to be used to open the path or URL.
 //!
 //! ```no_run
-//! open::with("http://rust-lang.org", "firefox").unwrap();
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! open::with("http://rust-lang.org", "firefox")?;
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! Or obtain the commands to launch a file or path without running them.
 //!
 //! ```no_run
-//! let cmd = open::commands("http://rust-lang.org");
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! let cmds = open::commands("http://rust-lang.org")[0].status()?;
+//! # Ok(())
+//! # }
+//! ```
+//!
+//! It's also possible to obtain a command that can be used to open a path in an application.
+//!
+//! ```no_run
+//! # fn main() -> Result<(), Box<dyn std::error::Error>> {
+//! let status = open::with_command("http://rust-lang.org", "firefox").status()?;
+//! # Ok(())
+//! # }
 //! ```
 //!
 //! # Notes
@@ -28,6 +46,10 @@
 //! launched child process is still running. Note that depending on the operating
 //! system, spawning launch helpers, which this library does under the hood,
 //! might still take 100's of milliseconds.
+//!
+//! **Beware that on some platforms and circumstances, the launcher may block**.
+//! In this case, please use the [`commands()`] or [`with_command()`] accordingly
+//! to `spawn()` it without blocking.
 //!
 //! ## Error handling
 //!
@@ -128,8 +150,8 @@ pub fn that(path: impl AsRef<OsStr>) -> io::Result<()> {
 
 /// Open path with the given application.
 ///
-/// This function may block if the application doesn't detach itself.
-/// In that case, consider using [`with_in_background()`].
+/// This function may block if the application or launcher doesn't detach itself.
+/// In that case, consider using [`with_in_background()`] or [`with_command()].
 ///
 /// # Examples
 ///

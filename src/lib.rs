@@ -113,7 +113,7 @@ use std::{
 ///
 /// Sometimes, depending on the platform and system configuration, launchers *can* block.
 /// If you want to be sure they don't, use [`that_in_background()`] instead.
-pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
+pub fn that(path: impl AsRef<OsStr>) -> io::Result<()> {
     let mut last_err = None;
     for mut cmd in commands(path) {
         match cmd.status_without_output() {
@@ -147,7 +147,7 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 ///
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
-pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
+pub fn with(path: impl AsRef<OsStr>, app: impl Into<String>) -> io::Result<()> {
     let mut cmd = with_command(path, app);
     cmd.status_without_output().into_result(&cmd)
 }
@@ -165,7 +165,7 @@ pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> 
 /// # Ok(())
 /// # }
 /// ```
-pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
+pub fn commands(path: impl AsRef<OsStr>) -> Vec<Command> {
     os::commands(path)
 }
 
@@ -180,14 +180,14 @@ pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
 /// # Ok(())
 /// # }
 /// ```
-pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
+pub fn with_command(path: impl AsRef<OsStr>, app: impl Into<String>) -> Command {
     os::with_command(path, app)
 }
 
 /// Open path with the default application in a new thread to assure it's non-blocking.
 ///
 /// See documentation of [`that()`] for more details.
-pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<io::Result<()>> {
+pub fn that_in_background(path: impl AsRef<OsStr>) -> thread::JoinHandle<io::Result<()>> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
 }

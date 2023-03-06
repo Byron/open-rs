@@ -8,35 +8,35 @@ use std::{
 
 use crate::{CommandExt, IntoResult};
 
-pub fn command<T: AsRef<OsStr>>(path: T) -> Command {
+pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     let path = path.as_ref();
-    let open_handlers = [
+    [
         ("xdg-open", &[path] as &[_]),
         ("gio", &[OsStr::new("open"), path]),
         ("gnome-open", &[path]),
         ("kde-open", &[path]),
         ("wslview", &[&wsl_path(path)]),
-    ];
-
-    for (command, args) in &open_handlers {
-        let result = Command::new(command).status_without_output();
-
-        if let Ok(_) = result {
-            let mut cmd = Command::new(command);
-            cmd.args(*args);
-            return cmd;
-        };
-    }
-
-    // fallback to xdg-open, even though we know it's probably not working at this point.
-    let (command, args) = &open_handlers[0];
-    let mut cmd = Command::new(command);
-    cmd.args(*args);
-    cmd
+    ]
+    .iter()
+    .map(|(command, args)| {
+        let mut cmd = Command::new(command);
+        cmd.args(*args);
+        cmd
+    })
+    .collect()
 }
 
 pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
-    command(path).status_without_output().into_result()
+    let mut last_err = None;
+    for mut command in commands(path) {
+        match command.status_without_output() {
+            Ok(status) => {
+                return Ok(status).into_result();
+            }
+            Err(err) => last_err = Some(err),
+        }
+    }
+    Err(last_err.expect("no launcher worked, at least one error"))
 }
 
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {

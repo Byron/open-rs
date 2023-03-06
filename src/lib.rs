@@ -182,28 +182,18 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 }
 
 trait IntoResult<T> {
-    fn into_result(self) -> T;
+    fn into_result(self, cmd: &Command) -> T;
 }
 
 impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
-    fn into_result(self) -> io::Result<()> {
+    fn into_result(self, cmd: &Command) -> io::Result<()> {
         match self {
             Ok(status) if status.success() => Ok(()),
             Ok(status) => Err(io::Error::new(
                 io::ErrorKind::Other,
-                format!("Launcher failed with {:?}", status),
+                format!("Launcher {cmd:?} failed with {:?}", status),
             )),
             Err(err) => Err(err),
-        }
-    }
-}
-
-#[cfg(windows)]
-impl IntoResult<io::Result<()>> for std::os::raw::c_int {
-    fn into_result(self) -> io::Result<()> {
-        match self {
-            i if i > 32 => Ok(()),
-            _ => Err(io::Error::last_os_error()),
         }
     }
 }

@@ -28,10 +28,10 @@ pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
 
 pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
     let mut last_err = None;
-    for mut command in commands(path) {
-        match command.status_without_output() {
+    for mut cmd in commands(path) {
+        match cmd.status_without_output() {
             Ok(status) => {
-                return Ok(status).into_result();
+                return Ok(status).into_result(&cmd);
             }
             Err(err) => last_err = Some(err),
         }
@@ -40,10 +40,10 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 }
 
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    Command::new(app.into())
-        .arg(path.as_ref())
+    let mut cmd = Command::new(app.into());
+    cmd.arg(path.as_ref())
         .status_without_output()
-        .into_result()
+        .into_result(&cmd)
 }
 
 // Polyfill to workaround absolute path bug in wslu(wslview). In versions before

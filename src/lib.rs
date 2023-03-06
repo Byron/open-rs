@@ -165,7 +165,7 @@ pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> 
 /// # Ok(())
 /// # }
 /// ```
-pub fn commands<'a, T: AsRef<OsStr>>(path: T) -> Vec<Command> {
+pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     os::commands(path)
 }
 
@@ -180,7 +180,7 @@ pub fn commands<'a, T: AsRef<OsStr>>(path: T) -> Vec<Command> {
 /// # Ok(())
 /// # }
 /// ```
-pub fn with_command<'a, T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
+pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
     os::with_command(path, app)
 }
 

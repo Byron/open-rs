@@ -24,7 +24,6 @@ pub fn command<T: AsRef<OsStr>>(path: T) -> Command {
         if let Ok(_) = result {
             let mut cmd = Command::new(command);
             cmd.args(*args);
-            dbg!(&cmd);
             return cmd;
         };
     }

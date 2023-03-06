@@ -12,7 +12,7 @@ $ start <path-or-url>
 $ xdg-open <path-or-url> || gio open <path-or-url> || gnome-open <path-or-url> || kde-open <path-or-url> || wslview <path-or-url>
 ```
 
-# Usage
+# Library Usage
 
 Add this to your Cargo.toml
 ```toml
@@ -29,7 +29,15 @@ open::that("https://rust-lang.org");
 open::with("https://rust-lang.org", "firefox");
 ```
 
-Follow this link for the [massive API docs](https://docs.rs/open).
+Follow this link for the [API docs](https://docs.rs/open).
+
+# Binary Usage
+
+This crate also implements a binary that acts like an opener itself.
+
+```shell
+cargo run 'file to open'
+```
 
 # Credits
 

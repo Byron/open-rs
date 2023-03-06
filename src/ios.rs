@@ -1,21 +1,16 @@
-use std::{ffi::OsStr, io, process::Command};
+use std::{ffi::OsStr, process::Command};
 
-use crate::{CommandExt, IntoResult};
-
-pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
-    Command::new("uiopen")
-        .arg("--url")
-        .arg(path.as_ref())
-        .status_without_output()
-        .into_result()
+pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
+    let mut cmd = Command::new("uiopen");
+    cmd.arg("--url").arg(path.as_ref());
+    vec![cmd]
 }
 
-pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    Command::new("uiopen")
-        .arg("--url")
+pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
+    let mut cmd = Command::new("uiopen");
+    cmd.arg("--url")
         .arg(path.as_ref())
         .arg("--bundleid")
-        .arg(app.into())
-        .status_without_output()
-        .into_result()
+        .arg(app.into());
+    cmd
 }

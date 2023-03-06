@@ -1,53 +1,32 @@
 use std::{
     env,
     ffi::{OsStr, OsString},
-    io,
     path::{Path, PathBuf},
     process::Command,
 };
 
-use crate::{CommandExt, IntoResult};
-
-pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
+pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     let path = path.as_ref();
-    let open_handlers = [
+    [
         ("xdg-open", &[path] as &[_]),
         ("gio", &[OsStr::new("open"), path]),
         ("gnome-open", &[path]),
         ("kde-open", &[path]),
         ("wslview", &[&wsl_path(path)]),
-    ];
-
-    let mut unsuccessful = None;
-    let mut io_error = None;
-
-    for (command, args) in &open_handlers {
-        let result = Command::new(command).args(*args).status_without_output();
-
-        match result {
-            Ok(status) if status.success() => return Ok(()),
-            Ok(status) => {
-                unsuccessful = unsuccessful.or_else(|| {
-                    Some(std::io::Error::new(
-                        std::io::ErrorKind::Other,
-                        status.to_string(),
-                    ))
-                })
-            }
-            Err(err) => io_error = io_error.or(Some(err)),
-        }
-    }
-
-    Err(unsuccessful
-        .or(io_error)
-        .expect("successful cases don't get here"))
+    ]
+    .iter()
+    .map(|(command, args)| {
+        let mut cmd = Command::new(command);
+        cmd.args(*args);
+        cmd
+    })
+    .collect()
 }
 
-pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    Command::new(app.into())
-        .arg(path.as_ref())
-        .status_without_output()
-        .into_result()
+pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
+    let mut cmd = Command::new(app.into());
+    cmd.arg(path.as_ref());
+    cmd
 }
 
 // Polyfill to workaround absolute path bug in wslu(wslview). In versions before

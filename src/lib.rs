@@ -14,6 +14,12 @@
 //! open::with("http://rust-lang.org", "firefox").unwrap();
 //! ```
 //!
+//! Or obtain the commands to launch a file or path without running them.
+//!
+//! ```no_run
+//! let cmd = open::commands("http://rust-lang.org");
+//! ```
+//!
 //! # Notes
 //!
 //! ## Nonblocking operation
@@ -102,8 +108,22 @@ use std::{
 ///
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
+///
+/// # Beware
+///
+/// Sometimes, depending on the platform and system configuration, launchers *can* block.
+/// If you want to be sure they don't, use [`that_in_background()`] instead.
 pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
-    os::that(path)
+    let mut last_err = None;
+    for mut cmd in commands(path) {
+        match cmd.status_without_output() {
+            Ok(status) => {
+                return Ok(status).into_result(&cmd);
+            }
+            Err(err) => last_err = Some(err),
+        }
+    }
+    Err(last_err.expect("no launcher worked, at least one error"))
 }
 
 /// Open path with the given application.
@@ -128,13 +148,45 @@ pub fn that<T: AsRef<OsStr>>(path: T) -> io::Result<()> {
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
 pub fn with<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    os::with(path, app)
+    let mut cmd = with_command(path, app);
+    cmd.status_without_output().into_result(&cmd)
 }
 
-/// Open path with the default application in a new thread.
+/// Get multiple commands that open `path` with the default application.
+///
+/// Each command represents a launcher to try.
+///
+/// # Examples
+///
+/// ```no_run
+/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let path = "http://rust-lang.org";
+/// assert!(open::commands(path)[0].status()?.success());
+/// # Ok(())
+/// # }
+/// ```
+pub fn commands<'a, T: AsRef<OsStr>>(path: T) -> Vec<Command> {
+    os::commands(path)
+}
+
+/// Get a command that uses `app` to open `path`.
+///
+/// # Examples
+///
+/// ```no_run
+/// # fn main() -> Result<(), Box<dyn std::error::Error>> {
+/// let path = "http://rust-lang.org";
+/// assert!(open::with_command(path, "app").status()?.success());
+/// # Ok(())
+/// # }
+/// ```
+pub fn with_command<'a, T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
+    os::with_command(path, app)
+}
+
+/// Open path with the default application in a new thread to assure it's non-blocking.
 ///
 /// See documentation of [`that()`] for more details.
-#[deprecated = "Use `that()` as it is non-blocking while making error handling easy."]
 pub fn that_in_background<T: AsRef<OsStr>>(path: T) -> thread::JoinHandle<io::Result<()>> {
     let path = path.as_ref().to_os_string();
     thread::spawn(|| that(path))
@@ -155,28 +207,18 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 }
 
 trait IntoResult<T> {
-    fn into_result(self) -> T;
+    fn into_result(self, cmd: &Command) -> T;
 }
 
 impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
-    fn into_result(self) -> io::Result<()> {
+    fn into_result(self, cmd: &Command) -> io::Result<()> {
         match self {
             Ok(status) if status.success() => Ok(()),
             Ok(status) => Err(io::Error::new(
                 io::ErrorKind::Other,
-                format!("Launcher failed with {:?}", status),
+                format!("Launcher {cmd:?} failed with {:?}", status),
             )),
             Err(err) => Err(err),
-        }
-    }
-}
-
-#[cfg(windows)]
-impl IntoResult<io::Result<()>> for std::os::raw::c_int {
-    fn into_result(self) -> io::Result<()> {
-        match self {
-            i if i > 32 => Ok(()),
-            _ => Err(io::Error::last_os_error()),
         }
     }
 }
@@ -187,13 +229,10 @@ trait CommandExt {
 
 impl CommandExt for Command {
     fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus> {
-        let mut process = self
-            .stdin(Stdio::null())
+        self.stdin(Stdio::null())
             .stdout(Stdio::null())
             .stderr(Stdio::null())
-            .spawn()?;
-
-        process.wait()
+            .status()
     }
 }
 

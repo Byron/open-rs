@@ -1,6 +1,55 @@
 # Changelog
 
+## 4.0.0 (2023-03-10)
+
+### Bug Fixes
+
+ - <csr-id-9ceb0a4b707022a6ce8046d3512be7c7a51d77a4/> Windows URL encoding for multiple query params
+   Previously, passing a URL with multiple query parameters on Windows would result in
+   improper escaping, causing unexpected behavior when using it with "cmd /c".
+   This commit addresses this issue by properly escaping all query parameters in the URL.
+   Now, URLs with multiple query parameters are handled correctly on Windows.
+   
+   See also:
+   * https://doc.rust-lang.org/std/os/windows/process/trait.CommandExt.html#tymethod.raw_arg
+   * https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cmd
+   * https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/start
+   
+   Related https://github.com/Byron/open-rs/issues/67.
+
+### New Features (BREAKING)
+
+ - <csr-id-0cd6f98d0a97ac3ddcecefc5d33952e7632298a5/> set minimal required Rust version of 1.62.
+   This version is motivated only when compiling on windows (but we can't differentiate that)
+   due to the recent addition of `CommandExt::raw_arg()`.
+   
+   This might be a breaking change as previously there was no minimal supported Rust version.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 4 commits contributed to the release.
+ - 3 days passed between releases.
+ - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Windows URL encoding for multiple query params ([`9ceb0a4`](https://github.com/Byron/open-rs/commit/9ceb0a4b707022a6ce8046d3512be7c7a51d77a4))
+    - Refactor ([`9a1178a`](https://github.com/Byron/open-rs/commit/9a1178a9d32c2b4da12cdb8542b3b36806825d7d))
+    - Set minimal required Rust version of 1.62. ([`0cd6f98`](https://github.com/Byron/open-rs/commit/0cd6f98d0a97ac3ddcecefc5d33952e7632298a5))
+    - Fix Windows URL encoding for multiple query params ([`e4856ac`](https://github.com/Byron/open-rs/commit/e4856acd170cdea5b06a947c7e7e9cdd36f0b392))
+</details>
+
 ## 3.4.0 (2023-03-06)
+
+<csr-id-7e2a9c645cd4ff5f86ece7cdc220e18c1b4ac1b5/>
 
 ### New Features
 
@@ -22,7 +71,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 10 commits contributed to the release.
+ - 11 commits contributed to the release.
  - 5 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -39,6 +88,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v3.4.0 ([`031c44b`](https://github.com/Byron/open-rs/commit/031c44b82b518757530568055db2f0833ba1ac5b))
     - Improve README ([`bfededa`](https://github.com/Byron/open-rs/commit/bfededa42cfa50f6fb88540cbce54a2318af5655))
     - Improve documentation around how to use the library. ([`7e2a9c6`](https://github.com/Byron/open-rs/commit/7e2a9c645cd4ff5f86ece7cdc220e18c1b4ac1b5))
     - Modernize generics of API using `impl` instead of 'the other way'. ([`cb322bf`](https://github.com/Byron/open-rs/commit/cb322bf72733a210bd41654bd3152f19dbb31059))

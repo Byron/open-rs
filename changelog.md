@@ -1,5 +1,36 @@
 # Changelog
 
+## Unreleased
+
+In the previous releases 3.3 and 4.0 on windows the console windows would show.
+This was unintentional and is now fixed.
+
+Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
+
+### Bug Fixes
+
+ - <csr-id-bc75d847c6c89cdd835f4220d6a0ed9a6985b41e/> hide the console window in Windows 
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 10 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #69 from amrbashir/hide-console ([`8cf21e0`](https://github.com/Byron/open-rs/commit/8cf21e0d23f0d18e503f4a056762d1efd733f99d))
+    - Hide the console window in Windows  ([`bc75d84`](https://github.com/Byron/open-rs/commit/bc75d847c6c89cdd835f4220d6a0ed9a6985b41e))
+</details>
+
 ## 4.0.0 (2023-03-10)
 
 ### Bug Fixes
@@ -12,10 +43,8 @@
    
    See also:
    * https://doc.rust-lang.org/std/os/windows/process/trait.CommandExt.html#tymethod.raw_arg
-   * https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cmd
-   * https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/start
-   
-   Related https://github.com/Byron/open-rs/issues/67.
+* https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/cmd
+* https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/start
 
 ### New Features (BREAKING)
 
@@ -29,7 +58,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release.
+ - 5 commits contributed to the release.
  - 3 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -41,11 +70,15 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v4.0.0 ([`f36f37a`](https://github.com/Byron/open-rs/commit/f36f37a7a2ac8f417cd14f900de795a144748264))
     - Windows URL encoding for multiple query params ([`9ceb0a4`](https://github.com/Byron/open-rs/commit/9ceb0a4b707022a6ce8046d3512be7c7a51d77a4))
     - Refactor ([`9a1178a`](https://github.com/Byron/open-rs/commit/9a1178a9d32c2b4da12cdb8542b3b36806825d7d))
     - Set minimal required Rust version of 1.62. ([`0cd6f98`](https://github.com/Byron/open-rs/commit/0cd6f98d0a97ac3ddcecefc5d33952e7632298a5))
     - Fix Windows URL encoding for multiple query params ([`e4856ac`](https://github.com/Byron/open-rs/commit/e4856acd170cdea5b06a947c7e7e9cdd36f0b392))
 </details>
+
+<csr-unknown>
+Related https://github.com/Byron/open-rs/issues/67.<csr-unknown/>
 
 ## 3.4.0 (2023-03-06)
 

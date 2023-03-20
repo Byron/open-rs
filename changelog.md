@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 4.0.1 (2023-03-20)
 
 In the previous releases 3.3 and 4.0 on windows the console windows would show.
 This was unintentional and is now fixed.
@@ -9,13 +9,13 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 
 ### Bug Fixes
 
- - <csr-id-bc75d847c6c89cdd835f4220d6a0ed9a6985b41e/> hide the console window in Windows 
+ - <csr-id-bc75d847c6c89cdd835f4220d6a0ed9a6985b41e/> hide the console window in Windows
 
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 10 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -27,6 +27,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Prepare changelog prior to release ([`8b4c259`](https://github.com/Byron/open-rs/commit/8b4c2596b1ac5d08bffb58784d1760ce47df14a5))
     - Merge pull request #69 from amrbashir/hide-console ([`8cf21e0`](https://github.com/Byron/open-rs/commit/8cf21e0d23f0d18e503f4a056762d1efd733f99d))
     - Hide the console window in Windows  ([`bc75d84`](https://github.com/Byron/open-rs/commit/bc75d847c6c89cdd835f4220d6a0ed9a6985b41e))
 </details>
@@ -76,9 +77,6 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
     - Set minimal required Rust version of 1.62. ([`0cd6f98`](https://github.com/Byron/open-rs/commit/0cd6f98d0a97ac3ddcecefc5d33952e7632298a5))
     - Fix Windows URL encoding for multiple query params ([`e4856ac`](https://github.com/Byron/open-rs/commit/e4856acd170cdea5b06a947c7e7e9cdd36f0b392))
 </details>
-
-<csr-unknown>
-Related https://github.com/Byron/open-rs/issues/67.<csr-unknown/>
 
 ## 3.4.0 (2023-03-06)
 

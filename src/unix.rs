@@ -1,4 +1,5 @@
 use std::{
+    borrow::Borrow,
     env,
     ffi::{OsStr, OsString},
     path::{Path, PathBuf},
@@ -8,11 +9,11 @@ use std::{
 pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     let path = path.as_ref();
     [
+        ("wslview", &[wsl_path(path).borrow()] as &[_]),
         ("xdg-open", &[path] as &[_]),
         ("gio", &[OsStr::new("open"), path]),
         ("gnome-open", &[path]),
         ("kde-open", &[path]),
-        ("wslview", &[&wsl_path(path)]),
     ]
     .iter()
     .map(|(command, args)| {

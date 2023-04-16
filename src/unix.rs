@@ -1,5 +1,4 @@
 use std::{
-    borrow::Borrow,
     env,
     ffi::{OsStr, OsString},
     path::{Path, PathBuf},
@@ -8,20 +7,28 @@ use std::{
 
 pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     let path = path.as_ref();
-    [
-        ("wslview", &[wsl_path(path).borrow()] as &[_]),
-        ("xdg-open", &[path] as &[_]),
-        ("gio", &[OsStr::new("open"), path]),
-        ("gnome-open", &[path]),
-        ("kde-open", &[path]),
-    ]
-    .iter()
-    .map(|(command, args)| {
-        let mut cmd = Command::new(command);
-        cmd.args(*args);
-        cmd
-    })
-    .collect()
+    let mut commands: Vec<(&str, Vec<&OsStr>)> = vec![];
+
+    let wsl_path = wsl_path(path);
+    if is_wsl::is_wsl() {
+        commands.push(("wslview", vec![&wsl_path]));
+    }
+
+    commands.extend_from_slice(&[
+        ("xdg-open", vec![&path]),
+        ("gio", vec![OsStr::new("open"), path]),
+        ("gnome-open", vec![path]),
+        ("kde-open", vec![path]),
+    ]);
+
+    commands
+        .iter()
+        .map(|(command, args)| {
+            let mut cmd = Command::new(command);
+            cmd.args(args);
+            cmd
+        })
+        .collect()
 }
 
 pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {

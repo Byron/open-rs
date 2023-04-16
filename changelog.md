@@ -1,5 +1,41 @@
 # Changelog
 
+## 4.0.2 (2023-04-16)
+
+### Bug Fixes
+
+ - <csr-id-5f1f80f9fb63e6c63b48ef97370711fd8cebcfcc/> now works within WSL if `gio` is installed.
+   `gio` would fail on WSL which is fixed by detecting that WSL is present
+   which is when `wslview` will be prioritized.
+   
+   Note that the binary size inceases by ~13kb as we try to avoid running `wslview`
+   first and fail everywhere, so prefer runtime performance on linux over binary
+   size. The binary size changes only on unix.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 5 commits contributed to the release.
+ - 26 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#71](https://github.com/Byron/open-rs/issues/71)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#71](https://github.com/Byron/open-rs/issues/71)**
+    - Now works within WSL if `gio` is installed. ([`5f1f80f`](https://github.com/Byron/open-rs/commit/5f1f80f9fb63e6c63b48ef97370711fd8cebcfcc))
+ * **Uncategorized**
+    - See if using the latest ubuntu provides CI runners faster ([`b7009ac`](https://github.com/Byron/open-rs/commit/b7009acf2d9149db13096815708588873403142b))
+    - Only pull `is-wsl` on unix. ([`1912915`](https://github.com/Byron/open-rs/commit/1912915cd541381a8184f574e13c3b31ba6f0a06))
+    - Check whether running in WSL before trying wslview ([`b150494`](https://github.com/Byron/open-rs/commit/b150494e70cfea1fb6aec87d1100c4426d13a16a))
+    - Prioritize wslview so it's always launched when present ([`9048e63`](https://github.com/Byron/open-rs/commit/9048e63181626ca9c165f8e85682465bbb985554))
+</details>
+
 ## 4.0.1 (2023-03-20)
 
 In the previous releases 3.3 and 4.0 on windows the console windows would show.
@@ -15,7 +51,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 10 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -27,6 +63,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v4.0.1 ([`c5af111`](https://github.com/Byron/open-rs/commit/c5af111792417c604c9b188aa2d627556a40b119))
     - Prepare changelog prior to release ([`8b4c259`](https://github.com/Byron/open-rs/commit/8b4c2596b1ac5d08bffb58784d1760ce47df14a5))
     - Merge pull request #69 from amrbashir/hide-console ([`8cf21e0`](https://github.com/Byron/open-rs/commit/8cf21e0d23f0d18e503f4a056762d1efd733f99d))
     - Hide the console window in Windows  ([`bc75d84`](https://github.com/Byron/open-rs/commit/bc75d847c6c89cdd835f4220d6a0ed9a6985b41e))

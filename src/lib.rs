@@ -78,6 +78,9 @@ use ios as os;
 #[cfg(target_os = "haiku")]
 use haiku as os;
 
+#[cfg(target_os = "redox")]
+use redox as os;
+
 #[cfg(any(
     target_os = "linux",
     target_os = "android",
@@ -102,7 +105,8 @@ use unix as os;
     target_os = "ios",
     target_os = "macos",
     target_os = "windows",
-    target_os = "haiku"
+    target_os = "haiku",
+    target_os = "redox"
 )))]
 compile_error!("open is not supported on this platform");
 
@@ -269,6 +273,9 @@ mod ios;
 
 #[cfg(target_os = "haiku")]
 mod haiku;
+
+#[cfg(target_os = "redox")]
+mod redox;
 
 #[cfg(any(
     target_os = "linux",

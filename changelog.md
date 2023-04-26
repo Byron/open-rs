@@ -1,5 +1,33 @@
 # Changelog
 
+## 4.1.0 (2023-04-26)
+
+### New Features
+
+ - <csr-id-b8089a6403394a56e9d023cee85e839f91ddc9aa/> Add Redox support.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 3 commits contributed to the release over the course of 9 calendar days.
+ - 10 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#74](https://github.com/Byron/open-rs/issues/74)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#74](https://github.com/Byron/open-rs/issues/74)**
+    - Add Redox support. ([`b8089a6`](https://github.com/Byron/open-rs/commit/b8089a6403394a56e9d023cee85e839f91ddc9aa))
+ * **Uncategorized**
+    - Add Redox support ([`4c31d9c`](https://github.com/Byron/open-rs/commit/4c31d9cb55a60881a84c81454c3f433b2c215809))
+    - Fix version in readme document ([`b076fc4`](https://github.com/Byron/open-rs/commit/b076fc44a984b55b0ca986530e9f4a18f1a43ba4))
+</details>
+
 ## 4.0.2 (2023-04-16)
 
 ### Bug Fixes
@@ -16,7 +44,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 5 commits contributed to the release.
+ - 6 commits contributed to the release.
  - 26 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#71](https://github.com/Byron/open-rs/issues/71)
@@ -30,6 +58,7 @@
  * **[#71](https://github.com/Byron/open-rs/issues/71)**
     - Now works within WSL if `gio` is installed. ([`5f1f80f`](https://github.com/Byron/open-rs/commit/5f1f80f9fb63e6c63b48ef97370711fd8cebcfcc))
  * **Uncategorized**
+    - Release open v4.0.2 ([`370f03b`](https://github.com/Byron/open-rs/commit/370f03b28910afae32d2e3054848068bea271a9b))
     - See if using the latest ubuntu provides CI runners faster ([`b7009ac`](https://github.com/Byron/open-rs/commit/b7009acf2d9149db13096815708588873403142b))
     - Only pull `is-wsl` on unix. ([`1912915`](https://github.com/Byron/open-rs/commit/1912915cd541381a8184f574e13c3b31ba6f0a06))
     - Check whether running in WSL before trying wslview ([`b150494`](https://github.com/Byron/open-rs/commit/b150494e70cfea1fb6aec87d1100c4426d13a16a))

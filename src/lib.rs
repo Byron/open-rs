@@ -112,6 +112,7 @@ compile_error!("open is not supported on this platform");
 
 use std::{
     ffi::OsStr,
+    fmt::Debug,
     io,
     process::{Command, Stdio},
     thread,
@@ -141,7 +142,7 @@ use std::{
 /// If you want to be sure they don't, use [`that_in_background()`] instead.
 pub fn that(path: impl AsRef<OsStr>) -> io::Result<()> {
     let mut last_err = None;
-    for mut cmd in commands(path) {
+    for mut cmd in os::commands(path) {
         match cmd.status_without_output() {
             Ok(status) => {
                 return Ok(status).into_result(&cmd);
@@ -191,8 +192,17 @@ pub fn with(path: impl AsRef<OsStr>, app: impl Into<String>) -> io::Result<()> {
 /// # Ok(())
 /// # }
 /// ```
+#[cfg(not(target_os = "windows"))]
 pub fn commands(path: impl AsRef<OsStr>) -> Vec<Command> {
     os::commands(path)
+}
+
+#[cfg(target_os = "windows")]
+pub fn commands(path: impl AsRef<OsStr>) -> Vec<Command> {
+    os::commands(path)
+        .into_iter()
+        .map(|cmd| cmd.extract())
+        .collect()
 }
 
 /// Get a command that uses `app` to open `path`.
@@ -233,11 +243,11 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 }
 
 trait IntoResult<T> {
-    fn into_result(self, cmd: &Command) -> T;
+    fn into_result(self, cmd: &impl Debug) -> T;
 }
 
 impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
-    fn into_result(self, cmd: &Command) -> io::Result<()> {
+    fn into_result(self, cmd: &impl Debug) -> io::Result<()> {
         match self {
             Ok(status) if status.success() => Ok(()),
             Ok(status) => Err(io::Error::new(
@@ -245,6 +255,23 @@ impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
                 format!("Launcher {cmd:?} failed with {:?}", status),
             )),
             Err(err) => Err(err),
+        }
+    }
+}
+
+#[cfg(target_os = "windows")]
+trait IntoWindowsResult<T> {
+    fn into_windows_result(self, cmd: &windows::WindowsRunCommand) -> T;
+}
+#[cfg(target_os = "windows")]
+impl IntoWindowsResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
+    fn into_windows_result(self, cmd: &windows::WindowsRunCommand) -> io::Result<()> {
+        match cmd {
+            windows::WindowsRunCommand::Start(cmd) => self.into_result(cmd),
+            windows::WindowsRunCommand::Explorer(_) => match self {
+                Ok(_) => Ok(()),
+                Err(err) => Err(err),
+            },
         }
     }
 }

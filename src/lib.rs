@@ -201,7 +201,7 @@ pub fn commands(path: impl AsRef<OsStr>) -> Vec<Command> {
 pub fn commands(path: impl AsRef<OsStr>) -> Vec<Command> {
     os::commands(path)
         .into_iter()
-        .map(|cmd| cmd.extract())
+        .map(|cmd| cmd.into())
         .collect()
 }
 

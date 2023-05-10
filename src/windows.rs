@@ -25,9 +25,11 @@ impl WindowsRunCommand {
             .stderr(Stdio::null())
             .status()
     }
+}
 
-    pub fn extract(self) -> Command {
-        match self {
+impl From<WindowsRunCommand> for Command {
+    fn from(value: WindowsRunCommand) -> Self {
+        match value {
             WindowsRunCommand::Start(cmd) => cmd,
             WindowsRunCommand::Explorer(cmd) => cmd,
         }
@@ -37,8 +39,8 @@ impl WindowsRunCommand {
 impl Debug for WindowsRunCommand {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Start(_) => write!(f, "start"),
-            Self::Explorer(_) => write!(f, "explorer"),
+            Self::Start(cmd) => write!(f, "{:?}", cmd),
+            Self::Explorer(cmd) => write!(f, "{:?}", cmd),
         }
     }
 }

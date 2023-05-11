@@ -111,11 +111,40 @@ use unix as os;
 compile_error!("open is not supported on this platform");
 
 use std::{
-    ffi::OsStr,
+    borrow::Borrow,
+    ffi::{OsStr, OsString},
     io,
     process::{Command, Stdio},
     thread,
 };
+
+pub struct PathIter {
+    pub paths: Vec<OsString>,
+}
+
+impl AsRef<OsStr> for PathIter {
+    fn as_ref(&self) -> &OsStr {
+        &self.paths[0].borrow()
+    }
+}
+
+impl IntoIterator for PathIter {
+    type Item = &'static OsStr;
+    type IntoIter = std::vec::IntoIter<&'static OsStr>;
+
+    fn into_iter(self) -> std::vec::IntoIter<&'static OsStr> {
+        let os_str_refs: Vec<&OsStr> = self
+            .paths
+            .iter()
+            .map(|os_string| os_string.borrow())
+            .collect();
+        let os_str_static_refs: Vec<&'static OsStr> = os_str_refs
+            .iter()
+            .map(|os_str| unsafe { std::mem::transmute::<&OsStr, &'static OsStr>(&os_str) })
+            .collect();
+        os_str_static_refs.into_iter()
+    }
+}
 
 /// Open path with the default application without blocking.
 ///
@@ -150,6 +179,23 @@ pub fn that(path: impl AsRef<OsStr>) -> io::Result<()> {
         }
     }
     Err(last_err.expect("no launcher worked, at least one error"))
+}
+
+pub fn these(path: PathIter) -> io::Result<()> {
+    let mut last_err = None;
+
+    for p in path {
+        for mut cmd in commands(p) {
+            match cmd.status_without_output() {
+                Ok(status) => {
+                    return Ok(status).into_result(&cmd);
+                }
+                Err(err) => last_err = Some(err),
+            }
+        }
+        return Err(last_err.expect("no launcher worked, at least one error"));
+    }
+    Ok(())
 }
 
 /// Open path with the given application.

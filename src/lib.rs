@@ -153,7 +153,9 @@ pub fn that(path: impl AsRef<OsStr>) -> io::Result<()> {
     Err(last_err.expect("no launcher worked, at least one error"))
 }
 
-pub fn these(path: impl IntoIterator<Item = impl AsRef<OsStr>> + std::convert::AsRef<std::ffi::OsStr>) -> io::Result<()> {
+pub fn these(
+    path: impl IntoIterator<Item = impl AsRef<OsStr>> + std::convert::AsRef<std::ffi::OsStr>,
+) -> io::Result<()> {
     let mut last_err = None;
 
     for mut cmd in commands(path) {

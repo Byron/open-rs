@@ -1,4 +1,7 @@
-//! Use this library to open a path or URL using the program configured on the system in a non-blocking fashion.
+//! Use this library to open a given path or URL in some application, obeying the current user's desktop configuration.
+//!
+//! It is expected that `http:` and `https:` URLs will open in a web browser, although desktop configuration may override this.
+//! The choice of application for opening other path types is highly system-dependent.
 //!
 //! # Usage
 //!
@@ -65,6 +68,21 @@
 //!     Err(err) => eprintln!("An error occurred when opening '{}': {}", path, err),
 //! }
 //! ```
+//!
+//! ## UNIX Desktop
+//!
+//! The choice of application for opening a given URL or path on a UNIX desktop is highly dependent on the user's GUI framework (if any) and its configuration.
+//! `open::that()` tries a sequence of opener commands to open the specified path.
+//! The configuration of these openers is dependent on the window system.
+//!
+// On a console, without a window manager, results will likely be poor. The openers expect to be able to open in a new or existing window, something that consoles lack.
+//!
+//! On Windows WSL, `wslview` is tried first, then `xdg-open`. In other UNIX environments, `xdg-open` is tried first. If this fails, a sequence of other openers is tried.
+//!
+//! Currently the `BROWSER` environment variable is ignored even for `http:` and `https:` URLs unless the opener being used happens to respect it.
+//!
+//! It cannot be overemphasized how fragile this all is in UNIX environments. It is common for the various MIME tables to incorrectly specify the application "owning" a given filetype.
+//! It is common for openers to behave strangely. Use with caution, as this crate merely inherits a particular platforms shortcomings.
 
 #[cfg(target_os = "windows")]
 use windows as os;

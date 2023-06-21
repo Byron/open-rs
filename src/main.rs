@@ -9,7 +9,12 @@ fn main() {
         }
     };
 
-    match open::that(&path_or_url) {
+    let result = match std::env::var("OPEN_WITH").ok() {
+        Some(program) => open::with(&path_or_url, program),
+        None => open::that(&path_or_url),
+    };
+
+    match result {
         Ok(()) => println!("Opened '{}' successfully.", path_or_url),
         Err(err) => {
             eprintln!("An error occurred when opening '{}': {}", path_or_url, err);

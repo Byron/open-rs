@@ -138,7 +138,7 @@ use std::{
 /// # Beware
 ///
 /// Sometimes, depending on the platform and system configuration, launchers *can* block.
-/// If you want to be sure they don't, use [`that_in_background()`] instead.
+/// If you want to be sure they don't, use [`that_in_background()`] or [`that_detached`] instead.
 pub fn that(path: impl AsRef<OsStr>) -> io::Result<()> {
     let mut last_err = None;
     for mut cmd in commands(path) {
@@ -232,6 +232,33 @@ pub fn with_in_background<T: AsRef<OsStr>>(
     thread::spawn(|| with(path, app))
 }
 
+/// Open path with the default application using a detached process. which is useful if
+/// the program ends up to be blocking or want to out-live your app
+///
+/// See documentation of [`that()`] for more details.
+pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
+    let mut last_err = None;
+    for mut cmd in commands(path) {
+        match cmd.spawn_detached() {
+            Ok(_) => {
+                return Ok(());
+            }
+            Err(err) => last_err = Some(err),
+        }
+    }
+    Err(last_err.expect("no launcher worked, at least one error"))
+}
+
+/// Open path with the given application using a detached process, which is useful if
+/// the program ends up to be blocking or want to out-live your app. Otherwise, prefer [`with()`] for
+/// straightforward error handling.
+///
+/// See documentation of [`with()`] for more details.
+pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
+    let mut cmd = with_command(path, app);
+    cmd.spawn_detached()
+}
+
 trait IntoResult<T> {
     fn into_result(self, cmd: &Command) -> T;
 }
@@ -251,6 +278,7 @@ impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
 
 trait CommandExt {
     fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus>;
+    fn spawn_detached(&mut self) -> io::Result<()>;
 }
 
 impl CommandExt for Command {
@@ -259,6 +287,43 @@ impl CommandExt for Command {
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .status()
+    }
+
+    fn spawn_detached(&mut self) -> io::Result<()> {
+        // This is pretty much lifted from the implementation in Alacritty:
+        // https://github.com/alacritty/alacritty/blob/b9c886872d1202fc9302f68a0bedbb17daa35335/alacritty/src/daemon.rs
+
+        self.stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null());
+
+        #[cfg(unix)]
+        unsafe {
+            use std::os::unix::process::CommandExt as _;
+
+            self.pre_exec(move || {
+                match libc::fork() {
+                    -1 => return Err(io::Error::last_os_error()),
+                    0 => (),
+                    _ => libc::_exit(0),
+                }
+
+                if libc::setsid() == -1 {
+                    return Err(io::Error::last_os_error());
+                }
+
+                Ok(())
+            });
+        }
+        #[cfg(windows)]
+        {
+            use std::os::windows::process::CommandExt;
+            const CREATE_NEW_PROCESS_GROUP: u32 = 0x00000200;
+            const CREATE_NO_WINDOW: u32 = 0x08000000;
+            self.creation_flags(CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW);
+        }
+
+        self.spawn().map(|_| ())
     }
 }
 

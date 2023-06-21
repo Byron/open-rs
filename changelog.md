@@ -1,18 +1,18 @@
 # Changelog
 
-## Unreleased
+## 4.2.0 (2023-06-21)
 
 ### New Features
 
  - <csr-id-7ad9cb373eb7e999f7e79705db891fd24a4d4bd2/> add `that_detached()` and `with_detached()` functions.
-
+   
    They allow to open the program in a completely independent fashion so that it can out-live the program that spawned it.
 
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release over the course of 1 calendar day.
+ - 3 commits contributed to the release over the course of 1 calendar day.
  - 55 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -24,6 +24,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Prepare changelog prior to release ([`4ad428e`](https://github.com/Byron/open-rs/commit/4ad428e4944a066bbd2d3646d0c338532956001d))
     - Merge branch 'feat/detached-process' ([`d21c48e`](https://github.com/Byron/open-rs/commit/d21c48e6682341e34ca37369460eb5247daaf71c))
     - Add `that_detached` and `with_detached` ([`7ad9cb3`](https://github.com/Byron/open-rs/commit/7ad9cb373eb7e999f7e79705db891fd24a4d4bd2))
 </details>

@@ -1,5 +1,33 @@
 # Changelog
 
+## Unreleased
+
+### New Features
+
+ - <csr-id-7ad9cb373eb7e999f7e79705db891fd24a4d4bd2/> add `that_detached()` and `with_detached()` functions.
+
+   They allow to open the program in a completely independent fashion so that it can out-live the program that spawned it.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release over the course of 1 calendar day.
+ - 55 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge branch 'feat/detached-process' ([`d21c48e`](https://github.com/Byron/open-rs/commit/d21c48e6682341e34ca37369460eb5247daaf71c))
+    - Add `that_detached` and `with_detached` ([`7ad9cb3`](https://github.com/Byron/open-rs/commit/7ad9cb373eb7e999f7e79705db891fd24a4d4bd2))
+</details>
+
 ## 4.1.0 (2023-04-26)
 
 ### New Features
@@ -10,7 +38,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release over the course of 9 calendar days.
+ - 4 commits contributed to the release over the course of 9 calendar days.
  - 10 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#74](https://github.com/Byron/open-rs/issues/74)
@@ -24,6 +52,7 @@
  * **[#74](https://github.com/Byron/open-rs/issues/74)**
     - Add Redox support. ([`b8089a6`](https://github.com/Byron/open-rs/commit/b8089a6403394a56e9d023cee85e839f91ddc9aa))
  * **Uncategorized**
+    - Release open v4.1.0 ([`8e47876`](https://github.com/Byron/open-rs/commit/8e47876d5d11ac31f3fbc4cf015cb865fc72bf3a))
     - Add Redox support ([`4c31d9c`](https://github.com/Byron/open-rs/commit/4c31d9cb55a60881a84c81454c3f433b2c215809))
     - Fix version in readme document ([`b076fc4`](https://github.com/Byron/open-rs/commit/b076fc44a984b55b0ca986530e9f4a18f1a43ba4))
 </details>

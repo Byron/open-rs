@@ -1,5 +1,42 @@
 # Changelog
 
+## 5.0.0 (2023-06-25)
+
+### Bug Fixes (BREAKING)
+
+ - <csr-id-ddf4842dc78389e87615f5c2ddf9e859b11277b2/> `with()` on windows to be able to lookup `program` in registry/PATH.
+   The underlying invocation of `with()` changed slightly on windows to make it more useful
+   as it can now find application names like `chrome` in the registry, but that change may also
+   be breaking for some who previously worked around the previous behaviour.
+   
+   Please let us know if this truly works better, or if more changes are needed to launch something
+   with a program on Windows.
+   
+   See https://github.com/Byron/open-rs/pull/82 for details.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 4 commits contributed to the release over the course of 3 calendar days.
+ - 3 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#80](https://github.com/Byron/open-rs/issues/80)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#80](https://github.com/Byron/open-rs/issues/80)**
+    - Fix open::with() on Windows. ([`5607cd6`](https://github.com/Byron/open-rs/commit/5607cd69f4f53aa02c67bccb60f7d4f9be6b74ea))
+    - `open` application now reads `OPEN_WITH` environment variable to obtain the program to open with. ([`659b8a0`](https://github.com/Byron/open-rs/commit/659b8a0a6580fb89376daf27822fc08557ccf477))
+ * **Uncategorized**
+    - `with()` on windows to be able to lookup `program` in registry/PATH. ([`ddf4842`](https://github.com/Byron/open-rs/commit/ddf4842dc78389e87615f5c2ddf9e859b11277b2))
+    - Cleanup `main` program to support `--with` on all platforms. ([`b5528b6`](https://github.com/Byron/open-rs/commit/b5528b60d49f4dd48449d9ff5b75edbea71ce248))
+</details>
+
 ## 4.2.0 (2023-06-21)
 
 ### New Features
@@ -12,7 +49,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release over the course of 1 calendar day.
+ - 4 commits contributed to the release over the course of 1 calendar day.
  - 55 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -24,6 +61,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v4.2.0 ([`b4592a4`](https://github.com/Byron/open-rs/commit/b4592a4367a8b743e89812f73a274e5e2b0c0d42))
     - Prepare changelog prior to release ([`4ad428e`](https://github.com/Byron/open-rs/commit/4ad428e4944a066bbd2d3646d0c338532956001d))
     - Merge branch 'feat/detached-process' ([`d21c48e`](https://github.com/Byron/open-rs/commit/d21c48e6682341e34ca37369460eb5247daaf71c))
     - Add `that_detached` and `with_detached` ([`7ad9cb3`](https://github.com/Byron/open-rs/commit/7ad9cb373eb7e999f7e79705db891fd24a4d4bd2))

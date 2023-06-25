@@ -9,9 +9,19 @@ fn main() {
         }
     };
 
+    #[cfg(not(windows))]
     let result = match std::env::var("OPEN_WITH").ok() {
         Some(program) => open::with(&path_or_url, program),
         None => open::that(&path_or_url),
+    };
+
+    #[cfg(windows)]
+    let result = match env::args().nth(2) {
+        Some(arg) if arg == "--with" || arg == "-w" => match env::args().nth(3) {
+            Some(program) => open::with(&path_or_url, program),
+            None => open::that(&path_or_url),
+        },
+        _ => open::that(&path_or_url),
     };
 
     match result {

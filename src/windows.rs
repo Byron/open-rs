@@ -20,6 +20,8 @@ pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
 pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {
     let mut cmd = Command::new("cmd");
     cmd.arg("/c")
+        .arg("start")
+        .raw_arg("\"\"")
         .raw_arg(app.into())
         .raw_arg(wrap_in_quotes(path))
         .creation_flags(CREATE_NO_WINDOW);

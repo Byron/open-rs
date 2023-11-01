@@ -17,7 +17,7 @@ $ xdg-open <path-or-url> || gio open <path-or-url> || gnome-open <path-or-url> |
 Add this to your Cargo.toml
 ```toml
 [dependencies]
-open = "4"
+open = "5"
 ```
 …and open something using…
 ```Rust

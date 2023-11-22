@@ -1,5 +1,36 @@
 # Changelog
 
+## Unreleased
+
+<csr-id-dca688bf473169b6d779695e35cb05596d094ba1/>
+
+### Bug Fixes
+
+ - <csr-id-15eedee81d851dd26e78984030020ba252812419/> open paths with given applications with whitespace in their paths on windows.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 4 commits contributed to the release over the course of 21 calendar days.
+ - 150 days passed between releases.
+ - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#85](https://github.com/Byron/open-rs/issues/85)**
+    - Open paths with given applications with whitespace in their paths on windows. ([`15eedee`](https://github.com/Byron/open-rs/commit/15eedee81d851dd26e78984030020ba252812419))
+ * **Uncategorized**
+    - Wrap provided app in quotes on Windows ([`e1b74d8`](https://github.com/Byron/open-rs/commit/e1b74d8e171ce63ddf4cad212a94b8238ae66be7))
+    - Merge pull request #84 from nomyfan/readme-version ([`a33caba`](https://github.com/Byron/open-rs/commit/a33caba441354a14bd55a16ad4a5e8bc793819f0))
+    - Update version to v5 ([`dca688b`](https://github.com/Byron/open-rs/commit/dca688bf473169b6d779695e35cb05596d094ba1))
+</details>
+
 ## 5.0.0 (2023-06-25)
 
 ### Bug Fixes (BREAKING)
@@ -18,7 +49,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release over the course of 3 calendar days.
+ - 5 commits contributed to the release over the course of 3 calendar days.
  - 3 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#80](https://github.com/Byron/open-rs/issues/80)
@@ -33,6 +64,7 @@
     - Fix open::with() on Windows. ([`5607cd6`](https://github.com/Byron/open-rs/commit/5607cd69f4f53aa02c67bccb60f7d4f9be6b74ea))
     - `open` application now reads `OPEN_WITH` environment variable to obtain the program to open with. ([`659b8a0`](https://github.com/Byron/open-rs/commit/659b8a0a6580fb89376daf27822fc08557ccf477))
  * **Uncategorized**
+    - Release open v5.0.0 ([`92695f6`](https://github.com/Byron/open-rs/commit/92695f6cfb397e84f13b997df06c5bf036305185))
     - `with()` on windows to be able to lookup `program` in registry/PATH. ([`ddf4842`](https://github.com/Byron/open-rs/commit/ddf4842dc78389e87615f5c2ddf9e859b11277b2))
     - Cleanup `main` program to support `--with` on all platforms. ([`b5528b6`](https://github.com/Byron/open-rs/commit/b5528b60d49f4dd48449d9ff5b75edbea71ce248))
 </details>

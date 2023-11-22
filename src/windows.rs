@@ -22,7 +22,7 @@ pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command
     cmd.arg("/c")
         .arg("start")
         .raw_arg("\"\"")
-        .raw_arg(app.into())
+        .raw_arg(wrap_in_quotes(app.into()))
         .raw_arg(wrap_in_quotes(path))
         .creation_flags(CREATE_NO_WINDOW);
     cmd

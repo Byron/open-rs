@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.1 (2023-11-22)
 
 <csr-id-dca688bf473169b6d779695e35cb05596d094ba1/>
 
@@ -12,7 +12,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release over the course of 21 calendar days.
+ - 5 commits contributed to the release over the course of 21 calendar days.
  - 150 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
@@ -26,6 +26,7 @@
  * **[#85](https://github.com/Byron/open-rs/issues/85)**
     - Open paths with given applications with whitespace in their paths on windows. ([`15eedee`](https://github.com/Byron/open-rs/commit/15eedee81d851dd26e78984030020ba252812419))
  * **Uncategorized**
+    - Prepare changelog ([`2735009`](https://github.com/Byron/open-rs/commit/2735009c771056fbb65120a439e34c6a3f2038f3))
     - Wrap provided app in quotes on Windows ([`e1b74d8`](https://github.com/Byron/open-rs/commit/e1b74d8e171ce63ddf4cad212a94b8238ae66be7))
     - Merge pull request #84 from nomyfan/readme-version ([`a33caba`](https://github.com/Byron/open-rs/commit/a33caba441354a14bd55a16ad4a5e8bc793819f0))
     - Update version to v5 ([`dca688b`](https://github.com/Byron/open-rs/commit/dca688bf473169b6d779695e35cb05596d094ba1))

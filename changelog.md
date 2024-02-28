@@ -1,5 +1,32 @@
 # Changelog
 
+## 5.0.2 (2024-02-28)
+
+### Other
+
+ - <csr-id-a583658a2f2cfea64c3be6e12cef159f5cbc7fbf/> use PATH to find launcher
+   Redox has moved the launcher from /ui/bin to /usr/bin. Just use the PATH to locate it, so any future changes in location don't break this crate.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 97 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #89 from jackpot51/patch-1 ([`0a25651`](https://github.com/Byron/open-rs/commit/0a25651fa04b9a696356a5980ede105f6923ce91))
+    - Use PATH to find launcher ([`a583658`](https://github.com/Byron/open-rs/commit/a583658a2f2cfea64c3be6e12cef159f5cbc7fbf))
+</details>
+
 ## 5.0.1 (2023-11-22)
 
 <csr-id-dca688bf473169b6d779695e35cb05596d094ba1/>
@@ -12,7 +39,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 5 commits contributed to the release over the course of 21 calendar days.
+ - 6 commits contributed to the release over the course of 21 calendar days.
  - 150 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
@@ -26,6 +53,7 @@
  * **[#85](https://github.com/Byron/open-rs/issues/85)**
     - Open paths with given applications with whitespace in their paths on windows. ([`15eedee`](https://github.com/Byron/open-rs/commit/15eedee81d851dd26e78984030020ba252812419))
  * **Uncategorized**
+    - Release open v5.0.1 ([`4a2a5b1`](https://github.com/Byron/open-rs/commit/4a2a5b104bb0aa8f2a42dc3e505c773fd8f5f45c))
     - Prepare changelog ([`2735009`](https://github.com/Byron/open-rs/commit/2735009c771056fbb65120a439e34c6a3f2038f3))
     - Wrap provided app in quotes on Windows ([`e1b74d8`](https://github.com/Byron/open-rs/commit/e1b74d8e171ce63ddf4cad212a94b8238ae66be7))
     - Merge pull request #84 from nomyfan/readme-version ([`a33caba`](https://github.com/Byron/open-rs/commit/a33caba441354a14bd55a16ad4a5e8bc793819f0))

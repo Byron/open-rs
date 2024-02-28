@@ -1,7 +1,7 @@
 use std::{ffi::OsStr, process::Command};
 
 pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
-    let mut cmd = Command::new("/ui/bin/launcher");
+    let mut cmd = Command::new("launcher");
     cmd.arg(path.as_ref());
     vec![cmd]
 }

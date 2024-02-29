@@ -40,24 +40,34 @@ fn wrap_in_quotes<T: AsRef<OsStr>>(path: T) -> OsString {
 }
 
 pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
-    detached(path, None::<&str>)
+    let path = wide(path);
+
+    unsafe {
+        ShellExecuteW(
+            0,
+            ffi::OPEN,
+            path.as_ptr(),
+            ptr::null(),
+            ptr::null(),
+            ffi::SW_SHOW,
+        )
+    }
 }
 
 pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> std::io::Result<()> {
-    detached(path, Some(app))
-}
-
-#[inline]
-fn detached<T: AsRef<OsStr>>(path: T, app: Option<impl Into<String>>) -> std::io::Result<()> {
+    let app = wide(app.into());
     let path = wide(path);
-    let app = app.map(|a| wide(a.into()));
 
-    let (app, args) = match app {
-        Some(app) => (app.as_ptr(), path.as_ptr()),
-        None => (path.as_ptr(), ptr::null()),
-    };
-
-    unsafe { ShellExecuteW(0, ffi::OPEN, app, args, ptr::null(), ffi::SW_SHOW) }
+    unsafe {
+        ShellExecuteW(
+            0,
+            ffi::OPEN,
+            app.as_ptr(),
+            path.as_ptr(),
+            ptr::null(),
+            ffi::SW_SHOW,
+        )
+    }
 }
 
 /// Encodes as wide and adds a null character.

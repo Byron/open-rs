@@ -237,16 +237,24 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 ///
 /// See documentation of [`that()`] for more details.
 pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
-    let mut last_err = None;
-    for mut cmd in commands(path) {
-        match cmd.spawn_detached() {
-            Ok(_) => {
-                return Ok(());
+    #[cfg(not(windows))]
+    {
+        let mut last_err = None;
+        for mut cmd in commands(path) {
+            match cmd.spawn_detached() {
+                Ok(_) => {
+                    return Ok(());
+                }
+                Err(err) => last_err = Some(err),
             }
-            Err(err) => last_err = Some(err),
         }
+        Err(last_err.expect("no launcher worked, at least one error"))
     }
-    Err(last_err.expect("no launcher worked, at least one error"))
+
+    #[cfg(windows)]
+    {
+        windows::that_detached(path)
+    }
 }
 
 /// Open path with the given application using a detached process, which is useful if
@@ -255,8 +263,16 @@ pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
 ///
 /// See documentation of [`with()`] for more details.
 pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    let mut cmd = with_command(path, app);
-    cmd.spawn_detached()
+    #[cfg(not(windows))]
+    {
+        let mut cmd = with_command(path, app);
+        cmd.spawn_detached()
+    }
+
+    #[cfg(windows)]
+    {
+        windows::with_detached(path, app)
+    }
 }
 
 trait IntoResult<T> {

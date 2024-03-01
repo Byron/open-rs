@@ -1,6 +1,35 @@
 # Changelog
 
+## 5.1.0 (2024-03-01)
+
+### New Features
+
+ - <csr-id-191cb0e2201c911d1bf0df3ba03062c6d9b6e738/> use `ShellExecuteW` for detached spawning on Windows
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 3 commits contributed to the release.
+ - 2 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #91 from amrbashir/feat/windows/detachded-using-shellexecutew ([`b268647`](https://github.com/Byron/open-rs/commit/b268647bd2684ee13f55eb3c976e71949c321bc3))
+    - Split into two functions for better readability ([`4506b2f`](https://github.com/Byron/open-rs/commit/4506b2f8ac51579932b76884a11133ce5c49c21f))
+    - Use `ShellExecuteW` for detached spawning on Windows ([`191cb0e`](https://github.com/Byron/open-rs/commit/191cb0e2201c911d1bf0df3ba03062c6d9b6e738))
+</details>
+
 ## 5.0.2 (2024-02-28)
+
+<csr-id-a583658a2f2cfea64c3be6e12cef159f5cbc7fbf/>
 
 ### Other
 
@@ -11,7 +40,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 97 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -23,6 +52,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.0.2 ([`f4ef7c9`](https://github.com/Byron/open-rs/commit/f4ef7c9de95fd503871028f100db28ef0287fbc4))
     - Merge pull request #89 from jackpot51/patch-1 ([`0a25651`](https://github.com/Byron/open-rs/commit/0a25651fa04b9a696356a5980ede105f6923ce91))
     - Use PATH to find launcher ([`a583658`](https://github.com/Byron/open-rs/commit/a583658a2f2cfea64c3be6e12cef159f5cbc7fbf))
 </details>

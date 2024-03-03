@@ -1,10 +1,13 @@
 # Changelog
 
-## 5.1.0 (2024-03-01)
+## 5.1.1 (2024-03-03)
 
-### New Features
+### Bug Fixes
 
- - <csr-id-191cb0e2201c911d1bf0df3ba03062c6d9b6e738/> use `ShellExecuteW` for detached spawning on Windows
+ - <csr-id-74fd8ec005d9bd24e6cb604e3239730b0b414b84/> add `shellexecute-on-windows` feature.
+   That way, it's possible to toggle on a feature that might
+   cause issues in some dependency trees that contain `flate2`
+   with `zlib-ng` backend.
 
 ### Commit Statistics
 
@@ -22,6 +25,34 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Merge branch 'validate-linkage' ([`59886df`](https://github.com/Byron/open-rs/commit/59886df5db59f6874ff24401e32a3e90b0d27a53))
+    - Add `shellexecute-on-windows` feature. ([`74fd8ec`](https://github.com/Byron/open-rs/commit/74fd8ec005d9bd24e6cb604e3239730b0b414b84))
+    - Try to validate linkage on all platforms ([`8f26da4`](https://github.com/Byron/open-rs/commit/8f26da4ff13be60c69f7b144b185d6166f6d4af6))
+</details>
+
+## 5.1.0 (2024-03-01)
+
+### New Features
+
+ - <csr-id-191cb0e2201c911d1bf0df3ba03062c6d9b6e738/> use `ShellExecuteW` for detached spawning on Windows
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 4 commits contributed to the release.
+ - 2 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Release open v5.1.0 ([`21a73ee`](https://github.com/Byron/open-rs/commit/21a73ee19d2d976076cefa8bdda639f510278420))
     - Merge pull request #91 from amrbashir/feat/windows/detachded-using-shellexecutew ([`b268647`](https://github.com/Byron/open-rs/commit/b268647bd2684ee13f55eb3c976e71949c321bc3))
     - Split into two functions for better readability ([`4506b2f`](https://github.com/Byron/open-rs/commit/4506b2f8ac51579932b76884a11133ce5c49c21f))
     - Use `ShellExecuteW` for detached spawning on Windows ([`191cb0e`](https://github.com/Byron/open-rs/commit/191cb0e2201c911d1bf0df3ba03062c6d9b6e738))

@@ -72,6 +72,9 @@ jobs:
           echo "target flag is: ${{ env.TARGET_FLAGS }}"
           echo "target dir is: ${{ env.TARGET_DIR }}"
 
+      - name: Build with all features
+        if: startsWith(matrix.os, 'windows')
+        run: ${{ env.CARGO }} build ${{ env.TARGET_FLAGS }} --all-features
       - name: Build (and link)
         run: ${{ env.CARGO }} build ${{ env.TARGET_FLAGS }}
       - name: Run tests

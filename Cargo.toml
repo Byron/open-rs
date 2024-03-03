@@ -12,6 +12,17 @@ keywords = ["open", "xdg-open", "start", "launch"]
 include = ["src/**/*", "LICENSE.md", "README.md", "changelog.md"]
 rust-version = "1.62"
 
+[features]
+## If enabled, link to `shell32` on Windows and use `ShellExecuteW` intead of a command invocation
+## when launching something in 'detached' mode.
+## That way, it should be possible to open currently opened (for writing) files as well.
+##
+## However, linking errors have been observed due to it where the one external function used here
+## couldn't be found, which is why it was put behind a feature toggle.
+##
+## This feature is only effective on Windows.
+shellexecute-on-windows = []
+
 [[bin]]
 test = false
 doc = false

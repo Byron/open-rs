@@ -1,9 +1,6 @@
 use std::{
     ffi::{OsStr, OsString},
-    io, iter,
-    os::windows::ffi::OsStrExt,
     process::Command,
-    ptr,
 };
 
 use std::os::windows::process::CommandExt;
@@ -39,6 +36,7 @@ fn wrap_in_quotes<T: AsRef<OsStr>>(path: T) -> OsString {
     result
 }
 
+#[cfg(feature = "shellexecute-on-windows")]
 pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
     let path = wide(path);
 
@@ -47,13 +45,14 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
             0,
             ffi::OPEN,
             path.as_ptr(),
-            ptr::null(),
-            ptr::null(),
+            std::ptr::null(),
+            std::ptr::null(),
             ffi::SW_SHOW,
         )
     }
 }
 
+#[cfg(feature = "shellexecute-on-windows")]
 pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> std::io::Result<()> {
     let app = wide(app.into());
     let path = wide(path);
@@ -64,21 +63,28 @@ pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> std::i
             ffi::OPEN,
             app.as_ptr(),
             path.as_ptr(),
-            ptr::null(),
+            std::ptr::null(),
             ffi::SW_SHOW,
         )
     }
 }
 
 /// Encodes as wide and adds a null character.
+#[cfg(feature = "shellexecute-on-windows")]
 fn wide<T: AsRef<OsStr>>(input: T) -> Vec<u16> {
-    input.as_ref().encode_wide().chain(iter::once(0)).collect()
+    use std::os::windows::ffi::OsStrExt;
+    input
+        .as_ref()
+        .encode_wide()
+        .chain(std::iter::once(0))
+        .collect()
 }
 
 /// Performs an operation on a specified file.
 ///
 /// <https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutew>
 #[allow(non_snake_case)]
+#[cfg(feature = "shellexecute-on-windows")]
 pub unsafe fn ShellExecuteW(
     hwnd: isize,
     lpoperation: *const u16,
@@ -101,10 +107,11 @@ pub unsafe fn ShellExecuteW(
     if hr > 32 {
         Ok(())
     } else {
-        Err(io::Error::last_os_error())
+        Err(std::io::Error::last_os_error())
     }
 }
 
+#[cfg(feature = "shellexecute-on-windows")]
 mod ffi {
     /// Activates the window and displays it in its current size and position.
     ///

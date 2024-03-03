@@ -20,7 +20,7 @@ jobs:
       RUST_BACKTRACE: 1
     strategy:
       matrix:
-        build: [linux, linux-arm, macos, win-msvc, win-gnu]
+        build: [ linux, linux-arm, macos, win-msvc, win-gnu, win32-gnu, win32-msvc ]
         include:
           - build: linux
             os: ubuntu-latest
@@ -42,6 +42,14 @@ jobs:
             os: windows-2019
             rust: stable
             target: x86_64-pc-windows-gnu
+          - build: win32-gnu
+            os: windows-latest
+            rust: stable
+            target: i686-pc-windows-gnu
+          - build: win32-msvc
+            os: windows-latest
+            rust: stable
+            target: i686-pc-windows-msvc
 
     steps:
       - name: Checkout repository
@@ -64,6 +72,11 @@ jobs:
           echo "target flag is: ${{ env.TARGET_FLAGS }}"
           echo "target dir is: ${{ env.TARGET_DIR }}"
 
+      - name: Build with all features
+        if: startsWith(matrix.os, 'windows')
+        run: ${{ env.CARGO }} build ${{ env.TARGET_FLAGS }} --all-features
+      - name: Build (and link)
+        run: ${{ env.CARGO }} build ${{ env.TARGET_FLAGS }}
       - name: Run tests
         run: ${{ env.CARGO }} test ${{ env.TARGET_FLAGS }}
       - name: Run fmt

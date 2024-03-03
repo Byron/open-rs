@@ -237,7 +237,7 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 ///
 /// See documentation of [`that()`] for more details.
 pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
-    #[cfg(not(windows))]
+    #[cfg(any(not(feature = "shellexecute-on-windows"), not(windows)))]
     {
         let mut last_err = None;
         for mut cmd in commands(path) {
@@ -251,7 +251,7 @@ pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
         Err(last_err.expect("no launcher worked, at least one error"))
     }
 
-    #[cfg(windows)]
+    #[cfg(all(windows, feature = "shellexecute-on-windows"))]
     {
         windows::that_detached(path)
     }
@@ -263,13 +263,13 @@ pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
 ///
 /// See documentation of [`with()`] for more details.
 pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    #[cfg(not(windows))]
+    #[cfg(any(not(feature = "shellexecute-on-windows"), not(windows)))]
     {
         let mut cmd = with_command(path, app);
         cmd.spawn_detached()
     }
 
-    #[cfg(windows)]
+    #[cfg(all(windows, feature = "shellexecute-on-windows"))]
     {
         windows::with_detached(path, app)
     }

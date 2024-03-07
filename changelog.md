@@ -1,5 +1,31 @@
 # Changelog
 
+## 5.1.2 (2024-03-07)
+
+### Bug Fixes
+
+ - <csr-id-2a62e84a234274b53cb77ffcef4ad76630ba7c2f/> link using "system" ABI
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 4 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge branch 'fix/shell-execute-w-link' ([`50b7a96`](https://github.com/Byron/open-rs/commit/50b7a96a964987fc4a82f6633930384c6d8e5fb0))
+    - Link using "system" ABI ([`2a62e84`](https://github.com/Byron/open-rs/commit/2a62e84a234274b53cb77ffcef4ad76630ba7c2f))
+</details>
+
 ## 5.1.1 (2024-03-03)
 
 ### Bug Fixes
@@ -13,7 +39,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 2 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -25,6 +51,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.1.1 ([`0c916ae`](https://github.com/Byron/open-rs/commit/0c916aefe11391d029635ad4e4a284a9b7f0d90a))
     - Merge branch 'validate-linkage' ([`59886df`](https://github.com/Byron/open-rs/commit/59886df5db59f6874ff24401e32a3e90b0d27a53))
     - Add `shellexecute-on-windows` feature. ([`74fd8ec`](https://github.com/Byron/open-rs/commit/74fd8ec005d9bd24e6cb604e3239730b0b414b84))
     - Try to validate linkage on all platforms ([`8f26da4`](https://github.com/Byron/open-rs/commit/8f26da4ff13be60c69f7b144b185d6166f6d4af6))

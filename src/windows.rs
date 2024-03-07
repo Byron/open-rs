@@ -121,8 +121,7 @@ mod ffi {
     /// Null-terminated UTF-16 encoding of `open`.  
     pub const OPEN: *const u16 = [111, 112, 101, 110, 0].as_ptr();
 
-    #[link(name = "Shell32")]
-    extern "C" {
+    extern "system" {
         pub fn ShellExecuteW(
             hwnd: isize,
             lpoperation: *const u16,
@@ -130,6 +129,6 @@ mod ffi {
             lpparameters: *const u16,
             lpdirectory: *const u16,
             nshowcmd: i32,
-        ) -> i32;
+        ) -> isize;
     }
 }

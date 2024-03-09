@@ -13,14 +13,13 @@ include = ["src/**/*", "LICENSE.md", "README.md", "changelog.md"]
 rust-version = "1.62"
 
 [features]
-## If enabled, link to `shell32` on Windows and use `ShellExecuteW` intead of a command invocation
+## If enabled, link to `system` on Windows and use `ShellExecuteW` intead of a command invocation
 ## when launching something in 'detached' mode.
 ## That way, it should be possible to open currently opened (for writing) files as well.
-##
-## However, linking errors have been observed due to it where the one external function used here
-## couldn't be found, which is why it was put behind a feature toggle.
-##
 ## This feature is only effective on Windows.
+##
+## There may be other side-effects that when comparing to the command-based
+## opening of paths, which is why this feature is opt-in.
 shellexecute-on-windows = []
 
 [[bin]]

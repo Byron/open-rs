@@ -49,7 +49,6 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
         (std::ptr::null(), std::ptr::null())
     };
 
-
     let mut info = ffi::SHELLEXECUTEINFOW {
         cbSize: std::mem::size_of::<ffi::SHELLEXECUTEINFOW>() as _,
         nShow: ffi::SW_SHOWNORMAL,
@@ -122,8 +121,8 @@ mod ffi {
     pub const FOLDER: *const u16 = [102, 111, 108, 100, 101, 114, 0].as_ptr();
 
     // Taken from https://docs.rs/windows-sys/latest/windows_sys/
-    #[repr(C)]
-    #[cfg(not(target_arch = "x86"))]
+    #[cfg_attr(not(target_arch = "x86"), repr(C))]
+    #[cfg_attr(target_arch = "x86", repr(C, packed(1)))]
     pub struct SHELLEXECUTEINFOW {
         pub cbSize: u32,
         pub fMask: u32,
@@ -143,37 +142,8 @@ mod ffi {
     }
 
     // Taken from https://docs.rs/windows-sys/latest/windows_sys/
-    #[repr(C)]
-    #[cfg(not(target_arch = "x86"))]
-    pub union SHELLEXECUTEINFOW_0 {
-        pub hIcon: isize,
-        pub hMonitor: isize,
-    }
-
-    // Taken from https://docs.rs/windows-sys/latest/windows_sys/
-    #[repr(C, packed(1))]
-    #[cfg(target_arch = "x86")]
-    pub struct SHELLEXECUTEINFOW {
-        pub cbSize: u32,
-        pub fMask: u32,
-        pub hwnd: isize,
-        pub lpVerb: *const u16,
-        pub lpFile: *const u16,
-        pub lpParameters: *const u16,
-        pub lpDirectory: *const u16,
-        pub nShow: i32,
-        pub hInstApp: isize,
-        pub lpIDList: *mut core::ffi::c_void,
-        pub lpClass: *const u16,
-        pub hkeyClass: isize,
-        pub dwHotKey: u32,
-        pub Anonymous: SHELLEXECUTEINFOW_0,
-        pub hProcess: isize,
-    }
-
-    // Taken from https://docs.rs/windows-sys/latest/windows_sys/
-    #[repr(C, packed(1))]
-    #[cfg(target_arch = "x86")]
+    #[cfg_attr(not(target_arch = "x86"), repr(C))]
+    #[cfg_attr(target_arch = "x86", repr(C, packed(1)))]
     pub union SHELLEXECUTEINFOW_0 {
         pub hIcon: isize,
         pub hMonitor: isize,

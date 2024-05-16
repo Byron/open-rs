@@ -1,5 +1,35 @@
 # Changelog
 
+## 5.1.3 (2024-05-16)
+
+### Bug Fixes
+
+ - <csr-id-43d8d88a2d5949114cdebcc08a0aad68f2141e54/> use `ShellExecuteExW` to avoid freeze when opening directories
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 5 commits contributed to the release over the course of 68 calendar days.
+ - 70 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#94](https://github.com/Byron/open-rs/issues/94)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#94](https://github.com/Byron/open-rs/issues/94)**
+    - Clarify docs of `shellexecute-on-windows` feature ([`7652a30`](https://github.com/Byron/open-rs/commit/7652a3016e3b243604f38d40eab6097c2d816fde))
+ * **Uncategorized**
+    - Merge pull request #98 from amrbashir/fix/windows/shell-execute-freeze ([`d152c8e`](https://github.com/Byron/open-rs/commit/d152c8e09225b23195dbee243e8bd508e07686e3))
+    - Use cfg_attr ([`c8840af`](https://github.com/Byron/open-rs/commit/c8840afb1550cef2c9897130c7d05b72bfd55d4a))
+    - Update src/windows.rs ([`75c7ea0`](https://github.com/Byron/open-rs/commit/75c7ea085116502d4dae61bc752cb27e7663a914))
+    - Use `ShellExecuteExW` to avoid freeze when opening directories ([`43d8d88`](https://github.com/Byron/open-rs/commit/43d8d88a2d5949114cdebcc08a0aad68f2141e54))
+</details>
+
 ## 5.1.2 (2024-03-07)
 
 ### Bug Fixes
@@ -10,7 +40,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 4 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -22,6 +52,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.1.2 ([`a65b733`](https://github.com/Byron/open-rs/commit/a65b7332e998ce0d61be8bf6786d0911b3334539))
     - Merge branch 'fix/shell-execute-w-link' ([`50b7a96`](https://github.com/Byron/open-rs/commit/50b7a96a964987fc4a82f6633930384c6d8e5fb0))
     - Link using "system" ABI ([`2a62e84`](https://github.com/Byron/open-rs/commit/2a62e84a234274b53cb77ffcef4ad76630ba7c2f))
 </details>

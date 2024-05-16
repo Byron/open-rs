@@ -49,7 +49,6 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
         (std::ptr::null(), std::ptr::null())
     };
 
-    dbg!(verb, class);
 
     let mut info = ffi::SHELLEXECUTEINFOW {
         cbSize: std::mem::size_of::<ffi::SHELLEXECUTEINFOW>() as _,

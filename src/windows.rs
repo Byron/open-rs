@@ -38,18 +38,27 @@ fn wrap_in_quotes<T: AsRef<OsStr>>(path: T) -> OsString {
 
 #[cfg(feature = "shellexecute-on-windows")]
 pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
+    let path = path.as_ref();
+    let is_dir = std::fs::metadata(path).map(|f| f.is_dir()).unwrap_or(false);
+
     let path = wide(path);
 
-    unsafe {
-        ShellExecuteW(
-            0,
-            ffi::OPEN,
-            path.as_ptr(),
-            std::ptr::null(),
-            std::ptr::null(),
-            ffi::SW_SHOW,
-        )
-    }
+    let (verb, class) = if is_dir {
+        (ffi::EXPLORE, ffi::FOLDER)
+    } else {
+        (std::ptr::null(), std::ptr::null())
+    };
+
+    let mut info = ffi::SHELLEXECUTEINFOW {
+        cbSize: std::mem::size_of::<ffi::SHELLEXECUTEINFOW>() as _,
+        nShow: ffi::SW_SHOWNORMAL,
+        lpVerb: verb,
+        lpClass: class,
+        lpFile: path.as_ptr(),
+        ..unsafe { std::mem::zeroed() }
+    };
+
+    unsafe { ShellExecuteExW(&mut info) }
 }
 
 #[cfg(feature = "shellexecute-on-windows")]
@@ -57,20 +66,20 @@ pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> std::i
     let app = wide(app.into());
     let path = wide(path);
 
-    unsafe {
-        ShellExecuteW(
-            0,
-            ffi::OPEN,
-            app.as_ptr(),
-            path.as_ptr(),
-            std::ptr::null(),
-            ffi::SW_SHOW,
-        )
-    }
+    let mut info = ffi::SHELLEXECUTEINFOW {
+        cbSize: std::mem::size_of::<ffi::SHELLEXECUTEINFOW>() as _,
+        nShow: ffi::SW_SHOWNORMAL,
+        lpFile: app.as_ptr(),
+        lpParameters: path.as_ptr(),
+        ..unsafe { std::mem::zeroed() }
+    };
+
+    unsafe { ShellExecuteExW(&mut info) }
 }
 
 /// Encodes as wide and adds a null character.
 #[cfg(feature = "shellexecute-on-windows")]
+#[inline]
 fn wide<T: AsRef<OsStr>>(input: T) -> Vec<u16> {
     use std::os::windows::ffi::OsStrExt;
     input
@@ -82,29 +91,13 @@ fn wide<T: AsRef<OsStr>>(input: T) -> Vec<u16> {
 
 /// Performs an operation on a specified file.
 ///
-/// <https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutew>
+/// <https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecuteexw>
 #[allow(non_snake_case)]
 #[cfg(feature = "shellexecute-on-windows")]
-pub unsafe fn ShellExecuteW(
-    hwnd: isize,
-    lpoperation: *const u16,
-    lpfile: *const u16,
-    lpparameters: *const u16,
-    lpdirectory: *const u16,
-    nshowcmd: i32,
-) -> std::io::Result<()> {
-    let hr = ffi::ShellExecuteW(
-        hwnd,
-        lpoperation,
-        lpfile,
-        lpparameters,
-        lpdirectory,
-        nshowcmd,
-    );
-
-    // ShellExecuteW returns > 32 on success
-    // https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecutew#return-value
-    if hr > 32 {
+pub unsafe fn ShellExecuteExW(info: *mut ffi::SHELLEXECUTEINFOW) -> std::io::Result<()> {
+    // ShellExecuteExW returns TRUE (i.e 1) on success
+    // https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecuteexw#remarks
+    if ffi::ShellExecuteExW(info) == 1 {
         Ok(())
     } else {
         Err(std::io::Error::last_os_error())
@@ -112,23 +105,52 @@ pub unsafe fn ShellExecuteW(
 }
 
 #[cfg(feature = "shellexecute-on-windows")]
+#[allow(non_snake_case)]
 mod ffi {
-    /// Activates the window and displays it in its current size and position.
+    /// Activates and displays a window.
+    /// If the window is minimized, maximized, or arranged, the system restores it to its original size and position.
+    /// An application should specify this flag when displaying the window for the first time.
     ///
     /// <https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow>
-    pub const SW_SHOW: i32 = 5;
+    pub const SW_SHOWNORMAL: i32 = 1;
 
-    /// Null-terminated UTF-16 encoding of `open`.  
-    pub const OPEN: *const u16 = [111, 112, 101, 110, 0].as_ptr();
+    /// Null-terminated UTF-16 encoding of `explore`.  
+    pub const EXPLORE: *const u16 = [101, 120, 112, 108, 111, 114, 101, 0].as_ptr();
 
+    /// Null-terminated UTF-16 encoding of `folder`.  
+    pub const FOLDER: *const u16 = [102, 111, 108, 100, 101, 114, 0].as_ptr();
+
+    // Taken from https://docs.rs/windows-sys/latest/windows_sys/
+    #[cfg_attr(not(target_arch = "x86"), repr(C))]
+    #[cfg_attr(target_arch = "x86", repr(C, packed(1)))]
+    pub struct SHELLEXECUTEINFOW {
+        pub cbSize: u32,
+        pub fMask: u32,
+        pub hwnd: isize,
+        pub lpVerb: *const u16,
+        pub lpFile: *const u16,
+        pub lpParameters: *const u16,
+        pub lpDirectory: *const u16,
+        pub nShow: i32,
+        pub hInstApp: isize,
+        pub lpIDList: *mut core::ffi::c_void,
+        pub lpClass: *const u16,
+        pub hkeyClass: isize,
+        pub dwHotKey: u32,
+        pub Anonymous: SHELLEXECUTEINFOW_0,
+        pub hProcess: isize,
+    }
+
+    // Taken from https://docs.rs/windows-sys/latest/windows_sys/
+    #[cfg_attr(not(target_arch = "x86"), repr(C))]
+    #[cfg_attr(target_arch = "x86", repr(C, packed(1)))]
+    pub union SHELLEXECUTEINFOW_0 {
+        pub hIcon: isize,
+        pub hMonitor: isize,
+    }
+
+    #[link(name = "shell32")]
     extern "system" {
-        pub fn ShellExecuteW(
-            hwnd: isize,
-            lpoperation: *const u16,
-            lpfile: *const u16,
-            lpparameters: *const u16,
-            lpdirectory: *const u16,
-            nshowcmd: i32,
-        ) -> isize;
+        pub fn ShellExecuteExW(info: *mut SHELLEXECUTEINFOW) -> isize;
     }
 }

@@ -1,5 +1,30 @@
 # Changelog
 
+## Unreleased
+
+This release adds vision-os support, by means of `ios` simulation.
+See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release over the course of 5 calendar days.
+ - 19 days passed between releases.
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #99 from eugenehp/visionos ([`1efa4cb`](https://github.com/Byron/open-rs/commit/1efa4cbb8ed7c1abac95299dd6af3c17727b27af))
+    - Added visionos support ([`df28e8b`](https://github.com/Byron/open-rs/commit/df28e8bdce30cd1a8e930c947566edfd8835cef8))
+</details>
+
 ## 5.1.3 (2024-05-16)
 
 ### Bug Fixes
@@ -10,7 +35,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 5 commits contributed to the release over the course of 68 calendar days.
+ - 6 commits contributed to the release over the course of 68 calendar days.
  - 70 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#94](https://github.com/Byron/open-rs/issues/94)
@@ -24,6 +49,7 @@
  * **[#94](https://github.com/Byron/open-rs/issues/94)**
     - Clarify docs of `shellexecute-on-windows` feature ([`7652a30`](https://github.com/Byron/open-rs/commit/7652a3016e3b243604f38d40eab6097c2d816fde))
  * **Uncategorized**
+    - Release open v5.1.3 ([`6e396da`](https://github.com/Byron/open-rs/commit/6e396da65e3483866a75a405b67f495d43cceb06))
     - Merge pull request #98 from amrbashir/fix/windows/shell-execute-freeze ([`d152c8e`](https://github.com/Byron/open-rs/commit/d152c8e09225b23195dbee243e8bd508e07686e3))
     - Use cfg_attr ([`c8840af`](https://github.com/Byron/open-rs/commit/c8840afb1550cef2c9897130c7d05b72bfd55d4a))
     - Update src/windows.rs ([`75c7ea0`](https://github.com/Byron/open-rs/commit/75c7ea085116502d4dae61bc752cb27e7663a914))

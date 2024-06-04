@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.1.4 (2024-06-04)
 
 This release adds vision-os support, by means of `ios` simulation.
 See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context.
@@ -9,7 +9,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release over the course of 5 calendar days.
+ - 3 commits contributed to the release over the course of 5 calendar days.
  - 19 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -21,6 +21,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Prepare changelog prior to release ([`5967b66`](https://github.com/Byron/open-rs/commit/5967b66212097facead9f16bc56905992eb6650e))
     - Merge pull request #99 from eugenehp/visionos ([`1efa4cb`](https://github.com/Byron/open-rs/commit/1efa4cbb8ed7c1abac95299dd6af3c17727b27af))
     - Added visionos support ([`df28e8b`](https://github.com/Byron/open-rs/commit/df28e8bdce30cd1a8e930c947566edfd8835cef8))
 </details>

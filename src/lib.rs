@@ -75,6 +75,9 @@ use macos as os;
 #[cfg(target_os = "ios")]
 use ios as os;
 
+#[cfg(target_os = "visionos")]
+use ios as os;
+
 #[cfg(target_os = "haiku")]
 use haiku as os;
 
@@ -103,6 +106,7 @@ use unix as os;
     target_os = "illumos",
     target_os = "solaris",
     target_os = "ios",
+    target_os = "visionos",
     target_os = "macos",
     target_os = "windows",
     target_os = "haiku",
@@ -350,6 +354,9 @@ mod windows;
 mod macos;
 
 #[cfg(target_os = "ios")]
+mod ios;
+
+#[cfg(target_os = "visionos")]
 mod ios;
 
 #[cfg(target_os = "haiku")]

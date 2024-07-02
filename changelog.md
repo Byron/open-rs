@@ -1,5 +1,31 @@
 # Changelog
 
+## 5.2.0 (2024-07-02)
+
+### New Features
+
+ - <csr-id-d4e66dc1332e49672190060de6b39b13784c5de9/> Add AIX support
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 27 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Add AIX support ([`d4e66dc`](https://github.com/Byron/open-rs/commit/d4e66dc1332e49672190060de6b39b13784c5de9))
+    - Add AIX support ([`b414215`](https://github.com/Byron/open-rs/commit/b41421579aa68b484d57814acd2ef33e5b1b9b5a))
+</details>
+
 ## 5.1.4 (2024-06-04)
 
 This release adds vision-os support, by means of `ios` simulation.
@@ -9,7 +35,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release over the course of 5 calendar days.
+ - 4 commits contributed to the release over the course of 5 calendar days.
  - 19 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -21,6 +47,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.1.4 ([`644f186`](https://github.com/Byron/open-rs/commit/644f186e6b4e870ca91c1eceeebe8fe9760eca35))
     - Prepare changelog prior to release ([`5967b66`](https://github.com/Byron/open-rs/commit/5967b66212097facead9f16bc56905992eb6650e))
     - Merge pull request #99 from eugenehp/visionos ([`1efa4cb`](https://github.com/Byron/open-rs/commit/1efa4cbb8ed7c1abac95299dd6af3c17727b27af))
     - Added visionos support ([`df28e8b`](https://github.com/Byron/open-rs/commit/df28e8bdce30cd1a8e930c947566edfd8835cef8))

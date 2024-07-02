@@ -92,7 +92,8 @@ use redox as os;
     target_os = "netbsd",
     target_os = "openbsd",
     target_os = "illumos",
-    target_os = "solaris"
+    target_os = "solaris",
+    target_os = "aix"
 ))]
 use unix as os;
 
@@ -110,7 +111,8 @@ use unix as os;
     target_os = "macos",
     target_os = "windows",
     target_os = "haiku",
-    target_os = "redox"
+    target_os = "redox",
+    target_os = "aix"
 )))]
 compile_error!("open is not supported on this platform");
 
@@ -373,6 +375,7 @@ mod redox;
     target_os = "netbsd",
     target_os = "openbsd",
     target_os = "illumos",
-    target_os = "solaris"
+    target_os = "solaris",
+    target_os = "aix"
 ))]
 mod unix;

@@ -1,5 +1,32 @@
 # Changelog
 
+## 5.3.0 (2024-07-10)
+
+### New Features
+
+ - <csr-id-58142a695d50460e439f85be3f0bc010936520e6/> add GNU/Hurd support
+   Handle it like most of the other Unix platforms (e.g. Linux, BSDs, etc).
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 7 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #101 from pinotree/hurd ([`a060608`](https://github.com/Byron/open-rs/commit/a0606084dd4a18ca67bef84fa217529cb858ded5))
+    - Add GNU/Hurd support ([`58142a6`](https://github.com/Byron/open-rs/commit/58142a695d50460e439f85be3f0bc010936520e6))
+</details>
+
 ## 5.2.0 (2024-07-02)
 
 ### New Features
@@ -10,7 +37,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 27 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -22,6 +49,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.2.0 ([`3cf72fd`](https://github.com/Byron/open-rs/commit/3cf72fd426442ed856f1b9cddea61b5413299c45))
     - Add AIX support ([`d4e66dc`](https://github.com/Byron/open-rs/commit/d4e66dc1332e49672190060de6b39b13784c5de9))
     - Add AIX support ([`b414215`](https://github.com/Byron/open-rs/commit/b41421579aa68b484d57814acd2ef33e5b1b9b5a))
 </details>

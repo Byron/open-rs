@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.3.1 (2024-11-14)
 
 On Windows, respect the `expand to open folder` setting.
 
@@ -8,7 +8,7 @@ On Windows, respect the `expand to open folder` setting.
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -19,6 +19,7 @@ On Windows, respect the `expand to open folder` setting.
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Prepare changelog prior to release ([`6e565e2`](https://github.com/Byron/open-rs/commit/6e565e2271f05a80b4360d5e0dbff8b05483efb0))
     - Merge pull request #104 from Legend-Master/shopenfolderandselectitems ([`d149825`](https://github.com/Byron/open-rs/commit/d14982521423e67c3dd0fde115bc64bee7f7fb45))
     - Fix: use SHOpenFolderAndSelectItems for folders To respect 'expand to open folder' setting Fixes #103 ([`7595da7`](https://github.com/Byron/open-rs/commit/7595da7d655e910f3cb9d26b96d3947f2acf2522))
 </details>

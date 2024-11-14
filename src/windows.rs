@@ -43,17 +43,18 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
 
     let path = wide(path);
 
-    let (verb, class) = if is_dir {
-        (ffi::EXPLORE, ffi::FOLDER)
-    } else {
-        (std::ptr::null(), std::ptr::null())
+    if is_dir {
+        unsafe { ffi::CoInitialize(std::ptr::null()) };
+        let folder = unsafe { ffi::ILCreateFromPathW(path.as_ptr()) };
+        unsafe { SHOpenFolderAndSelectItems(folder, Some(&[folder]), 0)? };
+        return Ok(());
     };
 
     let mut info = ffi::SHELLEXECUTEINFOW {
         cbSize: std::mem::size_of::<ffi::SHELLEXECUTEINFOW>() as _,
         nShow: ffi::SW_SHOWNORMAL,
-        lpVerb: verb,
-        lpClass: class,
+        lpVerb: std::ptr::null(),
+        lpClass: std::ptr::null(),
         lpFile: path.as_ptr(),
         ..unsafe { std::mem::zeroed() }
     };
@@ -104,6 +105,36 @@ pub unsafe fn ShellExecuteExW(info: *mut ffi::SHELLEXECUTEINFOW) -> std::io::Res
     }
 }
 
+// Taken from https://microsoft.github.io/windows-docs-rs/doc/windows/
+/// Opens a Windows Explorer window with specified items in a particular folder selected.
+///
+/// <https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shopenfolderandselectitems>
+#[allow(non_snake_case)]
+#[cfg(feature = "shellexecute-on-windows")]
+pub unsafe fn SHOpenFolderAndSelectItems(
+    pidlfolder: *const ffi::ITEMIDLIST,
+    apidl: Option<&[*const ffi::ITEMIDLIST]>,
+    dwflags: u32,
+) -> std::io::Result<()> {
+    use std::convert::TryInto;
+
+    match ffi::SHOpenFolderAndSelectItems(
+        pidlfolder,
+        apidl
+            .as_deref()
+            .map_or(0, |slice| slice.len().try_into().unwrap()),
+        core::mem::transmute(
+            apidl
+                .as_deref()
+                .map_or(core::ptr::null(), |slice| slice.as_ptr()),
+        ),
+        dwflags,
+    ) {
+        0 => Ok(()),
+        error_code => Err(std::io::Error::from_raw_os_error(error_code)),
+    }
+}
+
 #[cfg(feature = "shellexecute-on-windows")]
 #[allow(non_snake_case)]
 mod ffi {
@@ -113,12 +144,6 @@ mod ffi {
     ///
     /// <https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow>
     pub const SW_SHOWNORMAL: i32 = 1;
-
-    /// Null-terminated UTF-16 encoding of `explore`.  
-    pub const EXPLORE: *const u16 = [101, 120, 112, 108, 111, 114, 101, 0].as_ptr();
-
-    /// Null-terminated UTF-16 encoding of `folder`.  
-    pub const FOLDER: *const u16 = [102, 111, 108, 100, 101, 114, 0].as_ptr();
 
     // Taken from https://docs.rs/windows-sys/latest/windows_sys/
     #[cfg_attr(not(target_arch = "x86"), repr(C))]
@@ -149,8 +174,33 @@ mod ffi {
         pub hMonitor: isize,
     }
 
+    // Taken from https://microsoft.github.io/windows-docs-rs/doc/windows/
+    #[repr(C, packed(1))]
+    pub struct SHITEMID {
+        pub cb: u16,
+        pub abID: [u8; 1],
+    }
+
+    // Taken from https://microsoft.github.io/windows-docs-rs/doc/windows/
+    #[repr(C, packed(1))]
+    pub struct ITEMIDLIST {
+        pub mkid: SHITEMID,
+    }
+
     #[link(name = "shell32")]
     extern "system" {
         pub fn ShellExecuteExW(info: *mut SHELLEXECUTEINFOW) -> isize;
+        pub fn ILCreateFromPathW(pszpath: *const u16) -> *mut ITEMIDLIST;
+        pub fn SHOpenFolderAndSelectItems(
+            pidlfolder: *const ITEMIDLIST,
+            cidl: u32,
+            apidl: *const *const ITEMIDLIST,
+            dwflags: u32,
+        ) -> i32;
+    }
+
+    #[link(name = "ole32")]
+    extern "system" {
+        pub fn CoInitialize(pvreserved: *const core::ffi::c_void) -> i32;
     }
 }

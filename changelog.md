@@ -1,5 +1,28 @@
 # Changelog
 
+## Unreleased
+
+On Windows, respect the `expand to open folder` setting.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #104 from Legend-Master/shopenfolderandselectitems ([`d149825`](https://github.com/Byron/open-rs/commit/d14982521423e67c3dd0fde115bc64bee7f7fb45))
+    - Fix: use SHOpenFolderAndSelectItems for folders To respect 'expand to open folder' setting Fixes #103 ([`7595da7`](https://github.com/Byron/open-rs/commit/7595da7d655e910f3cb9d26b96d3947f2acf2522))
+</details>
+
 ## 5.3.0 (2024-07-10)
 
 ### New Features
@@ -11,7 +34,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 7 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -23,6 +46,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.3.0 ([`c26d98c`](https://github.com/Byron/open-rs/commit/c26d98cc66979f153682690201a4748026012224))
     - Merge pull request #101 from pinotree/hurd ([`a060608`](https://github.com/Byron/open-rs/commit/a0606084dd4a18ca67bef84fa217529cb858ded5))
     - Add GNU/Hurd support ([`58142a6`](https://github.com/Byron/open-rs/commit/58142a695d50460e439f85be3f0bc010936520e6))
 </details>
@@ -63,7 +87,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release over the course of 5 calendar days.
+ - 4 commits contributed to the release.
  - 19 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -91,8 +115,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-read-only-do-not-edit/>
 
- - 6 commits contributed to the release over the course of 68 calendar days.
- - 70 days passed between releases.
+ - 6 commits contributed to the release.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#94](https://github.com/Byron/open-rs/issues/94)
 
@@ -240,8 +263,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-read-only-do-not-edit/>
 
- - 6 commits contributed to the release over the course of 21 calendar days.
- - 150 days passed between releases.
+ - 6 commits contributed to the release.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
 
@@ -311,7 +333,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release over the course of 1 calendar day.
+ - 4 commits contributed to the release.
  - 55 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -375,7 +397,6 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release.
- - 26 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#71](https://github.com/Byron/open-rs/issues/71)
 
@@ -557,7 +578,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 
 <csr-read-only-do-not-edit/>
 
- - 8 commits contributed to the release over the course of 28 calendar days.
+ - 8 commits contributed to the release.
  - 105 days passed between releases.
  - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -625,8 +646,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 
 <csr-read-only-do-not-edit/>
 
- - 7 commits contributed to the release over the course of 8 calendar days.
- - 65 days passed between releases.
+ - 7 commits contributed to the release.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -677,7 +697,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
     - Try to fix CI by not using nightly toolchains on windows ([`b20e01c`](https://github.com/Byron/open-rs/commit/b20e01cf590d82a05841af1c92428249fe21d838))
 </details>
 
-## 3.0.2 (2022-07-17)
+## 3.0.2 (2022-07-18)
 
 ### Bug Fixes
 
@@ -849,7 +869,7 @@ A maintenance release which allows boxed values in parameter position.
     - Update to 2021 edition and remove Sized bound ([`2601e4e`](https://github.com/Byron/open-rs/commit/2601e4eff11a77a7ccd5acfa3215eb76450fe18c))
 </details>
 
-## 2.1.0 (2022-02-21)
+## 2.1.0 (2022-02-22)
 
 * add support for illumnos
 
@@ -900,7 +920,7 @@ in the `PATH`.
     - Use full path for `open` command on macOS ([`8f7c92a`](https://github.com/Byron/open-rs/commit/8f7c92ab1adf936cd43e4ba0eb1934e2c73763f7))
 </details>
 
-## 2.0.2 (2021-11-30)
+## 2.0.2 (2021-12-01)
 
 ### Bug Fixes
 
@@ -910,7 +930,7 @@ in the `PATH`.
 
 <csr-read-only-do-not-edit/>
 
- - 7 commits contributed to the release over the course of 106 calendar days.
+ - 7 commits contributed to the release.
  - 128 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
@@ -1229,7 +1249,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
     - Add that_in_background ([`5927784`](https://github.com/Byron/open-rs/commit/5927784721174259af5e6f3d07f724f5b6e89501))
 </details>
 
-## v1.3.1 (2019-07-28)
+## v1.3.1 (2019-07-29)
 
 ### Commit Statistics
 
@@ -1265,7 +1285,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release over the course of 16 calendar days.
- - 331 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1287,7 +1306,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 <csr-read-only-do-not-edit/>
 
- - 6 commits contributed to the release over the course of 234 calendar days.
+ - 6 commits contributed to the release.
  - 314 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -1320,7 +1339,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release over the course of 178 calendar days.
- - 236 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1355,8 +1373,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release over the course of 4 calendar days.
- - 295 days passed between releases.
+ - 3 commits contributed to the release.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1482,8 +1499,7 @@ don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1
 
 <csr-read-only-do-not-edit/>
 
- - 13 commits contributed to the release over the course of 130 calendar days.
- - 130 days passed between releases.
+ - 13 commits contributed to the release.
  - 12 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 

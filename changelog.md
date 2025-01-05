@@ -1,5 +1,32 @@
 # Changelog
 
+## 5.3.2 (2025-01-05)
+
+### Bug Fixes
+
+ - <csr-id-c452a8c4e56c3726431d8a4a77ad910bc8ae3ecb/> fix `that_detached` for UNC path of a directory
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 3 commits contributed to the release over the course of 1 calendar day.
+ - 51 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #107 from amrbashir/fix/windows/remove-unc-and-fallback-on-error ([`472ce26`](https://github.com/Byron/open-rs/commit/472ce262c8f3c02f089f881387616df2303f48f8))
+    - Fix `that_detached` for UNC path of a directory ([`c452a8c`](https://github.com/Byron/open-rs/commit/c452a8c4e56c3726431d8a4a77ad910bc8ae3ecb))
+    - Merge pull request #79 from Byron/better-docs ([`2646ff8`](https://github.com/Byron/open-rs/commit/2646ff820c2ab965a636d57753a10c56501f4163))
+</details>
+
 ## 5.3.1 (2024-11-14)
 
 On Windows, respect the `expand to open folder` setting.
@@ -8,7 +35,7 @@ On Windows, respect the `expand to open folder` setting.
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -19,6 +46,7 @@ On Windows, respect the `expand to open folder` setting.
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.3.1 ([`10c3f0d`](https://github.com/Byron/open-rs/commit/10c3f0d8c9a229522c217b38ecb6c257d925105a))
     - Prepare changelog prior to release ([`6e565e2`](https://github.com/Byron/open-rs/commit/6e565e2271f05a80b4360d5e0dbff8b05483efb0))
     - Merge pull request #104 from Legend-Master/shopenfolderandselectitems ([`d149825`](https://github.com/Byron/open-rs/commit/d14982521423e67c3dd0fde115bc64bee7f7fb45))
     - Fix: use SHOpenFolderAndSelectItems for folders To respect 'expand to open folder' setting Fixes #103 ([`7595da7`](https://github.com/Byron/open-rs/commit/7595da7d655e910f3cb9d26b96d3947f2acf2522))
@@ -324,6 +352,10 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 ## 4.2.0 (2023-06-21)
 
+### Other
+
+ - <csr-id-323b8ea2aba9b0661bf3af6bd48ccef53197b0bf/> Improve documentation about shortcomings particularly on console-only UNIX platforms.
+
 ### New Features
 
  - <csr-id-7ad9cb373eb7e999f7e79705db891fd24a4d4bd2/> add `that_detached()` and `with_detached()` functions.
@@ -334,10 +366,10 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release.
+ - 5 commits contributed to the release over the course of 28 calendar days.
  - 55 days passed between releases.
- - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
- - 0 issues like '(#ID)' were seen in commit messages
+ - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#8](https://github.com/Byron/open-rs/issues/8)
 
 ### Commit Details
 
@@ -345,6 +377,8 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <details><summary>view details</summary>
 
+ * **[#8](https://github.com/Byron/open-rs/issues/8)**
+    - Improve documentation about shortcomings particularly on console-only UNIX platforms. ([`323b8ea`](https://github.com/Byron/open-rs/commit/323b8ea2aba9b0661bf3af6bd48ccef53197b0bf))
  * **Uncategorized**
     - Release open v4.2.0 ([`b4592a4`](https://github.com/Byron/open-rs/commit/b4592a4367a8b743e89812f73a274e5e2b0c0d42))
     - Prepare changelog prior to release ([`4ad428e`](https://github.com/Byron/open-rs/commit/4ad428e4944a066bbd2d3646d0c338532956001d))

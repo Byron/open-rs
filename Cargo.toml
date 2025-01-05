@@ -20,7 +20,7 @@ rust-version = "1.62"
 ##
 ## There may be other side-effects that when comparing to the command-based
 ## opening of paths, which is why this feature is opt-in.
-shellexecute-on-windows = []
+shellexecute-on-windows = ["dep:dunce"]
 
 [[bin]]
 test = false
@@ -35,3 +35,6 @@ is-wsl = "0.4.0"
 
 [target."cfg(unix)".dependencies]
 libc = "0.2"
+
+[target."cfg(windows)".dependencies]
+dunce = { version = "1", optional = true }

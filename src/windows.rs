@@ -38,23 +38,34 @@ fn wrap_in_quotes<T: AsRef<OsStr>>(path: T) -> OsString {
 
 #[cfg(feature = "shellexecute-on-windows")]
 pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
+    use std::path::Path;
+
     let path = path.as_ref();
     let is_dir = std::fs::metadata(path).map(|f| f.is_dir()).unwrap_or(false);
 
-    let path = wide(path);
-
     if is_dir {
+        let path = dunce::simplified(Path::new(path));
+        let path = wide(path);
         unsafe { ffi::CoInitialize(std::ptr::null()) };
         let folder = unsafe { ffi::ILCreateFromPathW(path.as_ptr()) };
-        unsafe { SHOpenFolderAndSelectItems(folder, Some(&[folder]), 0)? };
-        return Ok(());
+        if unsafe { SHOpenFolderAndSelectItems(folder, Some(&[folder]), 0) }.is_ok() {
+            return Ok(());
+        }
+    };
+
+    let path = wide(path);
+
+    let (verb, class) = if is_dir {
+        (ffi::EXPLORE, ffi::FOLDER)
+    } else {
+        (std::ptr::null(), std::ptr::null())
     };
 
     let mut info = ffi::SHELLEXECUTEINFOW {
         cbSize: std::mem::size_of::<ffi::SHELLEXECUTEINFOW>() as _,
         nShow: ffi::SW_SHOWNORMAL,
-        lpVerb: std::ptr::null(),
-        lpClass: std::ptr::null(),
+        lpVerb: verb,
+        lpClass: class,
         lpFile: path.as_ptr(),
         ..unsafe { std::mem::zeroed() }
     };
@@ -144,6 +155,12 @@ mod ffi {
     ///
     /// <https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow>
     pub const SW_SHOWNORMAL: i32 = 1;
+
+    /// Null-terminated UTF-16 encoding of `explore`.  
+    pub const EXPLORE: *const u16 = [101, 120, 112, 108, 111, 114, 101, 0].as_ptr();
+
+    /// Null-terminated UTF-16 encoding of `folder`.  
+    pub const FOLDER: *const u16 = [102, 111, 108, 100, 101, 114, 0].as_ptr();
 
     // Taken from https://docs.rs/windows-sys/latest/windows_sys/
     #[cfg_attr(not(target_arch = "x86"), repr(C))]

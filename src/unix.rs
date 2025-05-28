@@ -7,18 +7,23 @@ use std::{
 
 pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     let path = path.as_ref();
-    let mut commands: Vec<(&str, Vec<&OsStr>)> = vec![];
+    let mut commands: Vec<(String, Vec<&OsStr>)> = vec![];
+
+    // Make the `$BROWSER` environment variable (if it's defined) the highest priority.
+    if let Ok(browser) = env::var("BROWSER") {
+        commands.push((browser, vec![path]));
+    }
 
     let wsl_path = wsl_path(path);
     if is_wsl::is_wsl() {
-        commands.push(("wslview", vec![&wsl_path]));
+        commands.push(("wslview".to_string(), vec![&wsl_path]));
     }
 
     commands.extend_from_slice(&[
-        ("xdg-open", vec![&path]),
-        ("gio", vec![OsStr::new("open"), path]),
-        ("gnome-open", vec![path]),
-        ("kde-open", vec![path]),
+        ("xdg-open".to_string(), vec![&path]),
+        ("gio".to_string(), vec![OsStr::new("open"), path]),
+        ("gnome-open".to_string(), vec![path]),
+        ("kde-open".to_string(), vec![path]),
     ]);
 
     commands

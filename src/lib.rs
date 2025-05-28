@@ -77,9 +77,7 @@
 //!
 // On a console, without a window manager, results will likely be poor. The openers expect to be able to open in a new or existing window, something that consoles lack.
 //!
-//! On Windows WSL, `wslview` is tried first, then `xdg-open`. In other UNIX environments, `xdg-open` is tried first. If this fails, a sequence of other openers is tried.
-//!
-//! Currently the `BROWSER` environment variable is ignored even for `http:` and `https:` URLs unless the opener being used happens to respect it.
+//! First, `$BROWSER` is tried (if defined). On Windows WSL, `wslview` is tried next, then `xdg-open`. In other UNIX environments, `xdg-open` is tried next. If this fails, a sequence of other openers is tried.
 //!
 //! It cannot be overemphasized how fragile this all is in UNIX environments. It is common for the various MIME tables to incorrectly specify the application "owning" a given filetype.
 //! It is common for openers to behave strangely. Use with caution, as this crate merely inherits a particular platforms shortcomings.

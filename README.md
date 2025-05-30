@@ -12,6 +12,8 @@ $ start <path-or-url>
 $ xdg-open <path-or-url> || gio open <path-or-url> || gnome-open <path-or-url> || kde-open <path-or-url> || wslview <path-or-url>
 ```
 
+To open a web browser, see the [webbrowser](https://docs.rs/webbrowser) crate, which offers functionality for that specific case.
+
 # Library Usage
 
 Add this to your Cargo.toml

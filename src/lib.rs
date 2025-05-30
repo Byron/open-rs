@@ -1,7 +1,9 @@
 //! Use this library to open a given path or URL in some application, obeying the current user's desktop configuration.
 //!
-//! It is expected that `http:` and `https:` URLs will open in a web browser, although desktop configuration may override this.
+//! It is expected that `http:` and `https:` URLs will open in a web browser, although the desktop configuration may override this.
 //! The choice of application for opening other path types is highly system-dependent.
+//! 
+//! To always open a web browser, see the [webbrowser](https://docs.rs/webbrowser) crate, which offers functionality for that specific case.
 //!
 //! # Usage
 //!

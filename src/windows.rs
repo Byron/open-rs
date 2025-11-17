@@ -38,17 +38,11 @@ fn wrap_in_quotes<T: AsRef<OsStr>>(path: T) -> OsString {
 
 #[cfg(feature = "shellexecute-on-windows")]
 pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
-    use std::path::Path;
-
     let path = path.as_ref();
     let is_dir = std::fs::metadata(path).map(|f| f.is_dir()).unwrap_or(false);
 
     if is_dir {
-        let path = dunce::simplified(Path::new(path));
-        let path = wide(path);
-        unsafe { ffi::CoInitialize(std::ptr::null()) };
-        let folder = unsafe { ffi::ILCreateFromPathW(path.as_ptr()) };
-        if unsafe { SHOpenFolderAndSelectItems(folder, Some(&[folder]), 0) }.is_ok() {
+        if shell_open_folder(path).is_ok() {
             return Ok(());
         }
     };
@@ -71,6 +65,20 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
     };
 
     unsafe { ShellExecuteExW(&mut info) }
+}
+
+#[cfg(feature = "shellexecute-on-windows")]
+fn shell_open_folder(path: &OsStr) -> Result<(), std::io::Error> {
+    let path = dunce::canonicalize(path)?;
+    let path = wide(path);
+    unsafe { ffi::CoInitialize(std::ptr::null()) };
+    let folder = unsafe { ffi::ILCreateFromPathW(path.as_ptr()) };
+    if folder.is_null() {
+        return Err(std::io::Error::last_os_error());
+    }
+    let result = unsafe { SHOpenFolderAndSelectItems(folder, Some(&[folder]), 0) };
+    unsafe { ffi::ILFree(folder) };
+    result
 }
 
 #[cfg(feature = "shellexecute-on-windows")]
@@ -156,10 +164,10 @@ mod ffi {
     /// <https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-showwindow>
     pub const SW_SHOWNORMAL: i32 = 1;
 
-    /// Null-terminated UTF-16 encoding of `explore`.  
+    /// Null-terminated UTF-16 encoding of `explore`.
     pub const EXPLORE: *const u16 = [101, 120, 112, 108, 111, 114, 101, 0].as_ptr();
 
-    /// Null-terminated UTF-16 encoding of `folder`.  
+    /// Null-terminated UTF-16 encoding of `folder`.
     pub const FOLDER: *const u16 = [102, 111, 108, 100, 101, 114, 0].as_ptr();
 
     // Taken from https://docs.rs/windows-sys/latest/windows_sys/
@@ -214,6 +222,7 @@ mod ffi {
             apidl: *const *const ITEMIDLIST,
             dwflags: u32,
         ) -> i32;
+        pub fn ILFree(pidl: *const ITEMIDLIST) -> i32;
     }
 
     #[link(name = "ole32")]

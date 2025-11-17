@@ -1,5 +1,45 @@
 # Changelog
 
+## 5.3.3 (2025-11-17)
+
+### Documentation
+
+ - <csr-id-07b246cf98d0486ba2ca570c803ded41283b90ed/> point to webbrowser crate for users that seek this specific functionality.
+
+### Bug Fixes
+
+ - <csr-id-abcd0f4810cbcdee4d80dba01a6474ad711efa61/> pass canonicalized path to `ILCreateFromPathW`
+
+### Other
+
+ - <csr-id-314d80ac36650f3ff57d62596513e1dcda4870fb/> remove whitespace.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 8 commits contributed to the release.
+ - 316 days passed between releases.
+ - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #116 from Legend-Master/canonicalize-ILCreateFromPathW ([`a1ca334`](https://github.com/Byron/open-rs/commit/a1ca3346ee45cd8c6a651476919f8cd711bdc084))
+    - Fix CI by using a more recent Windows image ([`c84cade`](https://github.com/Byron/open-rs/commit/c84cadebb81e7d214845bb1030e3e44fbf49fd91))
+    - Pass canonicalized path to `ILCreateFromPathW` ([`abcd0f4`](https://github.com/Byron/open-rs/commit/abcd0f4810cbcdee4d80dba01a6474ad711efa61))
+    - Merge pull request #111 from bjones1/docs ([`335146b`](https://github.com/Byron/open-rs/commit/335146bb4a0724fd0a21efcfffbcc6d60707e038))
+    - Remove whitespace. ([`314d80a`](https://github.com/Byron/open-rs/commit/314d80ac36650f3ff57d62596513e1dcda4870fb))
+    - Point to webbrowser crate for users that seek this specific functionality. ([`07b246c`](https://github.com/Byron/open-rs/commit/07b246cf98d0486ba2ca570c803ded41283b90ed))
+    - Merge pull request #110 from bjones1/codespaces ([`1c4a952`](https://github.com/Byron/open-rs/commit/1c4a9523e104758175411cd3d3df5b7f7cf5a897))
+    - Add Codespaces setup. ([`43b6a2d`](https://github.com/Byron/open-rs/commit/43b6a2d254cd823bf02a12bb8086bece16ec965b))
+</details>
+
 ## 5.3.2 (2025-01-05)
 
 ### Bug Fixes
@@ -10,7 +50,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release over the course of 1 calendar day.
+ - 4 commits contributed to the release over the course of 1 calendar day.
  - 51 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -22,6 +62,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.3.2 ([`f196640`](https://github.com/Byron/open-rs/commit/f196640a9c0def100401f6e97ebe5dd4b4f2bb0e))
     - Merge pull request #107 from amrbashir/fix/windows/remove-unc-and-fallback-on-error ([`472ce26`](https://github.com/Byron/open-rs/commit/472ce262c8f3c02f089f881387616df2303f48f8))
     - Fix `that_detached` for UNC path of a directory ([`c452a8c`](https://github.com/Byron/open-rs/commit/c452a8c4e56c3726431d8a4a77ad910bc8ae3ecb))
     - Merge pull request #79 from Byron/better-docs ([`2646ff8`](https://github.com/Byron/open-rs/commit/2646ff820c2ab965a636d57753a10c56501f4163))
@@ -351,6 +392,8 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 </details>
 
 ## 4.2.0 (2023-06-21)
+
+<csr-id-323b8ea2aba9b0661bf3af6bd48ccef53197b0bf/>
 
 ### Other
 

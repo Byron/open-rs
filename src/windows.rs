@@ -41,10 +41,8 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
     let path = path.as_ref();
     let is_dir = std::fs::metadata(path).map(|f| f.is_dir()).unwrap_or(false);
 
-    if is_dir {
-        if shell_open_folder(path).is_ok() {
-            return Ok(());
-        }
+    if is_dir && shell_open_folder(path).is_ok() {
+        return Ok(());
     };
 
     let path = wide(path);
@@ -69,8 +67,8 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
 
 #[cfg(feature = "shellexecute-on-windows")]
 fn shell_open_folder(path: &OsStr) -> Result<(), std::io::Error> {
-    let path = dunce::canonicalize(path)?;
-    let path = wide(path);
+    let path = std::path::absolute(path)?;
+    let path = wide(dunce::simplified(&path));
     unsafe { ffi::CoInitialize(std::ptr::null()) };
     let folder = unsafe { ffi::ILCreateFromPathW(path.as_ptr()) };
     if folder.is_null() {
@@ -139,14 +137,8 @@ pub unsafe fn SHOpenFolderAndSelectItems(
 
     match ffi::SHOpenFolderAndSelectItems(
         pidlfolder,
-        apidl
-            .as_deref()
-            .map_or(0, |slice| slice.len().try_into().unwrap()),
-        core::mem::transmute(
-            apidl
-                .as_deref()
-                .map_or(core::ptr::null(), |slice| slice.as_ptr()),
-        ),
+        apidl.map_or(0, |slice| slice.len().try_into().unwrap()),
+        apidl.map_or(core::ptr::null(), |slice| slice.as_ptr()),
         dwflags,
     ) {
         0 => Ok(()),
@@ -173,6 +165,7 @@ mod ffi {
     // Taken from https://docs.rs/windows-sys/latest/windows_sys/
     #[cfg_attr(not(target_arch = "x86"), repr(C))]
     #[cfg_attr(target_arch = "x86", repr(C, packed(1)))]
+    #[allow(clippy::upper_case_acronyms)]
     pub struct SHELLEXECUTEINFOW {
         pub cbSize: u32,
         pub fMask: u32,
@@ -201,6 +194,7 @@ mod ffi {
 
     // Taken from https://microsoft.github.io/windows-docs-rs/doc/windows/
     #[repr(C, packed(1))]
+    #[allow(clippy::upper_case_acronyms)]
     pub struct SHITEMID {
         pub cb: u16,
         pub abID: [u8; 1],
@@ -208,6 +202,7 @@ mod ffi {
 
     // Taken from https://microsoft.github.io/windows-docs-rs/doc/windows/
     #[repr(C, packed(1))]
+    #[allow(clippy::upper_case_acronyms)]
     pub struct ITEMIDLIST {
         pub mkid: SHITEMID,
     }

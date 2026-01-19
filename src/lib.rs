@@ -322,6 +322,7 @@ impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
 
 trait CommandExt {
     fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus>;
+    #[cfg_attr(feature = "shellexecute-on-windows", allow(dead_code))]
     fn spawn_detached(&mut self) -> io::Result<()>;
 }
 

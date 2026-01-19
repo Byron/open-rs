@@ -82,5 +82,7 @@ jobs:
       - name: Run fmt
         run: ${{ env.CARGO }} fmt ${{ env.TARGET_FLAGS }} --all -- --check
       - name: Run clippy
-        run: ${{ env.CARGO }} clippy ${{ env.TARGET_FLAGS }}
+        run: ${{ env.CARGO }} clippy ${{ env.TARGET_FLAGS }} -- -D warnings
+      - name: Run clippy
+        run: ${{ env.CARGO }} clippy ${{ env.TARGET_FLAGS }} --all-features -- -D warnings -A clippy::incompatible_msrv
 

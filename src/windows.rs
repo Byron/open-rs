@@ -69,8 +69,8 @@ pub fn that_detached<T: AsRef<OsStr>>(path: T) -> std::io::Result<()> {
 
 #[cfg(feature = "shellexecute-on-windows")]
 fn shell_open_folder(path: &OsStr) -> Result<(), std::io::Error> {
-    let path = dunce::canonicalize(path)?;
-    let path = wide(path);
+    let path = std::path::absolute(path)?;
+    let path = wide(dunce::simplified(&path));
     unsafe { ffi::CoInitialize(std::ptr::null()) };
     let folder = unsafe { ffi::ILCreateFromPathW(path.as_ptr()) };
     if folder.is_null() {

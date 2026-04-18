@@ -291,7 +291,16 @@ pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
 ///
 /// See documentation of [`with()`] for more details.
 pub fn with_detached<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> io::Result<()> {
-    #[cfg(any(not(feature = "shellexecute-on-windows"), not(windows)))]
+    #[cfg(target_os = "macos")]
+    {
+        let mut cmd = with_command(path, app);
+        cmd.status_without_output().into_result(&cmd)
+    }
+
+    #[cfg(all(
+        not(target_os = "macos"),
+        any(not(feature = "shellexecute-on-windows"), not(windows))
+    ))]
     {
         let mut cmd = with_command(path, app);
         cmd.spawn_detached()

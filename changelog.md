@@ -1,6 +1,45 @@
 # Changelog
 
+## 5.3.4 (2026-04-19)
+
+### Bug Fixes
+
+ - <csr-id-8e122d41929be6d9780679d6a40971de36247af3/> align with_detached() implementation with with()
+   On macOS, /usr/bin/open is natively detached. This commit changes
+   with_detached to use the same logic as with() .avoid double detachment to prevent silent failure
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 6 commits contributed to the release.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Thanks Clippy
+
+<csr-read-only-do-not-edit/>
+
+[Clippy](https://github.com/rust-lang/rust-clippy) helped 1 time to make code idiomatic. 
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #119 from benzeneringlq/fix-macos-detach-silent-failure ([`7db5738`](https://github.com/Byron/open-rs/commit/7db5738d0d7a43da8b3f29ad5a5c26c73c687a26))
+    - Align with_detached() implementation with with() ([`8e122d4`](https://github.com/Byron/open-rs/commit/8e122d41929be6d9780679d6a40971de36247af3))
+    - Merge pull request #117 from ChrisDenton/absolute ([`20ea175`](https://github.com/Byron/open-rs/commit/20ea1758c597d50a58b67854f063a9a9cd99ecb8))
+    - Thanks clippy (on Windows) ([`7faae87`](https://github.com/Byron/open-rs/commit/7faae875e76ddc05feb24f2bc935532ebfe7fefc))
+    - Enable clippy deny on CI, with all features, but allow incompatible MRSV there ([`1ab9c47`](https://github.com/Byron/open-rs/commit/1ab9c4738eadacdb83e770ad4ca3133b3fac6c91))
+    - Use absolute instead of canonicalize ([`5604cee`](https://github.com/Byron/open-rs/commit/5604cee4aae32689e3e648a520f76797b49988e4))
+</details>
+
 ## 5.3.3 (2025-11-17)
+
+<csr-id-314d80ac36650f3ff57d62596513e1dcda4870fb/>
 
 ### Documentation
 
@@ -18,7 +57,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 8 commits contributed to the release.
+ - 9 commits contributed to the release.
  - 316 days passed between releases.
  - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -30,6 +69,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.3.3 ([`ab1b306`](https://github.com/Byron/open-rs/commit/ab1b306e41e27ae302968c75bbe69dbc385027a9))
     - Merge pull request #116 from Legend-Master/canonicalize-ILCreateFromPathW ([`a1ca334`](https://github.com/Byron/open-rs/commit/a1ca3346ee45cd8c6a651476919f8cd711bdc084))
     - Fix CI by using a more recent Windows image ([`c84cade`](https://github.com/Byron/open-rs/commit/c84cadebb81e7d214845bb1030e3e44fbf49fd91))
     - Pass canonicalized path to `ILCreateFromPathW` ([`abcd0f4`](https://github.com/Byron/open-rs/commit/abcd0f4810cbcdee4d80dba01a6474ad711efa61))
@@ -1526,9 +1566,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
     - Taking T:AsRef<OsStr> instead of &str ([`2540a0a`](https://github.com/Byron/open-rs/commit/2540a0a6abc4b27d6553400e7aef62e3ef94020d))
     - No docs for open ([`31605e0`](https://github.com/Byron/open-rs/commit/31605e0eddfb0cf8db635dd4d86131bc46beae78))
 </details>
-
-<csr-unknown>
-don’t use ‘open’ on linux (https://github.com/Byron/open-rs/commit/30c96b1cb95c1e03bede218b8fb03bbd9ada931730c96b1c)linux uses open before anything else (https://github.com/Byron/open-rs/commit/4696d1a5ec80691e97bb1be4261d4f79ee0ade4d4696d1a5)<csr-unknown/>
 
 ## v1.1.0 (2015-07-08)
 

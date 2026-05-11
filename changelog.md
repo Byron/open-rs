@@ -1,5 +1,37 @@
 # Changelog
 
+## 5.3.5 (2026-05-12)
+
+### Bug Fixes
+
+ - <csr-id-db813693f3f186dac0bcf67fd939f93ca48a0300/> delegate to winebrowser under Wine
+   When running a Windows-targeted binary under Wine, open requests previously fell back to Wine's bundled `explorer.exe`, which lacks proper host desktop integration.
+   
+   This change detects the Wine environment at runtime (via `WINEPREFIX`, `WINELOADER`, or `WINEDEBUG`) and prepends a winebrowser command to the launcher list. `winebrowser` is Wine's official utility for forwarding file/URL requests to the host OS's default handler (e.g., `xdg-open` on Linux, `open` on macOS).
+   
+   If winebrowser is unavailable or fails, the existing `cmd /c start` fallback is used automatically, preserving backward compatibility. No public API changes or compile-time flags are introduced.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 3 commits contributed to the release.
+ - 22 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #121 from gsurrel/wine-awareness ([`bb28d04`](https://github.com/Byron/open-rs/commit/bb28d04bef96a59ff60215c349d048c8c4dfab9f))
+    - Review ([`f72e644`](https://github.com/Byron/open-rs/commit/f72e64456bc3d46b0d3f910597ebc638b96ae75d))
+    - Delegate to winebrowser under Wine ([`db81369`](https://github.com/Byron/open-rs/commit/db813693f3f186dac0bcf67fd939f93ca48a0300))
+</details>
+
 ## 5.3.4 (2026-04-19)
 
 ### Bug Fixes
@@ -12,7 +44,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 6 commits contributed to the release.
+ - 7 commits contributed to the release.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -29,6 +61,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.3.4 ([`7bd519c`](https://github.com/Byron/open-rs/commit/7bd519c778eda8efe84137e61c35eaff95102d41))
     - Merge pull request #119 from benzeneringlq/fix-macos-detach-silent-failure ([`7db5738`](https://github.com/Byron/open-rs/commit/7db5738d0d7a43da8b3f29ad5a5c26c73c687a26))
     - Align with_detached() implementation with with() ([`8e122d4`](https://github.com/Byron/open-rs/commit/8e122d41929be6d9780679d6a40971de36247af3))
     - Merge pull request #117 from ChrisDenton/absolute ([`20ea175`](https://github.com/Byron/open-rs/commit/20ea1758c597d50a58b67854f063a9a9cd99ecb8))

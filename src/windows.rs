@@ -7,14 +7,41 @@ use std::os::windows::process::CommandExt;
 
 const CREATE_NO_WINDOW: u32 = 0x08000000;
 
+/// Detects if the current process is running under Wine by checking environment
+/// variables that Wine injects into guest processes.
+fn is_running_under_wine() -> bool {
+    std::env::var_os("WINEPREFIX").is_some()
+        || std::env::var_os("WINELOADER").is_some()
+        || std::env::var_os("WINEDEBUG").is_some()
+}
+
+/// Constructs a Command to invoke Wine's winebrowser utility, which forwards
+/// file/URL open requests to the host OS's default handler.
+fn winebrowser_command<T: AsRef<OsStr>>(path: T) -> Command {
+    let mut cmd = Command::new("winebrowser");
+    cmd.arg(path.as_ref());
+    // Match Windows behavior: suppress console window flash
+    cmd.creation_flags(CREATE_NO_WINDOW);
+    cmd
+}
+
 pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
+    let mut cmds = Vec::new();
+
+    // When under Wine, try winebrowser first for seamless host integration.
+    if is_running_under_wine() {
+        cmds.push(winebrowser_command(&path));
+    }
+
     let mut cmd = Command::new("cmd");
     cmd.arg("/c")
         .arg("start")
         .raw_arg("\"\"")
-        .raw_arg(wrap_in_quotes(path))
+        .raw_arg(wrap_in_quotes(&path))
         .creation_flags(CREATE_NO_WINDOW);
-    vec![cmd]
+    cmds.push(cmd);
+
+    cmds
 }
 
 pub fn with_command<T: AsRef<OsStr>>(path: T, app: impl Into<String>) -> Command {

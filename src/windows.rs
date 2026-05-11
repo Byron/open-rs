@@ -27,17 +27,18 @@ fn winebrowser_command<T: AsRef<OsStr>>(path: T) -> Command {
 
 pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     let mut cmds = Vec::new();
+    let path = path.as_ref();
 
     // When under Wine, try winebrowser first for seamless host integration.
     if is_running_under_wine() {
-        cmds.push(winebrowser_command(&path));
+        cmds.push(winebrowser_command(path));
     }
 
     let mut cmd = Command::new("cmd");
     cmd.arg("/c")
         .arg("start")
         .raw_arg("\"\"")
-        .raw_arg(wrap_in_quotes(&path))
+        .raw_arg(wrap_in_quotes(path))
         .creation_flags(CREATE_NO_WINDOW);
     cmds.push(cmd);
 

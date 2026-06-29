@@ -1,5 +1,40 @@
 # Changelog
 
+## 5.3.6 (2026-06-29)
+
+### Bug Fixes
+
+ - <csr-id-44d1d41349fdfd23e5e74e3c0ac4c9aca2ed7282/> use PowerShell instead of wslview on WSL
+   WSL users reported that wslu's wslview is discontinued and unavailable in
+   some package managers. The regression tests cover the WSL command builder and
+   initially failed because the first generated command was still `wslview`.
+   
+   Build the WSL opener as a PowerShell `Start-Process -FilePath` script argument
+   with the target quoted as data, then retain the xdg-open, gio, gnome-open, and
+   kde-open fallbacks. Update the user-facing docs and keep the WSL command builder
+   testable from host builds without adding dev-dependencies.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 48 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#122](https://github.com/Byron/open-rs/issues/122)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#122](https://github.com/Byron/open-rs/issues/122)**
+    - Use PowerShell instead of wslview on WSL ([`44d1d41`](https://github.com/Byron/open-rs/commit/44d1d41349fdfd23e5e74e3c0ac4c9aca2ed7282))
+ * **Uncategorized**
+    - Merge pull request #123 from Byron/avoid-wslview ([`41c4cf0`](https://github.com/Byron/open-rs/commit/41c4cf09cab155460c29ac6a8b36ad6ec70b3d81))
+</details>
+
 ## 5.3.5 (2026-05-12)
 
 ### Bug Fixes
@@ -15,7 +50,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 3 commits contributed to the release.
+ - 4 commits contributed to the release.
  - 22 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -27,6 +62,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.3.5 ([`b98fc01`](https://github.com/Byron/open-rs/commit/b98fc01d0a9da985c892f8fdb14b618d036ab12d))
     - Merge pull request #121 from gsurrel/wine-awareness ([`bb28d04`](https://github.com/Byron/open-rs/commit/bb28d04bef96a59ff60215c349d048c8c4dfab9f))
     - Review ([`f72e644`](https://github.com/Byron/open-rs/commit/f72e64456bc3d46b0d3f910597ebc638b96ae75d))
     - Delegate to winebrowser under Wine ([`db81369`](https://github.com/Byron/open-rs/commit/db813693f3f186dac0bcf67fd939f93ca48a0300))
@@ -81,10 +117,6 @@
 ### Bug Fixes
 
  - <csr-id-abcd0f4810cbcdee4d80dba01a6474ad711efa61/> pass canonicalized path to `ILCreateFromPathW`
-
-### Other
-
- - <csr-id-314d80ac36650f3ff57d62596513e1dcda4870fb/> remove whitespace.
 
 ### Commit Statistics
 
@@ -368,11 +400,6 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 
 <csr-id-a583658a2f2cfea64c3be6e12cef159f5cbc7fbf/>
 
-### Other
-
- - <csr-id-a583658a2f2cfea64c3be6e12cef159f5cbc7fbf/> use PATH to find launcher
-   Redox has moved the launcher from /ui/bin to /usr/bin. Just use the PATH to locate it, so any future changes in location don't break this crate.
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
@@ -467,10 +494,6 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 ## 4.2.0 (2023-06-21)
 
 <csr-id-323b8ea2aba9b0661bf3af6bd48ccef53197b0bf/>
-
-### Other
-
- - <csr-id-323b8ea2aba9b0661bf3af6bd48ccef53197b0bf/> Improve documentation about shortcomings particularly on console-only UNIX platforms.
 
 ### New Features
 
@@ -661,10 +684,6 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
  - <csr-id-245c95ede24adc6694d935993d6045d19a935035/> `commands()` function to obtain a list of launchers to open the given path.
    This allows async applications to control the application launch in an async way,
    for instance with `tokio`.
-
-### Other
-
- - <csr-id-7e2a9c645cd4ff5f86ece7cdc220e18c1b4ac1b5/> improve documentation around how to use the library.
 
 ### Commit Statistics
 
@@ -968,10 +987,6 @@ A maintenance release which reduces compile times on windows by switching from `
 ## 2.1.2 (2022-04-29)
 
 <csr-id-85f4dfdafe6119af5b3a5d8f079279818d3d61ee/>
-
-### Other
-
- - <csr-id-85f4dfdafe6119af5b3a5d8f079279818d3d61ee/> add Heiku platform support
 
 ### Commit Statistics
 
@@ -1347,10 +1362,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 * Add LICENSE.md and README.md into the crates.io tarball.
 
-### Chore
-
- - <csr-id-5c1497c6d09a829d4be19e9bd3eec5557efce370/> Include README/LICENSE into a release tarball
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
@@ -1427,10 +1438,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 <csr-id-c2908176e2bb982a679d7097584e584a53deaf15/>
 
-### Chore
-
- - <csr-id-c2908176e2bb982a679d7097584e584a53deaf15/> Exclude unneeded files from crates.io
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
@@ -1481,10 +1488,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 <csr-id-79bc73b7ca0927f0594670bcc23de989693275c0/>
 
-### Other
-
- - <csr-id-79bc73b7ca0927f0594670bcc23de989693275c0/> improve example
-
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
@@ -1515,10 +1518,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 
 * **windows**: escape '&' in URLs. On windows, a shell is used to execute the command, which
   requires certain precautions for the URL to open to get through the interpreter.
-
-### Chore
-
- - <csr-id-37a253c89b1241b6f6ca0d3cafc8baa936aa274f/> v1.2.0
 
 ### Commit Statistics
 
@@ -1553,14 +1552,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 ### Improvements
 
 * **api:**  allow OSStrings instead of &str ([1d13a671](https://github.com/Byron/open-rs/commit/1d13a671f2c9bd9616bf185fac77b32da1dcf8ee))
-
-### Other
-
- - <csr-id-da45d9bad33fd9ed9659ec56ffe3b31d310253ca/> allow OSStrings instead of &str
-   Actually I can only hope that ordinary &str will still be fine.
-   Technically, I think they should ... but we shall see.
-
-## 25c0e398 (2015-07-08)
 
 ### Features
 
@@ -1600,6 +1591,9 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
     - No docs for open ([`31605e0`](https://github.com/Byron/open-rs/commit/31605e0eddfb0cf8db635dd4d86131bc46beae78))
 </details>
 
+<csr-unknown>
+25c0e398 (2015-07-08)<csr-unknown/>
+
 ## v1.1.0 (2015-07-08)
 
 <csr-id-a5557d5c096983cf70f59b1807cb6fbe2b6dab5e/>
@@ -1607,19 +1601,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-id-d816380f9680a9d56e22a79e025dc6c2073fb439/>
 <csr-id-bf8c9a11f4c1b1ac17d684a31c90d2a38255045e/>
 <csr-id-210ec6ef37ba7d230a0cc367e979173a555fa092/>
-
-### Chore
-
- - <csr-id-a5557d5c096983cf70f59b1807cb6fbe2b6dab5e/> v1.1.0
-   * added clog configuration and changelog
- - <csr-id-8db67f5874b007ea3710ed9670e88ad3f49b6d7d/> use stable instead of beta
- - <csr-id-d816380f9680a9d56e22a79e025dc6c2073fb439/> switch to travis-cargo
- - <csr-id-bf8c9a11f4c1b1ac17d684a31c90d2a38255045e/> added sublime-rustc-linter cfg
-   [skip ci]
-
-### Other
-
- - <csr-id-210ec6ef37ba7d230a0cc367e979173a555fa092/> start is a cmd command, not an executable
 
 ### Documentation
 

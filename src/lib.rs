@@ -79,7 +79,7 @@
 //!
 // On a console, without a window manager, results will likely be poor. The openers expect to be able to open in a new or existing window, something that consoles lack.
 //!
-//! On Windows WSL, `wslview` is tried first, then `xdg-open`. In other UNIX environments, `xdg-open` is tried first. If this fails, a sequence of other openers is tried.
+//! On Windows WSL, PowerShell is tried first to delegate to the Windows default handler, then `xdg-open`. In other UNIX environments, `xdg-open` is tried first. If this fails, a sequence of other openers is tried.
 //!
 //! Currently the `BROWSER` environment variable is ignored even for `http:` and `https:` URLs unless the opener being used happens to respect it.
 //!
@@ -398,6 +398,21 @@ mod haiku;
 
 #[cfg(target_os = "redox")]
 mod redox;
+
+#[cfg(any(
+    test,
+    target_os = "linux",
+    target_os = "android",
+    target_os = "freebsd",
+    target_os = "dragonfly",
+    target_os = "netbsd",
+    target_os = "openbsd",
+    target_os = "illumos",
+    target_os = "solaris",
+    target_os = "aix",
+    target_os = "hurd"
+))]
+mod wsl;
 
 #[cfg(any(
     target_os = "linux",

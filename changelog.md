@@ -1,5 +1,72 @@
 # Changelog
 
+## 5.4.0 (2026-07-12)
+
+### New Features
+
+ - <csr-id-7c19c0a1a810326b9a9e7542a0992d80adf0a365/> `cargo run` now shows the exact commands that were tried when opening.
+   This is useful for debugging, mainly.
+
+### Bug Fixes
+
+ - <csr-id-7265cae8c19180c1022d8b1a7fbec815d0264909/> Align WSL PowerShell invocation with Windows
+   Pass the WSL open target to PowerShell through the OPEN_RS_TARGET
+   environment variable instead of embedding it in the command string and
+   escaping it as a single-quoted PowerShell value.
+   
+   This matches the safer invocation already used by the native Windows
+   backend. Keeping the PowerShell program fixed ensures that paths and URLs
+   are treated purely as data, even when they contain quotes, semicolons, or
+   other PowerShell metacharacters. It also removes the need for custom
+   PowerShell quoting and avoids converting the target through
+   to_string_lossy() during command construction.
+   
+   Add -NonInteractive for consistency with the Windows launcher and update
+   the WSL tests to verify both the fixed command and the unchanged
+   environment-variable value.
+ - <csr-id-fd29861355bfb981aecdb94d0915f4e41c2686ee/> prevent launcher option and shell injection
+   Opening an attacker-controlled dash-leading path could be interpreted as
+   launcher options. On Windows, cmd /c start also parsed embedded quotes and
+   metacharacters as command language, while the legacy gnome-open fallback
+   could load a module even after a double-dash separator.
+   
+   Add command-construction regressions for malicious option-shaped paths and
+   Windows shell metacharacters. Use supported separators on macOS and KDE, and
+   rewrite dash-leading relative paths for launchers without separator support.
+   Keep Windows values out of shell syntax by passing the default target through
+   the environment and invoking custom applications directly, with explorer.exe
+   as a PowerShell-free fallback.
+   
+   Exclude cmd-based opening by default, while providing an
+   explicit insecure Cargo feature for users who need compatibility it
+   and accept their unsafe handling of untrusted input.
+   
+   Validated with default and all-feature cargo tests, clippy, and cross-target
+   cargo check --tests for aarch64 Linux and Windows.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 5 commits contributed to the release.
+ - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#124](https://github.com/Byron/open-rs/issues/124)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#124](https://github.com/Byron/open-rs/issues/124)**
+    - Prevent launcher option and shell injection ([`fd29861`](https://github.com/Byron/open-rs/commit/fd29861355bfb981aecdb94d0915f4e41c2686ee))
+ * **Uncategorized**
+    - Merge pull request #126 from Byron/fix-wsl ([`bdc3397`](https://github.com/Byron/open-rs/commit/bdc33978cdbfa1defef31e23659af4ba4a8913b0))
+    - Align WSL PowerShell invocation with Windows ([`7265cae`](https://github.com/Byron/open-rs/commit/7265cae8c19180c1022d8b1a7fbec815d0264909))
+    - Merge pull request #125 from Byron/open-with-dash-dash ([`407b058`](https://github.com/Byron/open-rs/commit/407b05879efb2b33c4e51fa15d77b49fa748a241))
+    - `cargo run` now shows the exact commands that were tried when opening. ([`7c19c0a`](https://github.com/Byron/open-rs/commit/7c19c0a1a810326b9a9e7542a0992d80adf0a365))
+</details>
+
 ## 5.3.6 (2026-06-29)
 
 ### Bug Fixes
@@ -18,7 +85,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 48 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#122](https://github.com/Byron/open-rs/issues/122)
@@ -32,6 +99,7 @@
  * **[#122](https://github.com/Byron/open-rs/issues/122)**
     - Use PowerShell instead of wslview on WSL ([`44d1d41`](https://github.com/Byron/open-rs/commit/44d1d41349fdfd23e5e74e3c0ac4c9aca2ed7282))
  * **Uncategorized**
+    - Release open v5.3.6 ([`cfb39d8`](https://github.com/Byron/open-rs/commit/cfb39d8c323bc147096ae00b1360cb6633ce4c35))
     - Merge pull request #123 from Byron/avoid-wslview ([`41c4cf0`](https://github.com/Byron/open-rs/commit/41c4cf09cab155460c29ac6a8b36ad6ec70b3d81))
 </details>
 
@@ -1590,9 +1658,6 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
     - Taking T:AsRef<OsStr> instead of &str ([`2540a0a`](https://github.com/Byron/open-rs/commit/2540a0a6abc4b27d6553400e7aef62e3ef94020d))
     - No docs for open ([`31605e0`](https://github.com/Byron/open-rs/commit/31605e0eddfb0cf8db635dd4d86131bc46beae78))
 </details>
-
-<csr-unknown>
-25c0e398 (2015-07-08)<csr-unknown/>
 
 ## v1.1.0 (2015-07-08)
 

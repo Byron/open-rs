@@ -12,28 +12,11 @@ fn command_with_distro(path: &OsStr, distro: Option<&str>) -> Command {
     let path = interop_path(path, distro);
     let mut cmd = Command::new("powershell.exe");
     cmd.arg("-NoProfile")
+        .arg("-NonInteractive")
         .arg("-Command")
-        .arg(powershell_start_process_command(&path));
+        .arg("Start-Process -FilePath $env:OPEN_RS_TARGET")
+        .env("OPEN_RS_TARGET", path);
     cmd
-}
-
-fn powershell_start_process_command(path: &OsStr) -> OsString {
-    let mut command = OsString::from("Start-Process -FilePath ");
-    command.push(powershell_single_quoted(path));
-    command
-}
-
-fn powershell_single_quoted(value: &OsStr) -> OsString {
-    let mut quoted = String::from("'");
-    for chr in value.to_string_lossy().chars() {
-        if chr == '\'' {
-            quoted.push_str("''");
-        } else {
-            quoted.push(chr);
-        }
-    }
-    quoted.push('\'');
-    OsString::from(quoted)
 }
 
 /// Converts WSL paths into paths Windows can open through interop.
@@ -126,24 +109,39 @@ mod tests {
             command_args(&command),
             [
                 "-NoProfile",
+                "-NonInteractive",
                 "-Command",
-                "Start-Process -FilePath 'https://example.com'"
+                "Start-Process -FilePath $env:OPEN_RS_TARGET"
             ]
+        );
+        assert_eq!(
+            command
+                .get_envs()
+                .find(|(name, _)| *name == OsStr::new("OPEN_RS_TARGET"))
+                .and_then(|(_, value)| value),
+            Some(OsStr::new("https://example.com"))
         );
     }
 
     #[test]
-    fn command_quotes_powershell_metacharacters() {
+    fn command_does_not_embed_powershell_metacharacters() {
         let command = command_with_distro(OsStr::new("https://example.com/a'b;c"), Some("Ubuntu"));
-        let args = command_args(&command);
 
         assert_eq!(
-            args,
+            command_args(&command),
             [
                 "-NoProfile",
+                "-NonInteractive",
                 "-Command",
-                "Start-Process -FilePath 'https://example.com/a''b;c'"
+                "Start-Process -FilePath $env:OPEN_RS_TARGET"
             ]
+        );
+        assert_eq!(
+            command
+                .get_envs()
+                .find(|(name, _)| *name == OsStr::new("OPEN_RS_TARGET"))
+                .and_then(|(_, value)| value),
+            Some(OsStr::new("https://example.com/a'b;c"))
         );
     }
 

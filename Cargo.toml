@@ -13,6 +13,12 @@ include = ["src/**/*", "LICENSE.md", "README.md", "changelog.md"]
 rust-version = "1.62"
 
 [features]
+## Restore the historical `cmd /c start` launcher on Windows. It cannot safely
+## receive untrusted paths because `cmd` interprets its arguments as shell syntax.
+##
+## Do not enable this feature when paths or URLs may be attacker-controlled.
+insecure = []
+
 ## If enabled, link to `system` on Windows and use `ShellExecuteW` intead of a command invocation
 ## when launching something in 'detached' mode.
 ## That way, it should be possible to open currently opened (for writing) files as well.

@@ -85,6 +85,17 @@
 //!
 //! It cannot be overemphasized how fragile this all is in UNIX environments. It is common for the various MIME tables to incorrectly specify the application "owning" a given filetype.
 //! It is common for openers to behave strangely. Use with caution, as this crate merely inherits a particular platforms shortcomings.
+//!
+//! ## Security boundaries
+//!
+//! Paths passed to system launchers are separated from launcher options where the
+//! launcher supports it. Applications selected through [`with()`] have arbitrary
+//! command-line grammars, however, so the crate cannot guarantee that every custom
+//! application treats a dash-leading path as data. Launching a document or custom
+//! URL scheme also trusts the configured local handler and the launched content.
+//! The `insecure` Cargo feature restores the legacy `cmd /c start` launcher on
+//! Windows for compatibility, but must not be enabled when paths or URLs may be
+//! attacker-controlled.
 
 #[cfg(target_os = "windows")]
 use windows as os;

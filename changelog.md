@@ -1,5 +1,43 @@
 # Changelog
 
+## 5.4.1 (2026-08-05)
+
+### Bug Fixes
+
+ - <csr-id-96fa673a6a152d193c210ff77766270192b42d16/> Forward WSL targets to PowerShell to make `open` actually work there
+   <!-- agent -->
+   Opening a URL from WSL failed because the Windows process did not receive
+   OPEN_RS_TARGET, even though it was present in the Linux command environment.
+   The failure reproduces with cargo run -- https://google.com on Ubuntu under
+   WSL, where Start-Process receives a null FilePath and exits unsuccessfully.
+   
+   Add OPEN_RS_TARGET to WSLENV so WSL interop forwards the target into the
+   PowerShell environment. Preserve existing WSLENV entries and their flags,
+   while keeping the PowerShell command fixed so targets remain data rather than
+   shell code.
+   
+   Validated with focused WSL tests, the all-features test suite, rustfmt,
+   Clippy with warnings denied, and an end-to-end cargo run from WSL.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 1 commit contributed to the release.
+ - 24 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 1 unique issue was worked on: [#128](https://github.com/Byron/open-rs/issues/128)
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **[#128](https://github.com/Byron/open-rs/issues/128)**
+    - Forward WSL targets to PowerShell to make `open` actually work there ([`96fa673`](https://github.com/Byron/open-rs/commit/96fa673a6a152d193c210ff77766270192b42d16))
+</details>
+
 ## 5.4.0 (2026-07-12)
 
 ### New Features
@@ -48,7 +86,8 @@
 
 <csr-read-only-do-not-edit/>
 
- - 5 commits contributed to the release.
+ - 6 commits contributed to the release.
+ - 13 days passed between releases.
  - 3 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#124](https://github.com/Byron/open-rs/issues/124)
 
@@ -61,6 +100,7 @@
  * **[#124](https://github.com/Byron/open-rs/issues/124)**
     - Prevent launcher option and shell injection ([`fd29861`](https://github.com/Byron/open-rs/commit/fd29861355bfb981aecdb94d0915f4e41c2686ee))
  * **Uncategorized**
+    - Release open v5.4.0 ([`b5c12bd`](https://github.com/Byron/open-rs/commit/b5c12bd9207a02272570252071d601a5dc44a3c6))
     - Merge pull request #126 from Byron/fix-wsl ([`bdc3397`](https://github.com/Byron/open-rs/commit/bdc33978cdbfa1defef31e23659af4ba4a8913b0))
     - Align WSL PowerShell invocation with Windows ([`7265cae`](https://github.com/Byron/open-rs/commit/7265cae8c19180c1022d8b1a7fbec815d0264909))
     - Merge pull request #125 from Byron/open-with-dash-dash ([`407b058`](https://github.com/Byron/open-rs/commit/407b05879efb2b33c4e51fa15d77b49fa748a241))
@@ -119,7 +159,7 @@
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release.
- - 22 days passed between releases.
+ - 23 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -149,6 +189,7 @@
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release.
+ - 153 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -224,7 +265,7 @@
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release over the course of 1 calendar day.
- - 51 days passed between releases.
+ - 52 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -250,6 +291,7 @@ On Windows, respect the `expand to open folder` setting.
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release.
+ - 127 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -278,7 +320,7 @@ On Windows, respect the `expand to open folder` setting.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 7 days passed between releases.
+ - 8 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -305,7 +347,7 @@ On Windows, respect the `expand to open folder` setting.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 27 days passed between releases.
+ - 28 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -359,6 +401,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release.
+ - 70 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#94](https://github.com/Byron/open-rs/issues/94)
 
@@ -473,7 +516,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 97 days passed between releases.
+ - 98 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -502,6 +545,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release.
+ - 150 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
 
@@ -540,7 +584,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release over the course of 3 calendar days.
- - 3 days passed between releases.
+ - 4 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#80](https://github.com/Byron/open-rs/issues/80)
 
@@ -574,7 +618,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release over the course of 28 calendar days.
- - 55 days passed between releases.
+ - 56 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#8](https://github.com/Byron/open-rs/issues/8)
 
@@ -639,6 +683,7 @@ See [the PR](https://github.com/Byron/open-rs/pull/99) for a little more context
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release.
+ - 27 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#71](https://github.com/Byron/open-rs/issues/71)
 
@@ -719,7 +764,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release.
- - 3 days passed between releases.
+ - 4 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -852,6 +897,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 <csr-read-only-do-not-edit/>
 
  - 5 commits contributed to the release.
+ - 1 day passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -885,6 +931,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release.
+ - 65 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -946,7 +993,7 @@ Thanks so much for [the contribution](https://github.com/Byron/open-rs/pull/69).
 <csr-read-only-do-not-edit/>
 
  - 2 commits contributed to the release.
- - 35 days passed between releases.
+ - 36 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#51](https://github.com/Byron/open-rs/issues/51)
 
@@ -1061,7 +1108,7 @@ A maintenance release which reduces compile times on windows by switching from `
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 54 days passed between releases.
+ - 55 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1112,7 +1159,7 @@ A maintenance release which allows boxed values in parameter position.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 8 days passed between releases.
+ - 9 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1165,7 +1212,7 @@ in the `PATH`.
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release.
- - 128 days passed between releases.
+ - 129 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#85](https://github.com/Byron/open-rs/issues/85)
 
@@ -1236,7 +1283,7 @@ This releases alleviates most of the issues.
 <csr-read-only-do-not-edit/>
 
  - 9 commits contributed to the release.
- - 89 days passed between releases.
+ - 90 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1267,7 +1314,7 @@ This releases alleviates most of the issues.
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release over the course of 38 calendar days.
- - 38 days passed between releases.
+ - 39 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1365,7 +1412,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 18 commits contributed to the release over the course of 321 calendar days.
- - 356 days passed between releases.
+ - 357 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1405,7 +1452,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release over the course of 25 calendar days.
- - 25 days passed between releases.
+ - 26 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1486,7 +1533,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
- - 25 days passed between releases.
+ - 26 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1511,6 +1558,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release over the course of 16 calendar days.
+ - 332 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1533,7 +1581,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 6 commits contributed to the release.
- - 314 days passed between releases.
+ - 315 days passed between releases.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1561,6 +1609,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 7 commits contributed to the release over the course of 178 calendar days.
+ - 236 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1592,6 +1641,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 3 commits contributed to the release.
+ - 296 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1642,7 +1692,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 4 commits contributed to the release over the course of 276 calendar days.
- - 276 days passed between releases.
+ - 277 days passed between releases.
  - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -1694,6 +1744,7 @@ YANKED to avoid potential for breakage by using 'explorer.exe' to open URLs.
 <csr-read-only-do-not-edit/>
 
  - 13 commits contributed to the release.
+ - 131 days passed between releases.
  - 12 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 

@@ -15,8 +15,21 @@ fn command_with_distro(path: &OsStr, distro: Option<&str>) -> Command {
         .arg("-NonInteractive")
         .arg("-Command")
         .arg("Start-Process -FilePath $env:OPEN_RS_TARGET")
+        .env("WSLENV", wslenv_with_target(env::var_os("WSLENV")))
         .env("OPEN_RS_TARGET", path);
     cmd
+}
+
+/// Adds `OPEN_RS_TARGET` to `WSLENV` so WSL forwards it to Windows processes,
+/// while preserving any existing entries. Without it, PowerShell would not see
+/// `OPEN_RS_TARGET`, even though it is set on the command.
+fn wslenv_with_target(existing: Option<OsString>) -> OsString {
+    let mut wslenv = OsString::from("OPEN_RS_TARGET");
+    if let Some(existing) = existing.filter(|value| !value.is_empty()) {
+        wslenv.push(":");
+        wslenv.push(existing);
+    }
+    wslenv
 }
 
 /// Converts WSL paths into paths Windows can open through interop.
@@ -121,6 +134,16 @@ mod tests {
                 .and_then(|(_, value)| value),
             Some(OsStr::new("https://example.com"))
         );
+        assert!(
+            command
+                .get_envs()
+                .find(|(name, _)| *name == OsStr::new("WSLENV"))
+                .and_then(|(_, value)| value)
+                .map_or(false, |value| {
+                    value.to_string_lossy().split(':').next() == Some("OPEN_RS_TARGET")
+                }),
+            "WSL must be instructed to forward the target to PowerShell"
+        );
     }
 
     #[test]
@@ -160,5 +183,13 @@ mod tests {
             r"C:\Users\alice\doc.pdf"
         );
         assert_eq!(interop_path(OsStr::new("/mnt/d"), Some("Ubuntu")), r"D:\");
+    }
+
+    #[test]
+    fn target_is_added_to_existing_wslenv() {
+        assert_eq!(
+            super::wslenv_with_target(Some("RUST_LOG/u:PATH/l".into())),
+            "OPEN_RS_TARGET:RUST_LOG/u:PATH/l"
+        );
     }
 }

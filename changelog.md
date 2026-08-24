@@ -1,5 +1,36 @@
 # Changelog
 
+## 5.4.2 (2026-08-24)
+
+### Bug Fixes
+
+ - <csr-id-c4369c5af39633a17a79c471605ef1a7f9143243/> wait in that_detached instead of double-fork
+   On macOS /usr/bin/open already detaches via LaunchServices. spawn_detached()
+   adds another fork and leaves zombie children. Align that_detached with
+   with_detached (PR #119).
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 4 commits contributed to the release over the course of 18 calendar days.
+ - 19 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #130 from s00d/fix/macos-that-detached-zombies ([`7468760`](https://github.com/Byron/open-rs/commit/7468760c0b149db984ca3ab35624ff028a9830dd))
+    - Review ([`351bb54`](https://github.com/Byron/open-rs/commit/351bb54bcdbdd61ff8509fcb3bdb6712ed69ad4e))
+    - Wait in that_detached instead of double-fork ([`c4369c5`](https://github.com/Byron/open-rs/commit/c4369c5af39633a17a79c471605ef1a7f9143243))
+    - Merge pull request #129 from Byron/fix-wsl ([`beb6a3f`](https://github.com/Byron/open-rs/commit/beb6a3f3fe16d0c9054230cb8b8b57031727fdfb))
+</details>
+
 ## 5.4.1 (2026-08-05)
 
 ### Bug Fixes
@@ -23,7 +54,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 2 commits contributed to the release.
  - 24 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#128](https://github.com/Byron/open-rs/issues/128)
@@ -36,6 +67,8 @@
 
  * **[#128](https://github.com/Byron/open-rs/issues/128)**
     - Forward WSL targets to PowerShell to make `open` actually work there ([`96fa673`](https://github.com/Byron/open-rs/commit/96fa673a6a152d193c210ff77766270192b42d16))
+ * **Uncategorized**
+    - Release open v5.4.1 ([`e548a4e`](https://github.com/Byron/open-rs/commit/e548a4e9180ef8ca7e6b605f3f248fee534a03d1))
 </details>
 
 ## 5.4.0 (2026-07-12)

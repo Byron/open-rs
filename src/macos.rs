@@ -22,7 +22,7 @@ mod tests {
     fn zombie_children_count() -> usize {
         let ppid = std::process::id().to_string();
         let output = SysCommand::new("ps")
-            .args(["-axo", "pid,ppid,stat"])
+            .args(["-axo", "ppid,stat"])
             .output()
             .expect("ps");
         String::from_utf8_lossy(&output.stdout)
@@ -30,9 +30,7 @@ mod tests {
             .skip(1)
             .filter_map(|line| {
                 let mut it = line.split_whitespace();
-                let _pid = it.next()?;
-                let child_ppid = it.next()?;
-                let stat = it.next()?;
+                let (child_ppid, stat) = (it.next()?, it.next()?);
                 Some((child_ppid, stat))
             })
             .filter(|(child_ppid, stat)| *child_ppid == ppid.as_str() && stat.starts_with('Z'))
@@ -53,7 +51,7 @@ mod tests {
         let after = zombie_children_count();
         assert_eq!(
             before, after,
-            "that_detached must not leave zombie children (before={before}, after={after})"
+            "RACY: that_detached must not leave zombie children (before={before}, after={after})"
         );
     }
 

@@ -275,8 +275,23 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 /// the program ends up to be blocking or want to out-live your app
 ///
 /// See documentation of [`that()`] for more details.
+///
+/// ## Platform-specific
+///
+/// - **macOS**: `/usr/bin/open` already hands the target off to LaunchServices and
+///   returns. Extra double-fork detachment (`spawn_detached`) is unnecessary and
+///   leaves unreaped zombie children. This function therefore waits for `open`
+///   itself, matching [`with_detached()`].
 pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
-    #[cfg(any(not(feature = "shellexecute-on-windows"), not(windows)))]
+    #[cfg(target_os = "macos")]
+    {
+        that(path)
+    }
+
+    #[cfg(all(
+        not(target_os = "macos"),
+        any(not(feature = "shellexecute-on-windows"), not(windows))
+    ))]
     {
         let mut last_err = None;
         for mut cmd in commands(path) {
@@ -342,7 +357,10 @@ impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
 
 trait CommandExt {
     fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus>;
-    #[cfg_attr(feature = "shellexecute-on-windows", allow(dead_code))]
+    #[cfg_attr(
+        any(target_os = "macos", feature = "shellexecute-on-windows"),
+        allow(dead_code)
+    )]
     fn spawn_detached(&mut self) -> io::Result<()>;
 }
 
@@ -354,6 +372,10 @@ impl CommandExt for Command {
             .status()
     }
 
+    #[cfg_attr(
+        any(target_os = "macos", feature = "shellexecute-on-windows"),
+        allow(dead_code)
+    )]
     fn spawn_detached(&mut self) -> io::Result<()> {
         // This is pretty much lifted from the implementation in Alacritty:
         // https://github.com/alacritty/alacritty/blob/b9c886872d1202fc9302f68a0bedbb17daa35335/alacritty/src/daemon.rs

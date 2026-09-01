@@ -410,7 +410,7 @@ impl CommandExt for Command {
             self.creation_flags(CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW);
         }
 
-        self.spawn().map(|_| ())
+        self.spawn()?.wait().map(|_| ())
     }
 }
 

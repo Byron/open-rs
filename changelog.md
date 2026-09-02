@@ -1,5 +1,32 @@
 # Changelog
 
+## 5.4.3 (2026-09-02)
+
+### Bug Fixes
+
+ - <csr-id-a78c0caa9608b7487925df9838a1ccee216e4384/> wait for intermediate child to terminate when double-forking
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 3 commits contributed to the release.
+ - 9 days passed between releases.
+ - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #131 from ncfavier/reap ([`136d4d0`](https://github.com/Byron/open-rs/commit/136d4d0aebb566449ee5b07151ae90ee3db305cf))
+    - Review ([`43e601d`](https://github.com/Byron/open-rs/commit/43e601dfdec770237fc13d31f8d2469439234caf))
+    - Wait for intermediate child to terminate when double-forking ([`a78c0ca`](https://github.com/Byron/open-rs/commit/a78c0caa9608b7487925df9838a1ccee216e4384))
+</details>
+
 ## 5.4.2 (2026-08-24)
 
 ### Bug Fixes
@@ -13,7 +40,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 4 commits contributed to the release over the course of 18 calendar days.
+ - 5 commits contributed to the release over the course of 18 calendar days.
  - 19 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
@@ -25,6 +52,7 @@
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release open v5.4.2 ([`1a3ef5d`](https://github.com/Byron/open-rs/commit/1a3ef5d5f981ed344fc3f08ca52b35efbb0b890a))
     - Merge pull request #130 from s00d/fix/macos-that-detached-zombies ([`7468760`](https://github.com/Byron/open-rs/commit/7468760c0b149db984ca3ab35624ff028a9830dd))
     - Review ([`351bb54`](https://github.com/Byron/open-rs/commit/351bb54bcdbdd61ff8509fcb3bdb6712ed69ad4e))
     - Wait in that_detached instead of double-fork ([`c4369c5`](https://github.com/Byron/open-rs/commit/c4369c5af39633a17a79c471605ef1a7f9143243))

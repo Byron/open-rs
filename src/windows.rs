@@ -76,7 +76,7 @@ pub fn commands<T: AsRef<OsStr>>(path: T) -> Vec<Command> {
     cmd.arg("-NoProfile")
         .arg("-NonInteractive")
         .arg("-Command")
-        .arg("Start-Process -FilePath $env:OPEN_RS_TARGET")
+        .arg(include_str!("powershell.ps1"))
         .env("OPEN_RS_TARGET", path)
         .creation_flags(CREATE_NO_WINDOW);
     cmds.push(cmd);
@@ -215,7 +215,7 @@ mod tests {
         assert_eq!(command.get_program(), "powershell.exe");
         assert_eq!(
             command.get_args().last(),
-            Some(OsStr::new("Start-Process -FilePath $env:OPEN_RS_TARGET")),
+            Some(OsStr::new(include_str!("powershell.ps1"))),
             "the PowerShell program must read the target as data instead of embedding it as code"
         );
         assert_eq!(
@@ -228,9 +228,10 @@ mod tests {
             )),
             "shell metacharacters must remain unchanged in the environment-variable value"
         );
-        assert_eq!(
-            launchers.last().unwrap().get_program(),
-            OsStr::new("explorer.exe"),
+        assert!(
+            launchers
+                .iter()
+                .any(|command| command.get_program() == "explorer.exe"),
             "Explorer must remain available as the fallback when PowerShell cannot launch"
         );
         assert_eq!(

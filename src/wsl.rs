@@ -14,7 +14,7 @@ fn command_with_distro(path: &OsStr, distro: Option<&str>) -> Command {
     cmd.arg("-NoProfile")
         .arg("-NonInteractive")
         .arg("-Command")
-        .arg("Start-Process -FilePath $env:OPEN_RS_TARGET")
+        .arg(include_str!("powershell.ps1"))
         .env("WSLENV", wslenv_with_target(env::var_os("WSLENV")))
         .env("OPEN_RS_TARGET", path);
     cmd
@@ -124,7 +124,7 @@ mod tests {
                 "-NoProfile",
                 "-NonInteractive",
                 "-Command",
-                "Start-Process -FilePath $env:OPEN_RS_TARGET"
+                include_str!("powershell.ps1")
             ]
         );
         assert_eq!(
@@ -156,7 +156,7 @@ mod tests {
                 "-NoProfile",
                 "-NonInteractive",
                 "-Command",
-                "Start-Process -FilePath $env:OPEN_RS_TARGET"
+                include_str!("powershell.ps1")
             ]
         );
         assert_eq!(

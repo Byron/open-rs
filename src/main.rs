@@ -5,6 +5,10 @@ use std::{
 
 fn run(mut commands: Vec<Command>) -> io::Result<Command> {
     let mut last_err = None;
+    #[cfg(windows)]
+    let first_exit_err = None;
+    #[cfg(not(windows))]
+    let mut first_exit_err = None;
 
     for mut command in commands.drain(..) {
         let result = command
@@ -15,10 +19,19 @@ fn run(mut commands: Vec<Command>) -> io::Result<Command> {
         match result {
             Ok(status) if status.success() => return Ok(command),
             Ok(status) => {
-                return Err(io::Error::new(
+                let err = io::Error::new(
                     io::ErrorKind::Other,
                     format!("Launcher {command:?} failed with {status:?}"),
-                ));
+                );
+                // UNIX desktop launchers retry reported failures, as in
+                // open::that(). Preserve Windows' historical exit-code policy.
+                #[cfg(windows)]
+                return Err(err);
+                #[cfg(not(windows))]
+                {
+                    eprintln!("{err}");
+                    first_exit_err = first_exit_err.or(Some(err));
+                }
             }
             Err(err) => {
                 eprintln!("Failed to execute {command:?}: {err}");
@@ -27,7 +40,9 @@ fn run(mut commands: Vec<Command>) -> io::Result<Command> {
         }
     }
 
-    Err(last_err.expect("no launcher worked, at least one error"))
+    Err(first_exit_err
+        .or(last_err)
+        .expect("no launcher worked, at least one error"))
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {

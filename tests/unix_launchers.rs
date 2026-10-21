@@ -78,12 +78,13 @@ fn launcher_fixture() {
     match case.as_str() {
         "fallback" | "success" | "kde" => open::that("document.pdf").unwrap(),
         "detached-fallback" => open::that_detached_with_timeout("document.pdf", timeout).unwrap(),
+        "plain-detached" => open::that_detached("document.pdf").unwrap(),
         "outlive" => open::that_detached_with_timeout("document.pdf", Duration::ZERO).unwrap(),
-        "failure" | "detached-failure" => {
-            let result = if case == "failure" {
-                open::that("document.pdf")
-            } else {
-                open::that_detached_with_timeout("document.pdf", timeout)
+        "failure" | "detached-failure" | "plain-detached-failure" => {
+            let result = match case.as_str() {
+                "failure" => open::that("document.pdf"),
+                "detached-failure" => open::that_detached_with_timeout("document.pdf", timeout),
+                _ => open::that_detached("document.pdf"),
             };
             let err = result.unwrap_err();
             assert_eq!(err.kind(), std::io::ErrorKind::Other);
@@ -137,7 +138,7 @@ const SUCCEED: &str = "printf 'gio\\n' >> \"$OPEN_RS_TEST_LAUNCHER_LOG\"\nexit 0
 
 #[test]
 fn retries_failed_launchers_and_stops_after_success() {
-    for case in ["fallback", "detached-fallback"] {
+    for case in ["fallback", "detached-fallback", "plain-detached"] {
         let fixture = Fixture::new();
         fixture.launcher("xdg-open", FAIL);
         fixture.launcher("gio", SUCCEED);
@@ -190,7 +191,7 @@ fn launcher_output_cannot_fill_a_pipe_and_block_status_checks() {
 
 #[test]
 fn preserves_actual_failure_when_later_launchers_are_missing() {
-    for case in ["failure", "detached-failure"] {
+    for case in ["failure", "detached-failure", "plain-detached-failure"] {
         let fixture = Fixture::new();
         fixture.launcher("xdg-open", FAIL);
         fixture.run(case);

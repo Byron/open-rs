@@ -157,6 +157,12 @@ use std::{
     time::{Duration, Instant},
 };
 
+/// How long [`that_detached()`] observes a launcher for an immediate failure
+/// before treating it as handed off. Misconfigured launchers fail within
+/// milliseconds; callers with a different budget can use
+/// [`that_detached_with_timeout()`].
+const DETACHED_FAILURE_CHECK_TIMEOUT: Duration = Duration::from_millis(250);
+
 /// Open path with the default application without blocking.
 ///
 /// # Examples
@@ -361,9 +367,11 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 ///
 /// See documentation of [`that()`] for more details.
 ///
-/// Except on macOS, success only confirms that a launcher was spawned. A
-/// subsequent launcher failure cannot be reported or retried. Use
-/// [`that_detached_with_timeout()`] to check for failures during a bounded wait.
+/// Except on macOS, each launcher is observed for an additional 250 ms. A
+/// launcher that fails within that window falls through to the next candidate;
+/// one that is still running is treated as handed off. Failures after the
+/// window cannot be reported or retried. Use
+/// [`that_detached_with_timeout()`] for a different window.
 /// With `shellexecute-on-windows`, success instead confirms that the Windows
 /// Shell API accepted the request.
 ///
@@ -384,16 +392,7 @@ pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
         any(not(feature = "shellexecute-on-windows"), not(windows))
     ))]
     {
-        let mut last_err = None;
-        for mut cmd in commands(path) {
-            match cmd.spawn_detached() {
-                Ok(_) => {
-                    return Ok(());
-                }
-                Err(err) => last_err = Some(err),
-            }
-        }
-        Err(last_err.expect("no launcher worked, at least one error"))
+        that_detached_with_timeout(path, DETACHED_FAILURE_CHECK_TIMEOUT)
     }
 
     #[cfg(all(windows, feature = "shellexecute-on-windows"))]

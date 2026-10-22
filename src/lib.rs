@@ -154,7 +154,18 @@ use std::{
     io,
     process::{Command, Stdio},
     thread,
+    time::{Duration, Instant},
 };
+
+/// How long [`that_detached()`] observes a launcher for an immediate failure
+/// before treating it as handed off. Misconfigured launchers fail within
+/// milliseconds; callers with a different budget can use
+/// [`that_detached_with_timeout()`].
+#[cfg(all(
+    not(target_os = "macos"),
+    any(not(feature = "shellexecute-on-windows"), not(windows))
+))]
+const DETACHED_FAILURE_CHECK_TIMEOUT: Duration = Duration::from_millis(250);
 
 /// Open path with the default application without blocking.
 ///
@@ -173,22 +184,18 @@ use std::{
 ///
 /// A [`std::io::Error`] is returned on failure. Because different operating systems
 /// handle errors differently it is recommend to not match on a certain error.
+/// On UNIX desktops, unsuccessful launcher exits cause the next candidate to be
+/// tried. If none succeeds, the first unsuccessful exit is reported in preference
+/// to errors from missing fallback executables.
 ///
 /// # Beware
 ///
 /// Sometimes, depending on the platform and system configuration, launchers *can* block.
 /// If you want to be sure they don't, use [`that_in_background()`] or [`that_detached`] instead.
 pub fn that(path: impl AsRef<OsStr>) -> io::Result<()> {
-    let mut last_err = None;
-    for mut cmd in commands(path) {
-        match cmd.status_without_output() {
-            Ok(status) => {
-                return Ok(status).into_result(&cmd);
-            }
-            Err(err) => last_err = Some(err),
-        }
-    }
-    Err(last_err.expect("no launcher worked, at least one error"))
+    try_launchers(launchers(path), |cmd| {
+        cmd.status_without_output().map(LauncherStatus::Exited)
+    })
 }
 
 /// Open path with the given application.
@@ -231,7 +238,95 @@ pub fn with(path: impl AsRef<OsStr>, app: impl Into<String>) -> io::Result<()> {
 /// # }
 /// ```
 pub fn commands(path: impl AsRef<OsStr>) -> Vec<Command> {
+    launchers(path)
+        .into_iter()
+        .map(|launcher| launcher.command)
+        .collect()
+}
+
+/// Whether a launcher's failure is sufficiently reliable to try another opener.
+#[derive(Clone, Copy)]
+#[allow(dead_code)] // Each platform constructs only the policies it needs.
+enum ExitStatusPolicy {
+    RetryOnFailure,
+    StopOnFailure,
+}
+
+struct Launcher {
+    command: Command,
+    exit_status: ExitStatusPolicy,
+}
+
+enum LauncherStatus {
+    Exited(std::process::ExitStatus),
+    Running,
+    WaitError(io::Error),
+}
+
+fn launchers(path: impl AsRef<OsStr>) -> Vec<Launcher> {
+    #[cfg(any(
+        target_os = "linux",
+        target_os = "android",
+        target_os = "freebsd",
+        target_os = "dragonfly",
+        target_os = "netbsd",
+        target_os = "openbsd",
+        target_os = "illumos",
+        target_os = "solaris",
+        target_os = "aix",
+        target_os = "hurd"
+    ))]
+    return unix::launchers(path);
+
+    #[cfg(any(
+        windows,
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "visionos",
+        target_os = "haiku",
+        target_os = "redox"
+    ))]
     os::commands(path)
+        .into_iter()
+        .map(|command| Launcher {
+            command,
+            // Preserve existing behavior on other platforms. In particular,
+            // Explorer's nonzero exit status is not a reliable launch failure.
+            exit_status: ExitStatusPolicy::StopOnFailure,
+        })
+        .collect()
+}
+
+fn try_launchers(
+    launchers: Vec<Launcher>,
+    mut launch: impl FnMut(&mut Command) -> io::Result<LauncherStatus>,
+) -> io::Result<()> {
+    let mut first_exit_err = None;
+    let mut last_spawn_err = None;
+    for mut launcher in launchers {
+        let cmd = &mut launcher.command;
+        match launch(cmd) {
+            Ok(LauncherStatus::Running) => return Ok(()),
+            // The launcher already started. An inability to observe its exit
+            // is not evidence that opening failed, so do not launch it twice.
+            Ok(LauncherStatus::WaitError(err)) => return Err(err),
+            Ok(LauncherStatus::Exited(status)) => match Ok(status).into_result(cmd) {
+                Ok(()) => return Ok(()),
+                Err(err) => match launcher.exit_status {
+                    ExitStatusPolicy::StopOnFailure => return Err(err),
+                    ExitStatusPolicy::RetryOnFailure => {
+                        // Missing later launchers should not mask a launcher's
+                        // actual failure with an unrelated ENOENT error.
+                        first_exit_err = first_exit_err.or(Some(err));
+                    }
+                },
+            },
+            Err(err) => last_spawn_err = Some(err),
+        }
+    }
+    Err(first_exit_err
+        .or(last_spawn_err)
+        .expect("no launcher worked, at least one error"))
 }
 
 /// Get a command that uses `app` to open `path`.
@@ -276,6 +371,14 @@ pub fn with_in_background<T: AsRef<OsStr>>(
 ///
 /// See documentation of [`that()`] for more details.
 ///
+/// Except on macOS, each launcher is observed for an additional 250 ms. A
+/// launcher that fails within that window falls through to the next candidate;
+/// one that is still running is treated as handed off. Failures after the
+/// window cannot be reported or retried. Use
+/// [`that_detached_with_timeout()`] for a different window.
+/// With `shellexecute-on-windows`, success instead confirms that the Windows
+/// Shell API accepted the request.
+///
 /// ## Platform-specific
 ///
 /// - **macOS**: `/usr/bin/open` already hands the target off to LaunchServices and
@@ -293,22 +396,44 @@ pub fn that_detached(path: impl AsRef<OsStr>) -> io::Result<()> {
         any(not(feature = "shellexecute-on-windows"), not(windows))
     ))]
     {
-        let mut last_err = None;
-        for mut cmd in commands(path) {
-            match cmd.spawn_detached() {
-                Ok(_) => {
-                    return Ok(());
-                }
-                Err(err) => last_err = Some(err),
-            }
-        }
-        Err(last_err.expect("no launcher worked, at least one error"))
+        that_detached_with_timeout(path, DETACHED_FAILURE_CHECK_TIMEOUT)
     }
 
     #[cfg(all(windows, feature = "shellexecute-on-windows"))]
     {
         windows::that_detached(path)
     }
+}
+
+/// Open a path with the default application in a detached process, checking for
+/// launcher failures for up to `timeout` **per launcher**.
+///
+/// On UNIX desktops, a launcher that exits unsuccessfully within this interval
+/// causes the next launcher to be tried. Success means that a launcher exited
+/// successfully or was still running when its timeout elapsed. It does not
+/// confirm that an application opened the target: failures after the timeout
+/// cannot be reported, and some launchers report success before the hand-off
+/// completes. A zero timeout performs a single immediate status check.
+///
+/// A launcher still running at the timeout is reaped by a background thread when
+/// it exits. It can outlive the calling application. Spawning a process and
+/// scheduling the waiter can take additional time beyond the timeout.
+///
+/// This uses command-based launchers on all platforms, including Windows when
+/// the `shellexecute-on-windows` feature is enabled. Windows retains [`that()`]'s
+/// policy of stopping on nonzero exit status because launcher exit codes can be
+/// unreliable there.
+///
+/// ```no_run
+/// # fn main() -> std::io::Result<()> {
+/// open::that_detached_with_timeout("document.pdf", std::time::Duration::from_secs(1))?;
+/// # Ok(())
+/// # }
+/// ```
+pub fn that_detached_with_timeout(path: impl AsRef<OsStr>, timeout: Duration) -> io::Result<()> {
+    try_launchers(launchers(path), |cmd| {
+        cmd.status_detached_with_timeout(timeout)
+    })
 }
 
 /// Open path with the given application using a detached process, which is useful if
@@ -357,6 +482,7 @@ impl IntoResult<io::Result<()>> for io::Result<std::process::ExitStatus> {
 
 trait CommandExt {
     fn status_without_output(&mut self) -> io::Result<std::process::ExitStatus>;
+    fn status_detached_with_timeout(&mut self, timeout: Duration) -> io::Result<LauncherStatus>;
     #[cfg_attr(
         any(target_os = "macos", feature = "shellexecute-on-windows"),
         allow(dead_code)
@@ -370,6 +496,76 @@ impl CommandExt for Command {
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .status()
+    }
+
+    fn status_detached_with_timeout(&mut self, timeout: Duration) -> io::Result<LauncherStatus> {
+        self.stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null());
+
+        // Reserve the waiter before launching anything. If creating a thread
+        // fails, there is no live child to abandon or accidentally launch twice.
+        let (sender, receiver) = std::sync::mpsc::sync_channel::<std::process::Child>(1);
+        thread::Builder::new()
+            .name("open-launcher-wait".into())
+            // The waiter only receives a child and waits; avoid a default-sized stack.
+            .stack_size(64 * 1024)
+            .spawn(move || {
+                if let Ok(mut child) = receiver.recv() {
+                    let _ = child.wait();
+                }
+            })?;
+
+        #[cfg(unix)]
+        unsafe {
+            use std::os::unix::process::CommandExt as _;
+            // Keep the launcher as our child so its real exit status is
+            // available. Unlike spawn_detached, there is no intermediate
+            // child whose successful exit could mask a launcher failure.
+            self.pre_exec(|| {
+                if libc::setsid() == -1 {
+                    return Err(io::Error::last_os_error());
+                }
+                Ok(())
+            });
+        }
+        #[cfg(windows)]
+        {
+            use std::os::windows::process::CommandExt;
+            const CREATE_NEW_PROCESS_GROUP: u32 = 0x00000200;
+            const CREATE_NO_WINDOW: u32 = 0x08000000;
+            self.creation_flags(CREATE_NEW_PROCESS_GROUP | CREATE_NO_WINDOW);
+        }
+
+        let mut child = self.spawn()?;
+        let start = Instant::now();
+        let mut initial_poll = true;
+        let result = loop {
+            // Always poll once, even for a zero timeout. After that, a delayed
+            // wakeup must not observe a late failure and trigger fallback.
+            // We do this primarily to avoid polling again and take more time
+            // than allocated.
+            if !initial_poll && start.elapsed() >= timeout {
+                break LauncherStatus::Running;
+            }
+            initial_poll = false;
+            match child.try_wait() {
+                Ok(Some(status)) => return Ok(LauncherStatus::Exited(status)),
+                Err(err) => break LauncherStatus::WaitError(err),
+                Ok(None) => {
+                    let remaining = timeout.saturating_sub(start.elapsed());
+                    if remaining.is_zero() {
+                        break LauncherStatus::Running;
+                    }
+                    thread::sleep(remaining.min(Duration::from_millis(10)));
+                }
+            }
+        };
+
+        // Retain ownership of the child after returning. Dropping Child does
+        // not reap it on Unix and would leave a zombie when it eventually exits.
+        sender.send(child).expect("waiter is waiting for the child");
+        Ok(result)
     }
 
     #[cfg_attr(
@@ -473,6 +669,66 @@ mod unix;
 mod command_ext_tests {
     use super::*;
     use std::time::{Duration, Instant};
+
+    fn failed_status() -> std::process::ExitStatus {
+        #[cfg(unix)]
+        {
+            use std::os::unix::process::ExitStatusExt;
+            std::process::ExitStatus::from_raw(1 << 8)
+        }
+        #[cfg(windows)]
+        {
+            use std::os::windows::process::ExitStatusExt;
+            std::process::ExitStatus::from_raw(1)
+        }
+    }
+
+    #[test]
+    fn unreliable_failure_stops_fallback() {
+        let launchers = vec![
+            Launcher {
+                command: Command::new("unreliable-opener"),
+                exit_status: ExitStatusPolicy::StopOnFailure,
+            },
+            Launcher {
+                command: Command::new("second-opener"),
+                exit_status: ExitStatusPolicy::RetryOnFailure,
+            },
+        ];
+        let mut attempts = 0;
+        let err = try_launchers(launchers, |_| {
+            attempts += 1;
+            Ok(LauncherStatus::Exited(failed_status()))
+        })
+        .unwrap_err();
+        assert_eq!(attempts, 1);
+        assert!(err.to_string().contains("unreliable-opener"));
+    }
+
+    #[test]
+    fn status_observation_error_does_not_launch_twice() {
+        let launchers = vec![
+            Launcher {
+                command: Command::new("first-opener"),
+                exit_status: ExitStatusPolicy::RetryOnFailure,
+            },
+            Launcher {
+                command: Command::new("second-opener"),
+                exit_status: ExitStatusPolicy::RetryOnFailure,
+            },
+        ];
+        let mut attempts = 0;
+        let err = try_launchers(launchers, |_| {
+            attempts += 1;
+            Ok(LauncherStatus::WaitError(io::Error::new(
+                io::ErrorKind::Other,
+                "could not observe the launcher's exit",
+            )))
+        })
+        .unwrap_err();
+        assert_eq!(attempts, 1);
+        assert!(err.to_string().contains("observe"));
+    }
 
     #[test]
     fn spawn_detached_does_not_wait_for_target() {

@@ -1,5 +1,99 @@
 # Changelog
 
+## 5.4.5 (2026-10-22)
+
+### Bug Fixes
+
+ - <csr-id-42a34b073caf7c4ec631ec0657b6ba5387b369f2/> check that_detached launchers for immediate failures
+   `that_detached()` returned as soon as a launcher spawned, so a launcher that
+   failed right after starting was reported as success and no fallback ran.
+   
+   Observe each launcher for 250 ms by delegating to
+   `that_detached_with_timeout()`. A launcher that exits unsuccessfully within
+   that window falls through to the next candidate; one still running is treated
+   as handed off. The macOS and `shellexecute-on-windows` paths are unchanged.
+   
+   Extend the fixture tests to call `that_detached()` directly.
+ - <csr-id-279c1b24e34a482f893a09a483294e20f344350b/> restore launcher fallback and support Plasma 6
+   <!-- agent -->
+   When `xdg-open` starts but exits unsuccessfully, `that()` and the CLI
+   previously stopped before trying another installed opener. On Plasma 6,
+   the fallback list also omitted the versioned KDE launchers.
+   
+   ### Launcher behavior
+   
+   - Retry reported failures from UNIX desktop launchers and retain the first
+     unsuccessful exit when later candidates are missing.
+   - Add `kde-open6` and `kde-open5` before the existing `kde-open` fallback.
+   - Keep launcher ordering, argument boundaries, and exit-status policy
+     together so compatibility decisions are explicit.
+   - Preserve Windows' stop-on-failure policy and the existing protections
+     for option-shaped and non-UTF-8 paths.
+   
+   ### Bounded detached checks
+   
+   Add `that_detached_with_timeout(path, timeout)` to opt into checking the
+   actual launcher status for a configurable interval per candidate. Retry
+   confirmed UNIX launcher failures; consider successful exits or launchers
+   still running at the deadline handed off. A zero timeout polls once.
+   
+   On UNIX, use `setsid()` while retaining the launcher as a child. Reserve a
+   background waiter before spawning and transfer ownership after a timeout
+   so the launcher can outlive its caller and is eventually reaped. Stop
+   fallback if observing an already-started launcher fails, avoiding a second
+   launch based only on a wait error. Existing detached calls retain their
+   timing behavior. The new API uses command-based launchers on Windows,
+   including when `shellexecute-on-windows` is enabled.
+   
+   ### Historical constraints
+   
+   `55dc10d` relaxed exit checks for argumentless availability probes, where
+   usage errors are expected. It did not establish that failed real opening
+   operations should stop fallback. `245c95e` introduced that behavior;
+   the earlier implementation retried unsuccessful operations.
+   
+   Keep stderr redirected to null: `30a144a` and `0bdc6d6` document previous
+   pipe deadlocks and hangs. Do not interpret the successful double-fork
+   intermediate child's exit as launcher success (`a78c0ca`, `43e601d`).
+   
+   Document these constraints and upstream launcher behavior in
+   `docs/launchers.md`. Exclude `kioclient exec`, which enables execution
+   beyond `kde-open`'s behavior, and arbitrary file-manager or AppImage
+   environment fallbacks that could override configured handlers.
+   
+   ### Validation and limits
+   
+   - Default and all-feature Linux tests pass, covering fallback, error
+     selection, Plasma 6 reachability, timeouts, child reaping, survival after
+     caller exit, large stderr output, argument protection, and CLI behavior.
+   - Formatting, `git diff --check`, and all-target, all-feature Linux clippy
+     pass. Windows and macOS compile checks and clippy also pass.
+   - Actual desktop and AppImage behavior still needs testing. A handler
+     that opens a target before reporting failure can cause a duplicate open
+     when retried. Failures after the timeout cannot trigger fallback.
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 4 commits contributed to the release.
+ - 42 days passed between releases.
+ - 2 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Merge pull request #135 from Byron/fix-linux-launchers ([`4e64f6b`](https://github.com/Byron/open-rs/commit/4e64f6b1ad83b6839e6f2babe657e3897b201daf))
+    - Auto-review ([`c88759b`](https://github.com/Byron/open-rs/commit/c88759b37476816b89365b2ca9cf614fff999b63))
+    - Check that_detached launchers for immediate failures ([`42a34b0`](https://github.com/Byron/open-rs/commit/42a34b073caf7c4ec631ec0657b6ba5387b369f2))
+    - Restore launcher fallback and support Plasma 6 ([`279c1b2`](https://github.com/Byron/open-rs/commit/279c1b24e34a482f893a09a483294e20f344350b))
+</details>
+
 ## 5.4.4 (2026-09-10)
 
 ### Bug Fixes
@@ -39,7 +133,7 @@
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 8 days passed between releases.
  - 1 commit was understood as [conventional](https://www.conventionalcommits.org).
  - 1 unique issue was worked on: [#132](https://github.com/Byron/open-rs/issues/132)
@@ -53,6 +147,7 @@
  * **[#132](https://github.com/Byron/open-rs/issues/132)**
     - Open Windows paths without wildcard expansion ([`ad95c40`](https://github.com/Byron/open-rs/commit/ad95c40f98144b368ec759492edecd0b8b20b672))
  * **Uncategorized**
+    - Release open v5.4.4 ([`ba35e00`](https://github.com/Byron/open-rs/commit/ba35e001028f03290eaae2cc1cad8411322507b2))
     - Merge pull request #133 from Byron/fix-open-on-windows ([`45317f8`](https://github.com/Byron/open-rs/commit/45317f8a4fdc43218dcc3418156e677e35662dff))
 </details>
 

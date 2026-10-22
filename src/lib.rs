@@ -161,6 +161,10 @@ use std::{
 /// before treating it as handed off. Misconfigured launchers fail within
 /// milliseconds; callers with a different budget can use
 /// [`that_detached_with_timeout()`].
+#[cfg(all(
+    not(target_os = "macos"),
+    any(not(feature = "shellexecute-on-windows"), not(windows))
+))]
 const DETACHED_FAILURE_CHECK_TIMEOUT: Duration = Duration::from_millis(250);
 
 /// Open path with the default application without blocking.
@@ -535,7 +539,16 @@ impl CommandExt for Command {
 
         let mut child = self.spawn()?;
         let start = Instant::now();
+        let mut initial_poll = true;
         let result = loop {
+            // Always poll once, even for a zero timeout. After that, a delayed
+            // wakeup must not observe a late failure and trigger fallback.
+            // We do this primarily to avoid polling again and take more time
+            // than allocated.
+            if !initial_poll && start.elapsed() >= timeout {
+                break LauncherStatus::Running;
+            }
+            initial_poll = false;
             match child.try_wait() {
                 Ok(Some(status)) => return Ok(LauncherStatus::Exited(status)),
                 Err(err) => break LauncherStatus::WaitError(err),

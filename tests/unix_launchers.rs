@@ -115,9 +115,8 @@ fn launcher_fixture() {
             std::thread::sleep(Duration::from_secs(2));
             #[cfg(target_os = "linux")]
             {
-                let children =
-                    fs::read_to_string(format!("/proc/self/task/{}/children", std::process::id()))
-                        .unwrap();
+                // Inspect the spawning test thread, not the process's main thread.
+                let children = fs::read_to_string("/proc/thread-self/children").unwrap();
                 assert!(
                     children.trim().is_empty(),
                     "unreaped children: {}",

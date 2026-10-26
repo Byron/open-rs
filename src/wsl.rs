@@ -1,7 +1,9 @@
 use std::{
     env,
     ffi::{OsStr, OsString},
+    fs,
     process::Command,
+    sync::OnceLock,
 };
 
 pub fn command(path: &OsStr) -> Command {
@@ -94,6 +96,48 @@ fn drvfs_path(path: &str) -> Option<String> {
         drive.to_ascii_uppercase(),
         rest.replace('/', r"\")
     ))
+}
+
+pub fn is_wsl() -> bool {
+    static CACHED_RESULT: OnceLock<bool> = OnceLock::new();
+
+    *CACHED_RESULT.get_or_init(|| {
+        if std::env::consts::OS != "linux" {
+            return false;
+        }
+
+        if let Ok(os_release) = fs::read_to_string("/proc/sys/kernel/osrelease") {
+            if os_release.to_lowercase().contains("microsoft") {
+                return !is_docker();
+            }
+        }
+
+        proc_version_includes_microsoft() && !is_docker()
+    })
+}
+
+fn proc_version_includes_microsoft() -> bool {
+    match fs::read_to_string("/proc/version") {
+        Ok(file_contents) => file_contents.to_lowercase().contains("microsoft"),
+        Err(_) => false,
+    }
+}
+
+fn is_docker() -> bool {
+    static CACHED_RESULT: OnceLock<bool> = OnceLock::new();
+
+    *CACHED_RESULT.get_or_init(|| has_docker_env_file() || has_docker_in_cgroup())
+}
+
+fn has_docker_env_file() -> bool {
+    fs::metadata("/.dockerenv").is_ok()
+}
+
+fn has_docker_in_cgroup() -> bool {
+    match fs::read_to_string("/proc/self/cgroup") {
+        Ok(file_contents) => file_contents.contains("docker"),
+        Err(_) => false,
+    }
 }
 
 #[cfg(test)]

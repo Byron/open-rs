@@ -117,7 +117,7 @@ fn option_safe_path(path: &OsStr) -> OsString {
 
 pub(super) fn launchers<T: AsRef<OsStr>>(path: T) -> Vec<Launcher> {
     let path = path.as_ref();
-    let is_wsl = is_wsl::is_wsl();
+    let is_wsl = crate::wsl::is_wsl();
     let mut commands = vec![];
 
     if is_wsl {

@@ -98,6 +98,8 @@ fn drvfs_path(path: &str) -> Option<String> {
     ))
 }
 
+// Detection code adapted from is-wsl 0.4.0 and is-docker 0.2.0.
+// See LICENSE.md for their MIT copyright and permission notice.
 pub fn is_wsl() -> bool {
     static CACHED_RESULT: OnceLock<bool> = OnceLock::new();
 
